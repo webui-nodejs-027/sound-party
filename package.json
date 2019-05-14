@@ -1,0 +1,33 @@
+{
+  "name": "sound-party",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webui-nodejs-027/sound-party.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/webui-nodejs-027/sound-party/issues"
+  },
+  "homepage": "https://github.com/webui-nodejs-027/sound-party#readme",
+  "dependencies": {
+    "express": "4.16.4",
+    "express-validator": "5.3.1",
+    "nodemailer": "6.1.1",
+    "passport": "0.4.0",
+    "pg": "7.11.0",
+    "typeorm": "0.2.17"
+  },
+  "devDependencies": {
+    "chai": "4.2.0",
+    "eslint": "5.16.0",
+    "mocha": "6.1.4"
+  }
+}
