@@ -1,0 +1,14 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": 123321,
+  "database": "music-base",
+  "entities": ["src/Entityes/*.js"],
+  "logging": true,
+  "synchronize": true
+}
+
+
+
