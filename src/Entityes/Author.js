@@ -12,13 +12,5 @@ module.exports = new EntitySchema( {
             type: "varchar",
             nullable : false
         }
-    },
-    relations: {
-        song: {
-            type: `one-to-one`,
-            target: `Song`,
-            joinColumn: true,
-            cascade:true
-        },
     }
 });
