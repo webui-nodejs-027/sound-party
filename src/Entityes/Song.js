@@ -18,14 +18,14 @@ module.exports = new EntitySchema({
         }
     },
     relations: {
-        song: {
-            type: `one-to-one`,
+        author: {
+            type: `many-to-one`,
             target: `Author`,
             joinColumn: true,
             cascade:true
         },
         genre: {
-            type: `one-to-one`,
+            type: `many-to-one`,
             target: `Genre`,
             joinColumn: true,
             cascade:true
