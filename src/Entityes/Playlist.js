@@ -27,7 +27,7 @@ module.exports = new EntitySchema({
             cascade: true
         },
         typeofplaylist: {
-            type: 'one-to-one',
+            type: 'many-to-one',
             target: `TypeOfPlaylist`,
             joinColumn: true
         }
