@@ -11,6 +11,10 @@ module.exports = new EntitySchema({
         name: {
             type: `varchar`,
             nullable: false
+        },
+        favourite:{
+            type: "boolean",
+             default : false
         }
     },
     relations: {

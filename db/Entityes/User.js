@@ -24,6 +24,15 @@ module.exports = new EntitySchema({
         password: {
             type: "varchar",
             nullable: false
+        },
+        birthday: {
+            type: 'date',
+        },
+        gender: {
+            type: "varchar"
+        },
+        socialLink: {
+            type: "varchar"
         }
     },
     relations: {
@@ -32,5 +41,11 @@ module.exports = new EntitySchema({
             target: 'Playlist',
             joinColumn: true
         },
+        role: {
+            type: 'one-to-one',
+            target: 'Role',
+            joinColumn: true,
+            cascade: true
+        }
     }
 });
