@@ -1,5 +1,5 @@
 const EntitySchema = require('typeorm').EntitySchema;
-const TypeOfListModel = require('../../db/Models/TypeOfPlaylistModel');
+const TypeOfListModel = require('../Models/TypeOfPlaylistModel');
 
 module.exports = new EntitySchema( {
     name: "TypeOfPlaylist",
