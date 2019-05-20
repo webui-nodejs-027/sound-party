@@ -1,19 +1,27 @@
-const typeorm = require('typeorm');
-const TypeOfPlaylist = require('./db/Models/TypeOfPlaylistModel');
-const Author = require('./db/Models/AuthorModel');
+const express = require('express');
+const dbConnect = require('./db/dbconnect');
+const routers = require('./src/routes/routers');
 
-let express = require('express');
-let app = express();
+const app = express();
 
-typeorm.createConnection().then(async connection => {
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
 
-    console.log(`Connect to DB`);
-    let author = new Author('Hello');
-    let typeOfListRepository = await connection.getRepository(TypeOfPlaylist.getNameToRepository());
-    await typeOfListRepository.save(author);
+app.use('/', routers.mainRoute);
+app.use('/api/users', routers.userRoute)
 
-    app.listen(3000, () => {
-        console.log(`Server created`);
-    });
+app.use((req, res, next) => {
+    res.sendStatus(404);
+});
 
+app.use((err, req, res, next) => {
+    res.status(err.statusCode || 500).send({errors: err.message});
+})
+
+app.listen(3000, async () => {
+    console.log('Server created');
+    await dbConnect.createDbConnection();
+    console.log('Database connected'); 
 });
