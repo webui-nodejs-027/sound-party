@@ -16,7 +16,7 @@ class User {
     this.birthday = birthday;
     this.gender = gender;
     this.socialLink = socialLink;
-    this.roleId = roleId;
+    this.role = roleId;
   }
 }
 
