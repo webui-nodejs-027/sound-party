@@ -1,8 +1,9 @@
-const ClientService = require('../services/ClientService');
+const ClientService = require("../services/ClientService");
+
 class ClientController {
   constructor(entity) {
     this.ClientService = new ClientService(entity);
-   
+
     this.getAllData = this.getAllData.bind(this);
   }
 
@@ -11,7 +12,6 @@ class ClientController {
     console.log(result);
     res.status(200).json(result);
   }
-
 }
 
 module.exports = ClientController;
