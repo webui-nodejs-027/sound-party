@@ -1,51 +1,51 @@
-const { EntitySchema } = require("typeorm");
+const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({
-  name: "User",
+  name: 'User',
   columns: {
     id: {
       primary: true,
-      type: "int",
-      generated: true
+      type: 'int',
+      generated: true,
     },
     firstName: {
-      type: "varchar",
-      nullable: false
+      type: 'varchar',
+      nullable: false,
     },
     lastName: {
-      type: "varchar",
-      nullable: false
+      type: 'varchar',
+      nullable: false,
     },
     email: {
-      type: "varchar",
+      type: 'varchar',
       unique: true,
-      nullable: false
+      nullable: false,
     },
     password: {
-      type: "varchar",
-      nullable: false
+      type: 'varchar',
+      nullable: false,
     },
     birthday: {
-      type: "date"
+      type: 'date',
     },
     gender: {
-      type: "varchar"
+      type: 'varchar',
     },
     socialLink: {
-      type: "varchar"
-    }
+      type: 'varchar',
+    },
   },
   relations: {
     playlist: {
-      type: "one-to-many",
-      target: "Playlist",
-      joinColumn: { name: "playlistId" }
+      type: 'one-to-many',
+      target: 'Playlist',
+      joinColumn: { name: 'playlistId' },
     },
     role: {
-      type: "many-to-one",
-      target: "Role",
-      joinColumn: { name: "roleId" },
-      cascade: true
-    }
-  }
+      type: 'many-to-one',
+      target: 'Role',
+      joinColumn: { name: 'roleId' },
+      cascade: true,
+    },
+  },
 });

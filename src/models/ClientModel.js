@@ -1,4 +1,4 @@
-const { getRepository } = require("typeorm");
+const { getRepository } = require('typeorm');
 
 class ClientModel {
   constructor(entity) {

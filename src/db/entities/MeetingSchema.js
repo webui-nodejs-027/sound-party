@@ -1,56 +1,56 @@
-const { EntitySchema } = require("typeorm");
+const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({
-  name: "Meeting",
+  name: 'Meeting',
   columns: {
     id: {
       primary: true,
-      type: "int",
-      generated: true
+      type: 'int',
+      generated: true,
     },
     name: {
-      type: "varchar",
-      nullable: false
+      type: 'varchar',
+      nullable: false,
     },
     dateTime: {
-      type: "timestamp",
-      nullable: false
+      type: 'timestamp',
+      nullable: false,
     },
     address: {
-      type: "varchar",
-      nullable: false
-    }
+      type: 'varchar',
+      nullable: false,
+    },
   },
   relations: {
     author: {
-      type: "many-to-one",
-      joinColumn: { name: "authorId" },
-      target: "Author",
-      cascade: true
+      type: 'many-to-one',
+      joinColumn: { name: 'authorId' },
+      target: 'Author',
+      cascade: true,
     },
     genre: {
-      type: "many-to-one",
-      joinColumn: { name: "genreId" },
-      target: "Genre",
-      cascade: true
+      type: 'many-to-one',
+      joinColumn: { name: 'genreId' },
+      target: 'Genre',
+      cascade: true,
     },
     user: {
-      type: "many-to-one",
-      joinColumn: { name: "userId" },
-      target: "User",
-      cascade: true
+      type: 'many-to-one',
+      joinColumn: { name: 'userId' },
+      target: 'User',
+      cascade: true,
     },
     city: {
-      type: "many-to-one",
-      joinColumn: { name: "cityId" },
-      target: "City",
-      cascade: true
+      type: 'many-to-one',
+      joinColumn: { name: 'cityId' },
+      target: 'City',
+      cascade: true,
     },
     status: {
-      type: "many-to-one",
-      joinColumn: { name: "statusId" },
-      target: "Status",
-      cascade: true
-    }
-  }
+      type: 'many-to-one',
+      joinColumn: { name: 'statusId' },
+      target: 'Status',
+      cascade: true,
+    },
+  },
 });

@@ -1,5 +1,5 @@
-const ClientController = require("./ClientController");
-const UserService = require("../services/UserService");
+const ClientController = require('./ClientController');
+const UserService = require('../services/UserService');
 
 class UserController extends ClientController {
   constructor(entity) {

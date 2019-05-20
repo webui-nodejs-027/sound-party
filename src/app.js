@@ -1,18 +1,18 @@
-const express = require("express");
-const dbConnect = require("./db/dbconnect");
-const routers = require("./routes/routers");
+const express = require('express');
+const dbConnect = require('./db/dbconnect');
+const routers = require('./routes/routers');
 
 const app = express();
 
 app.use(express.json());
 app.use(
   express.urlencoded({
-    extended: true
-  })
+    extended: true,
+  }),
 );
 
-app.use("/", routers.mainRoute);
-app.use("/api/users", routers.userRoute);
+app.use('/', routers.mainRoute);
+app.use('/api/users', routers.userRoute);
 
 app.use((req, res, next) => {
   res.sendStatus(404);
@@ -23,7 +23,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(3000, async () => {
-  console.log("Server created");
+  console.log('Server created');
   await dbConnect.createDbConnection();
-  console.log("Database connected");
+  console.log('Database connected');
 });

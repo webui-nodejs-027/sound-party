@@ -1,4 +1,4 @@
-const ClientModel = require("../models/ClientModel");
+const ClientModel = require('../models/ClientModel');
 
 class ClientService {
   constructor(entity) {
