@@ -59,7 +59,7 @@ async function initializeUser(connection) {
   await connection
     .getRepository(RoleSchema)
     .save(roles);
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i += 1) {
     const firstName = firstNames[getRndmNum(0, 9)];
     const lastName = lastNames[getRndmNum(0, 9)];
     const email = `${firstName.toLowerCase()}.${lastName.toLowerCase() + i}@gmail.com`;
@@ -115,7 +115,7 @@ async function initializeGenre(connection) {
 
 async function initializeSong(connection, authors, genres) {
   const songs = [];
-  for (let i = 0; i < 11; i++) {
+  for (let i = 0; i < 11; i += 1) {
     const songName = `Song${i}`;
     const source = `file://localhost/d:/storage/song${i}.mp3`;
     const year = `${getRndmNum(1980, 2011)}`;
@@ -143,7 +143,7 @@ async function initializePlaylist(connection, users, songs) {
     .getRepository(TypeOfPlaylistSchema)
     .save(typesOfPlaylist);
   let playlists = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i += 1) {
     const user = users[i];
     const name = `${user.firstName}\`s playlist`;
     const playlistNF = new Playlist(
@@ -212,7 +212,7 @@ async function initializeMeeting(connection, authors, genres, users, cities, sta
     'disco',
   ];
   const meetings = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i += 1) {
     const name = `${adjectives[getRndmNum(0, 8)]} ${nouns[getRndmNum(0, 5)]}`;
     const dateTime = `2019-06-${getRndmNum(1, 31)} 12:00:00`;
     const address = `Party str., ${i}`;
