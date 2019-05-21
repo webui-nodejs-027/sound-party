@@ -1,29 +1,23 @@
 const express = require('express');
-const dbConnect = require('./db/dbconnect');
-const routers = require('./routes/routers');
+const reqMiddleware = require('./middlewares/settingMiddlewares/reqMiddleware');
+const errorMiddleware = require('./middlewares/settingMiddlewares/errorMiddleware');
+const createDbConnection = require('./db/');
+const routers = require('./routes/');
 
 const app = express();
 
-app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  }),
-);
+reqMiddleware(app);
 
-app.use('/', routers.mainRoute);
-app.use('/api/users', routers.userRoute);
+routers(app);
 
-app.use((req, res, next) => {
-  res.sendStatus(404);
-});
+errorMiddleware(app);
 
-app.use((err, req, res, next) => {
-  res.status(err.statusCode || 500).send({ errors: err.message });
-});
-
-app.listen(3000, async () => {
-  console.log('Server created');
-  await dbConnect.createDbConnection();
+const initial = async () => {
+  await createDbConnection();
   console.log('Database connected');
-});
+  app.listen(3000, () => {
+    console.log('Server created');
+  });
+};
+
+initial();

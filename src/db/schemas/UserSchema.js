@@ -34,6 +34,9 @@ module.exports = new EntitySchema({
     socialLink: {
       type: 'varchar',
     },
+    roleId: {
+      type: 'int',
+    },
   },
   relations: {
     playlist: {

@@ -13,4 +13,12 @@ module.exports = new EntitySchema({
       nullable: false,
     },
   },
+  relations: {
+    meeting: {
+      type: 'one-to-many',
+      joinColumn: { name: 'cityId' },
+      target: 'Meeting',
+      cascade: true,
+    },
+  },
 });

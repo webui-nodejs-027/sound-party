@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon app.js",
     "lint": "eslint --fix ./src/**/*.js",
-    "pretty": "prettier --write ./src/**/*.js"
+    "pretty": "prettier --single-quote --write ./src/**/*.js"
   },
   "repository": {
     "type": "git",
