@@ -25,16 +25,16 @@ module.exports = new EntitySchema({
     },
   },
   relations: {
-    song: {
+    songs: {
       target: 'Song',
       type: 'many-to-many',
       joinTable: true,
       cascade: true,
     },
-    user: {
+    userId: {
       type: 'many-to-one',
+      joinColumn: { name: 'userId' },
       target: 'User',
-      joinColumn: true,
       cascade: true,
     },
   },

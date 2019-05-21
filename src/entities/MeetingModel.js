@@ -1,13 +1,13 @@
 class Meeting {
-  constructor(name, creator, time, city, address, status, genre, author) {
+  constructor(name, creatorId, time, cityId, address, statusId, genreId, authorId) {
     this.name = name;
-    this.user = creator;
+    this.userId = creatorId;
     this.dateTime = time;
-    this.city = city;
+    this.cityId = cityId;
     this.address = address;
-    this.status = status;
-    this.genre = genre || null;
-    this.author = author || null;
+    this.statusId = statusId;
+    this.genreId = genreId || null;
+    this.authorId = authorId || null;
   }
 }
 

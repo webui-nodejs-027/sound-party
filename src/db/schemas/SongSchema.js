@@ -27,13 +27,13 @@ module.exports = new EntitySchema({
     },
   },
   relations: {
-    author: {
+    authorId: {
       type: 'many-to-one',
       target: 'Author',
       joinColumn: { name: 'authorId' },
       cascade: true,
     },
-    genre: {
+    genreId: {
       type: 'many-to-one',
       target: 'Genre',
       joinColumn: { name: 'genreId' },

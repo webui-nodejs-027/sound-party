@@ -37,31 +37,31 @@ module.exports = new EntitySchema({
     },
   },
   relations: {
-    author: {
+    authorId: {
       type: 'many-to-one',
       joinColumn: { name: 'authorId' },
       target: 'Author',
       cascade: true,
     },
-    genre: {
+    genreId: {
       type: 'many-to-one',
       joinColumn: { name: 'genreId' },
       target: 'Genre',
       cascade: true,
     },
-    user: {
+    userId: {
       type: 'many-to-one',
       joinColumn: { name: 'userId' },
       target: 'User',
       cascade: true,
     },
-    city: {
+    cityId: {
       type: 'many-to-one',
       joinColumn: { name: 'cityId' },
       target: 'City',
       cascade: true,
     },
-    status: {
+    statusId: {
       type: 'many-to-one',
       joinColumn: { name: 'statusId' },
       target: 'Status',

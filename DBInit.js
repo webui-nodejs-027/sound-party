@@ -2,27 +2,27 @@ const { createConnection } = require('typeorm');
 const crypto = require('crypto');
 const config = require('./config/dbconfig');
 
-const AuthorSchema = require('./src/db/entities/AuthorSchema');
-const CitySchema = require('./src/db/entities/CitySchema');
-const GenreSchema = require('./src/db/entities/GenreSchema');
-const MeetingSchema = require('./src/db/entities/MeetingSchema');
-const PlaylistSchema = require('./src/db/entities/PlaylistSchema');
-const RoleSchema = require('./src/db/entities/RoleSchema');
-const SongSchema = require('./src/db/entities/SongSchema');
-const StatusSchema = require('./src/db/entities/StatusSchema');
-const TypeOfPlaylistSchema = require('./src/db/entities/TypeOfPlaylistSchema');
-const UserSchema = require('./src/db/entities/UserSchema');
+config.entities = ['./src/db/schemas/*.js'];
 
-const Author = require('./src/db/models/AuthorModel');
-const City = require('./src/db/models/CityModel');
-const Genre = require('./src/db/models/GenreModel');
-const Meeting = require('./src/db/models/MeetingModel');
-const Playlist = require('./src/db/models/PlaylistModel');
-const Role = require('./src/db/models/RoleModel');
-const Song = require('./src/db/models/SongModel');
-const Status = require('./src/db/models/StatusModel');
-const TypeOfPlaylist = require('./src/db/models/TypeOfPlaylistModel');
-const User = require('./src/db/models/UserModel');
+const AuthorSchema = require('./src/db/schemas/AuthorSchema');
+const CitySchema = require('./src/db/schemas/CitySchema');
+const GenreSchema = require('./src/db/schemas/GenreSchema');
+const MeetingSchema = require('./src/db/schemas/MeetingSchema');
+const PlaylistSchema = require('./src/db/schemas/PlaylistSchema');
+const RoleSchema = require('./src/db/schemas/RoleSchema');
+const SongSchema = require('./src/db/schemas/SongSchema');
+const StatusSchema = require('./src/db/schemas/StatusSchema');
+const UserSchema = require('./src/db/schemas/UserSchema');
+
+const Author = require('./src/entities/AuthorModel');
+const City = require('./src/entities/CityModel');
+const Genre = require('./src/entities/GenreModel');
+const Meeting = require('./src/entities/MeetingModel');
+const Playlist = require('./src/entities/PlaylistModel');
+const Role = require('./src/entities/RoleModel');
+const Song = require('./src/entities/SongModel');
+const Status = require('./src/entities/StatusModel');
+const User = require('./src/entities/UserModel');
 
 function getRndmNum(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -135,30 +135,25 @@ async function initializeSong(connection, authors, genres) {
 }
 
 async function initializePlaylist(connection, users, songs) {
-  const typesOfPlaylist = [
-    new TypeOfPlaylist(true),
-    new TypeOfPlaylist(false),
-  ];
-  await connection
-    .getRepository(TypeOfPlaylistSchema)
-    .save(typesOfPlaylist);
   let playlists = [];
   for (let i = 0; i < 10; i += 1) {
     const user = users[i];
     const name = `${user.firstName}\`s playlist`;
+
+    const songsForPL = [songs[i], songs[i + 1]];
     const playlistNF = new Playlist(
       name,
-      user.id,
+      songsForPL,
       false,
-      typesOfPlaylist[0].id,
-      [songs[i], songs[i + 1]],
+      true,
+      user.id,
     );
     const playlistF = new Playlist(
       name,
-      user.id,
+      songsForPL,
       true,
-      typesOfPlaylist[1].id,
-      [songs[i], songs[i + 1]],
+      false,
+      user.id,
     );
     playlists = [...playlists, playlistF, playlistNF];
   }

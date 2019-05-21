@@ -42,9 +42,8 @@ module.exports = new EntitySchema({
     playlist: {
       type: 'one-to-many',
       target: 'Playlist',
-      joinColumn: { name: 'playlistId' },
     },
-    role: {
+    roleId: {
       type: 'many-to-one',
       target: 'Role',
       joinColumn: { name: 'roleId' },
