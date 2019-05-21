@@ -167,7 +167,7 @@ async function initializePlaylist(connection, users, songs) {
     .save(playlists);
 }
 
-async function initiaizeCity(connection) {
+async function initializeCity(connection) {
   const cities = [
     new City('Izium'),
     new City('Kharkov'),
@@ -181,7 +181,7 @@ async function initiaizeCity(connection) {
   return cities;
 }
 
-async function initialiseStatus(connection) {
+async function initializeStatus(connection) {
   const statuses = [
     new Status('finished'),
     new Status('canceled'),
@@ -255,8 +255,8 @@ async function initialize() {
     const genres = await initializeGenre(connection);
     const songs = await initializeSong(connection, authors, genres);
     await initializePlaylist(connection, users, songs);
-    const cities = await initiaizeCity(connection);
-    const statuses = await initialiseStatus(connection);
+    const cities = await initializeCity(connection);
+    const statuses = await initializeStatus(connection);
     await initializeMeeting(
       connection,
       authors,
