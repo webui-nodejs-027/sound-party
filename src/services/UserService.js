@@ -1,8 +1,9 @@
-const ClientService = require('./ClientService');
-const ClientModel = require('../models/UserModel');
+const BaseService = require('./BaseService');
 
-class UserService extends ClientService {
-  constructor() {}
+class UserService extends BaseService {
+  constructor(entity) {
+    super(entity);
+  }
 }
 
 module.exports = UserService;

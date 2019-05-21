@@ -1,7 +1,7 @@
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({
-  name: 'Author',
+  name: 'Status',
   columns: {
     id: {
       primary: true,
@@ -11,6 +11,14 @@ module.exports = new EntitySchema({
     name: {
       type: 'varchar',
       nullable: false,
+    },
+  },
+  relations: {
+    meeting: {
+      type: 'one-to-many',
+      joinColumn: { name: 'statusId' },
+      target: 'Meeting',
+      cascade: true,
     },
   },
 });

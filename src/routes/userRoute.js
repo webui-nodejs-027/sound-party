@@ -1,11 +1,11 @@
 const express = require('express');
-const UserController = require('../controllers/userController');
-const User = require('../db/entities/UserSchema');
+const UserController = require('../controllers/UserController');
+const User = require('../db/schemas/UserSchema');
 
 const router = express.Router();
 
 const userController = new UserController(User);
 
-router.get('/', userController.getAllData);
+router.get('/', userController.getAllData.bind(userController));
 
 module.exports = router;

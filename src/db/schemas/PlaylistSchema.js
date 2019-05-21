@@ -1,7 +1,7 @@
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({
-  name: 'Song',
+  name: 'Playlist',
   columns: {
     id: {
       primary: true,
@@ -12,25 +12,29 @@ module.exports = new EntitySchema({
       type: 'varchar',
       nullable: false,
     },
-    source: {
-      type: 'varchar',
-      nullable: false,
+    favourite: {
+      type: 'boolean',
+      default: false,
     },
-    year: {
+    isMain: {
+      type: 'boolean',
+      default: false,
+    },
+    userId: {
       type: 'int',
     },
   },
   relations: {
-    author: {
-      type: 'many-to-one',
-      target: 'Author',
-      joinColumn: { name: 'authorId' },
+    song: {
+      target: 'Song',
+      type: 'many-to-many',
+      joinTable: true,
       cascade: true,
     },
-    genre: {
+    user: {
       type: 'many-to-one',
-      target: 'Genre',
-      joinColumn: { name: 'genreId' },
+      target: 'User',
+      joinColumn: true,
       cascade: true,
     },
   },

@@ -20,6 +20,21 @@ module.exports = new EntitySchema({
       type: 'varchar',
       nullable: false,
     },
+    authorId: {
+      type: 'int',
+    },
+    genreId: {
+      type: 'int',
+    },
+    userId: {
+      type: 'int',
+    },
+    cityId: {
+      type: 'int',
+    },
+    statusId: {
+      type: 'int',
+    },
   },
   relations: {
     author: {
