@@ -5,5 +5,5 @@ const genreRoute = require('./genreRoute');
 module.exports = (app) => {
   app.use('/', mainRoute);
   app.use('/api/users', userRoute);
-  app.use('/api/genre', genreRoute);
+  app.use('/api/genres', genreRoute);
 };
