@@ -1,10 +1,10 @@
 class Playlist {
-  constructor(name, songs, favourite, isMain, userId) {
+  constructor(name, userId, favourite, typeOfPlayList, songs) {
     this.name = name;
     this.songs = songs;
-    this.favourite = favourite;
-    this.isMain = isMain;
     this.userId = userId;
+    this.typeOfPlayList = typeOfPlayList;
+    this.favourite = favourite;
   }
 }
 

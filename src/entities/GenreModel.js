@@ -1,6 +1,8 @@
-class Genre {
+const BaseModel = require('./BaseModel');
+
+class Genre extends BaseModel {
   constructor(name) {
-    this.name = name;
+    super(name);
   }
 }
 

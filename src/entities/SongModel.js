@@ -1,10 +1,10 @@
 class Song {
-  constructor(songName, source, year, authorId, genreId) {
+  constructor(songName, source, year, author, genre) {
     this.name = songName;
     this.source = source;
+    this.author = author;
+    this.genre = genre;
     this.year = year;
-    this.authorId = authorId;
-    this.genreId = genreId;
   }
 }
 
