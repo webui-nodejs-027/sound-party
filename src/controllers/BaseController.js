@@ -10,6 +10,12 @@ class BaseController {
     console.log(result);
     res.status(200).json(result);
   }
+
+  async getDataById(req, res) {
+    const result = await this.BaseService.getDataById(req.params.id);
+    console.log(result);
+    res.status(200).json(result);
+  }
 }
 
 module.exports = BaseController;
