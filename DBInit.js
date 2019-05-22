@@ -71,8 +71,7 @@ async function initializeUser(connection) {
     const gender = firstName === 'Anna' ? 'female' : 'male';
     const SL = `https://www.instagram.com/${firstName.toLowerCase()}_${lastName.toLowerCase()}`;
     const roleId = i ? roles[1].id : roles[0].id;
-    const user = new User(
-      firstName,
+    const user = new User(sss
       lastName,
       email,
       password,
