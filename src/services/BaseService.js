@@ -26,6 +26,24 @@ class BaseService {
       .values(content)
       .execute();
   }
+
+  async updateDataById(id, content) {
+    return getRepository(this.entity)
+      .createQueryBuilder()
+      .update(this.entity.options.name)
+      .set(content)
+      .where('id = :id', { id })
+      .execute();
+  }
+
+  async deleteDataById(id) {
+    return getRepository(this.entity)
+      .createQueryBuilder()
+      .delete()
+      .from(this.entity.options.name)
+      .where('id = :id', { id })
+      .execute();
+  }
 }
 
 module.exports = BaseService;
