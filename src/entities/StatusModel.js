@@ -1,6 +1,8 @@
-class Status {
+const BaseModel = require('./BaseModel');
+
+class Status extends BaseModel {
   constructor(name) {
-    this.name = name;
+    super(name);
   }
 }
 
