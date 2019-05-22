@@ -7,11 +7,8 @@ class BaseController {
 
   async getAllData(req, res) {
     const result = await this.BaseService.getAllData();
-    res.status(200).json(result);
-  }
-
-  async addData(req, res) {
-
+    res.status(200)
+      .json(result);
   }
 }
 
