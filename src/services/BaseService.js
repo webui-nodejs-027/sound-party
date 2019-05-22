@@ -11,19 +11,19 @@ class BaseService {
       .getMany();
   }
 
-  async getById(id){
+  async getById(id) {
     return getRepository(this.entity)
       .createQueryBuilder(`${this.entity.name}`)
-      .where(`${this.entity.name}.id = :id`, { id: id })
+      .where(`${this.entity.name}.id = :id`, { id })
       .getOne();
   }
 
-  async deleteById(id){
-    return  getRepository(this.entity)
+  async deleteById(id) {
+    return getRepository(this.entity)
       .createQueryBuilder()
       .delete()
       .from(this.entity)
-      .where("id = :id", { id: id })
+      .where('id = :id', { id })
       .execute();
   }
 }

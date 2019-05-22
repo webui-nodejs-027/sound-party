@@ -1,6 +1,6 @@
 const BaseModel = require('./BaseModel');
 
-class Role extends BaseModel{
+class Role extends BaseModel {
   constructor(name) {
     super(name);
   }

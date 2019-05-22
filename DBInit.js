@@ -143,17 +143,18 @@ async function initializePlaylist(connection, users, songs) {
     const songsForPL = [songs[i], songs[i + 1]];
     const playlistNF = new Playlist(
       name,
-      songsForPL,
+      user.id,
       false,
       true,
-      user.id,
+      songsForPL,
     );
     const playlistF = new Playlist(
       name,
-      songsForPL,
+      user.id,
       true,
       false,
-      user.id,
+
+      songsForPL,
     );
     playlists = [...playlists, playlistF, playlistNF];
   }
