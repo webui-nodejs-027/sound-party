@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/webui-nodejs-027/sound-party#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "4.16.4",
     "express-validator": "5.3.1",
     "nodemailer": "6.1.1",

@@ -3,8 +3,8 @@ module.exports = {
   host: 'localhost',
   port: 5432,
   username: 'postgres',
-  password: 123,
+  password: "password",
   database: 'music-base',
-  entities: ['db/schemas/*.js'],
+  entities: ['src/db/schemas/*.js'],
   synchronize: true,
 };
