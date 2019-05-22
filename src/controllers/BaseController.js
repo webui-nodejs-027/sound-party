@@ -3,7 +3,7 @@ const BaseService = require('../services/BaseService');
 class BaseController {
   constructor(entity, service) {
     this.service = new service(entity);
-}
+  }
 
   async getAllData(req, res) {
     const result = await this.service.getAllData();
