@@ -1,19 +1,23 @@
-const typeorm = require("typeorm");
-const express = require("express");
-const TypeOfPlaylist = require("./db/Models/TypeOfPlaylistModel");
-const Author = require("./db/Models/AuthorModel");
+const express = require('express');
+const reqMiddleware = require('./middlewares/settingMiddlewares/reqMiddleware');
+const errorMiddleware = require('./middlewares/settingMiddlewares/errorMiddleware');
+const createDbConnection = require('./db/');
+const routers = require('./routes/');
 
 const app = express();
 
-typeorm.createConnection().then(async connection => {
-  console.log("Connect to DB");
-  const author = new Author("Hello");
-  const typeOfListRepository = await connection.getRepository(
-    TypeOfPlaylist.getNameToRepository()
-  );
-  await typeOfListRepository.save(author);
+reqMiddleware(app);
 
+routers(app);
+
+errorMiddleware(app);
+
+const initial = async () => {
+  await createDbConnection();
+  console.log('Database connected');
   app.listen(3000, () => {
-    console.log("Server created");
+    console.log('Server created');
   });
-});
+};
+
+initial();
