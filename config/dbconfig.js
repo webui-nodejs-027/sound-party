@@ -5,6 +5,6 @@ module.exports = {
   username: 'postgres',
   password: 123,
   database: 'music-base',
-  entities: ['db/schemas/*.js'],
+  entities: ['./src/db/schemas/*.js'],
   synchronize: true,
 };
