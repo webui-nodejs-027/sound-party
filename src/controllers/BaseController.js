@@ -1,7 +1,9 @@
+// eslint-disable-next-line no-unused-vars
 const BaseService = require('../services/BaseService');
 
 class BaseController {
   constructor(entity, service) {
+    // eslint-disable-next-line new-cap
     this.service = new service(entity);
   }
 
