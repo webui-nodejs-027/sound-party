@@ -6,49 +6,49 @@ module.exports = new EntitySchema({
     id: {
       primary: true,
       type: 'int',
-      generated: true,
+      generated: true
     },
     firstName: {
       type: 'varchar',
-      nullable: false,
+      nullable: false
     },
     lastName: {
       type: 'varchar',
-      nullable: false,
+      nullable: false
     },
     email: {
       type: 'varchar',
       unique: true,
-      nullable: false,
+      nullable: false
     },
     password: {
       type: 'varchar',
-      nullable: false,
+      nullable: false
     },
     birthday: {
-      type: 'date',
+      type: 'date'
     },
     gender: {
-      type: 'varchar',
+      type: 'varchar'
     },
     socialLink: {
-      type: 'varchar',
+      type: 'varchar'
     },
     roleId: {
-      type: 'int',
-    },
+      type: 'int'
+    }
   },
   relations: {
     playlist: {
       type: 'one-to-many',
       target: 'Playlist',
-      joinColumn: { name: 'playlistId' },
+      joinColumn: { name: 'playlistId' }
     },
     role: {
       type: 'many-to-one',
       target: 'Role',
       joinColumn: { name: 'roleId' },
-      cascade: true,
-    },
-  },
+      cascade: true
+    }
+  }
 });

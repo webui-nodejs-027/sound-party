@@ -8,7 +8,7 @@ const Genre = require('../db/schemas/GenreSchema');
 const Author = require('../db/schemas/AuthorSchema');
 
 class MeetingService extends BaseService {
-// eslint-disable-next-line no-useless-constructor
+  // eslint-disable-next-line no-useless-constructor
   constructor(entity) {
     super(entity);
   }
@@ -18,7 +18,7 @@ class MeetingService extends BaseService {
     const entityManager = getManager();
     const cityName = await entityManager.findOne(City, { name: req.body.city });
     const statusName = await entityManager.findOne(Status, {
-      name: req.body.status,
+      name: req.body.status
     });
 
     const city = cityName.id;
@@ -30,14 +30,14 @@ class MeetingService extends BaseService {
 
     if (req.body.genre) {
       const genreName = await entityManager.findOne(Genre, {
-        name: req.body.genre,
+        name: req.body.genre
       });
       genre = genreName.id;
     }
 
     if (req.body.author) {
       const authorName = await entityManager.findOne(Author, {
-        name: req.body.author,
+        name: req.body.author
       });
       author = authorName.id;
     }
@@ -50,7 +50,7 @@ class MeetingService extends BaseService {
       address,
       status,
       genre,
-      author,
+      author
     );
     return meeting;
   }
