@@ -6,10 +6,10 @@ const router = express.Router();
 
 const genreController = new GenreController(Genre);
 
-router.get('/:id', genreController.getDataById.bind(genreController));
-router.post('/', genreController.addData.bind(genreController));
-router.put('/:id', genreController.updateDataById.bind(genreController));
-router.delete('/:id', genreController.deleteDataById.bind(genreController));
+router.get('/:id', genreController.getById.bind(genreController));
+router.post('/', genreController.insertData.bind(genreController));
+router.put('/:id', genreController.updateById.bind(genreController));
+router.delete('/:id', genreController.deleteById.bind(genreController));
 
 router.get('/', genreController.getAllData.bind(genreController));
 
