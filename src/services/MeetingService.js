@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const { getManager } = require('typeorm');
 const BaseService = require('./BaseService');
 const MeetingModel = require('../entities/MeetingModel');
