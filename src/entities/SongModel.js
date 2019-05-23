@@ -3,8 +3,8 @@ class Song {
     this.name = songName;
     this.source = source;
     this.year = year;
-    this.author = author;
-    this.genre = genre;
+    this.authorId = author;
+    this.genreId = genre;
   }
 }
 

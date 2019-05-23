@@ -2,32 +2,32 @@ const passport = require('passport');
 const { Strategy } = require('passport-local');
 
 const userSchema = require('../src/db/schemas/UserSchema');
-const { getRepository } = require('typeorm');
+const UserService = require('../src/services/UserService');
+const UserEntity = require('../src/entities/UserModel');
+
+const userServiceObj = new UserService(userSchema);
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user);
 });
 
-passport.deserializeUser((id, done) => {
-  const findUser = getRepository(this.entity)
-    .createQueryBuilder(`${this.entity.name}`)
-    .where(`${this.entity.name}.id = :id`, { id })
-    .getOne();
+passport.deserializeUser(async (user, done) => {
+  const findUser = await userServiceObj.getUserByEmail(user.email);
   done(null, findUser);
   return null;
 });
 
-
 passport.use(new Strategy({
-  usernameField: 'user[email]',
-  passwordField: 'user[password]',
+  usernameField: 'email',
+  passwordField: 'password',
 }, async (email, password, done) => {
-  const user = getRepository(userSchema)
-    .createQueryBuilder(`${userSchema.name}`)
-    .where(`${userSchema.name}.email = :email`, { email })
-    .getOne();
+  const user = await userServiceObj.getUserByEmail(email);
   if (!user) {
-    return done(null, false, { errors: { 'email or passward': 'is invalid' } });
+    return done(null, false, { errors: 'email is invalid' });
+  }
+  const comparePassword = await UserEntity.comparePassword(password, user.password);
+  if (!comparePassword) {
+    return done(null, false, { errors: 'password is invalid' });
   }
   return done(null, user);
 }));

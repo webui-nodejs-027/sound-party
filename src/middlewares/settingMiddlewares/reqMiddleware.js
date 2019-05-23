@@ -3,6 +3,8 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const FileStore = require('session-file-store')(session);
 const passport = require('passport');
+require('../../../config/passport-config');
+
 
 module.exports = (app) => {
   app.use(express.json());
@@ -20,7 +22,7 @@ module.exports = (app) => {
 
   app.use(cookieParser());
   app.use(express.json());
-  app.use(express.urlencoded({extended: false}));
+  app.use(express.urlencoded({ extended: false }));
   app.use(passport.initialize());
   app.use(passport.session());
 };

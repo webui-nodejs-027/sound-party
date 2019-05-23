@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 class User {
   constructor(
     firstname,
@@ -20,4 +22,13 @@ class User {
   }
 }
 
-module.exports = User;
+module.exports.User = User;
+module.exports.hashPassword = async (password, salt = 10) => {
+  const hash = await bcrypt.hash(password, salt);
+  return hash;
+};
+
+module.exports.comparePassword = async (plaintPassword, hash) => {
+  const resultCompare = await bcrypt.compare(plaintPassword, hash);
+  return resultCompare;
+};
