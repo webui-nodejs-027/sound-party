@@ -24,6 +24,16 @@ class BaseService {
       .delete()
       .from(this.entity)
       .where('id = :id', { id })
+      .output(Object.getOwnPropertyNames(this.entity.options.columns))
+      .execute();
+  }
+
+  async addData(content) {
+    return getRepository(this.entity)
+      .createQueryBuilder()
+      .insert()
+      .into(this.entity.options.name)
+      .values(content)
       .execute();
   }
 }
