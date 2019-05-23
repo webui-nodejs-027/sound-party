@@ -1,9 +1,9 @@
 const mainRoute = require('./mainRoute');
 const userRoute = require('./userRoute');
-const meetingRoute = require('./meetingRoute');
+const songRoute = require('./songRoute');
 
 module.exports = (app) => {
   app.use('/', mainRoute);
   app.use('/api/users', userRoute);
-  app.use('/api/meetings', meetingRoute);
+  app.use('/api/songs', songRoute);
 };

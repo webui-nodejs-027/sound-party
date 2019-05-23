@@ -1,13 +1,10 @@
-const BaseService = require('../services/BaseService');
-
 class BaseController {
-  constructor(entity, service) {
-    this.service = new service(entity);
+  constructor(entity, Service) {
+    this.service = new Service(entity);
   }
 
   async getAllData(req, res) {
     const result = await this.service.getAllData();
-    console.log(result);
     res.status(200).json(result);
   }
 
