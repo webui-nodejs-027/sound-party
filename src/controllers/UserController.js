@@ -1,13 +1,10 @@
 const passport = require('passport');
-
 const BaseController = require('./BaseController');
-const UserService = require('../services/UserService');
-const User = require('../db/schemas/UserSchema');
-const UserShema = require('../entities/UserModel');
+const userService = require('../services/UserService');
 
 class UserController extends BaseController {
-  constructor(entity, service) {
-    super(entity, service);
+  constructor(service) {
+    super(service);
   }
 
   async login(req, res, next) {
@@ -43,9 +40,9 @@ class UserController extends BaseController {
     } = data;
     const user = new UserShema.User(firstname, lastname, email,
       password, birthday, gender, socialLink, roleId);
-    const result = await this.service.addData(req.body);
+    const result = await this.service.addData(user);
     res.send(result);
   }
 }
 
-module.exports = new UserController(User, UserService);
+module.exports = new UserController(userService);

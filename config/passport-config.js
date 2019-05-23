@@ -2,10 +2,10 @@ const passport = require('passport');
 const { Strategy } = require('passport-local');
 
 const userSchema = require('../src/db/schemas/UserSchema');
-const UserService = require('../src/services/UserService');
+const userService = require('../src/services/UserService');
 const UserEntity = require('../src/entities/UserModel');
 
-const userServiceObj = new UserService(userSchema);
+const userServiceObj = userService;
 
 passport.serializeUser((user, done) => {
   done(null, user);

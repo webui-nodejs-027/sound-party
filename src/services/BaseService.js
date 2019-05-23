@@ -1,8 +1,10 @@
 const { getRepository } = require('typeorm');
+const services = require('./../data');
 
 class BaseService {
   constructor(entity) {
     this.entity = entity;
+    this.services = services;
   }
 
   async getAllData() {
@@ -24,6 +26,7 @@ class BaseService {
       .delete()
       .from(this.entity)
       .where('id = :id', { id })
+      .output(Object.getOwnPropertyNames(this.entity.options.columns))
       .execute();
   }
 
@@ -35,15 +38,8 @@ class BaseService {
       .values(content)
       .execute();
   }
-
-  async updateDataById(id, content) {
-    return getRepository(this.entity)
-      .createQueryBuilder()
-      .update(this.entity)
-      .set(content)
-      .where('id = :id', { id })
-      .execute();
-  }
 }
 
+console.log('Base service');
+console.log(BaseService);
 module.exports = BaseService;

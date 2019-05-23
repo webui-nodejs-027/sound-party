@@ -22,9 +22,11 @@ module.exports = new EntitySchema({
     },
     authorId: {
       type: 'int',
+      nullable: true,
     },
     genreId: {
       type: 'int',
+      nullable: true,
     },
     userId: {
       type: 'int',

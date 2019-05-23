@@ -1,6 +1,6 @@
 const { getRepository } = require('typeorm');
 const BaseService = require('./BaseService');
-
+const UserEntity = require('../db/schemas/UserSchema');
 
 class UserService extends BaseService {
   constructor(entity) {
@@ -15,4 +15,4 @@ class UserService extends BaseService {
   }
 }
 
-module.exports = UserService;
+module.exports = new UserService(UserEntity);
