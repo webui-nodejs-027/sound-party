@@ -46,5 +46,10 @@
     "rules":{
       "linebreak-style": 0
     }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pretty && npm run lint"
+    }
   }
 }

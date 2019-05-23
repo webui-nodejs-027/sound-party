@@ -1,32 +1,23 @@
 const BaseService = require('../services/BaseService');
 
 class BaseController {
-  constructor(entity) {
-    this.BaseService = new BaseService(entity);
+  constructor(entity, service) {
+    this.service = new service(entity);
   }
 
   async getAllData(req, res) {
-    const result = await this.BaseService.getAllData();
+    const result = await this.service.getAllData();
+    console.log(result);
     res.status(200).json(result);
   }
 
-  async getDataById(req, res) {
-    const result = await this.BaseService.getDataById(req.params.id);
+  async getById(req, res) {
+    const result = await this.service.getById(req.params.id);
     res.status(200).json(result);
   }
 
-  async addData(req, res) {
-    const result = await this.BaseService.addData(req.body);
-    res.status(200).json(result);
-  }
-
-  async updateDataById(req, res) {
-    const result = await this.BaseService.updateDataById(req.params.id, req.body);
-    res.status(200).json(result);
-  }
-
-  async deleteDataById(req, res) {
-    const result = await this.BaseService.deleteDataById(req.params.id);
+  async deleteById(req, res) {
+    const result = await this.service.deleteById(req.params.id);
     res.status(200).json(result);
   }
 }

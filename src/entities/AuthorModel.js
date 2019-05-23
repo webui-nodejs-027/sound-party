@@ -1,6 +1,8 @@
-class AuthorModel {
+const BaseModel = require('./BaseModel');
+
+class AuthorModel extends BaseModel {
   constructor(name) {
-    this.name = name;
+    super(name);
   }
 }
 

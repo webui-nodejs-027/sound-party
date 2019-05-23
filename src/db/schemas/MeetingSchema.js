@@ -42,12 +42,14 @@ module.exports = new EntitySchema({
       joinColumn: { name: 'authorId' },
       target: 'Author',
       cascade: true,
+      nullable: true,
     },
     genre: {
       type: 'many-to-one',
       joinColumn: { name: 'genreId' },
       target: 'Genre',
       cascade: true,
+      nullable: true,
     },
     user: {
       type: 'many-to-one',

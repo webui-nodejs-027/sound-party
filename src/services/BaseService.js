@@ -11,36 +11,18 @@ class BaseService {
       .getMany();
   }
 
-  async getDataById(id) {
+  async getById(id) {
     return getRepository(this.entity)
-      .createQueryBuilder()
-      .where('id = :id', { id })
+      .createQueryBuilder(`${this.entity.name}`)
+      .where(`${this.entity.name}.id = :id`, { id })
       .getOne();
   }
 
-  async addData(content) {
-    return getRepository(this.entity)
-      .createQueryBuilder()
-      .insert()
-      .into(this.entity.options.name)
-      .values(content)
-      .execute();
-  }
-
-  async updateDataById(id, content) {
-    return getRepository(this.entity)
-      .createQueryBuilder()
-      .update(this.entity.options.name)
-      .set(content)
-      .where('id = :id', { id })
-      .execute();
-  }
-
-  async deleteDataById(id) {
+  async deleteById(id) {
     return getRepository(this.entity)
       .createQueryBuilder()
       .delete()
-      .from(this.entity.options.name)
+      .from(this.entity)
       .where('id = :id', { id })
       .execute();
   }
