@@ -6,68 +6,68 @@ module.exports = new EntitySchema({
     id: {
       primary: true,
       type: 'int',
-      generated: true
+      generated: true,
     },
     name: {
       type: 'varchar',
-      nullable: false
+      nullable: false,
     },
     dateTime: {
       type: 'timestamp',
-      nullable: false
+      nullable: false,
     },
     address: {
       type: 'varchar',
-      nullable: false
+      nullable: false,
     },
     authorId: {
       type: 'int',
-      nullable: true
+      nullable: true,
     },
     genreId: {
       type: 'int',
-      nullable: true
+      nullable: true,
     },
     userId: {
-      type: 'int'
+      type: 'int',
     },
     cityId: {
-      type: 'int'
+      type: 'int',
     },
     statusId: {
-      type: 'int'
-    }
+      type: 'int',
+    },
   },
   relations: {
     author: {
       type: 'many-to-one',
       joinColumn: { name: 'authorId' },
       target: 'Author',
-      cascade: true
+      cascade: true,
     },
     genre: {
       type: 'many-to-one',
       joinColumn: { name: 'genreId' },
       target: 'Genre',
-      cascade: true
+      cascade: true,
     },
     user: {
       type: 'many-to-one',
       joinColumn: { name: 'userId' },
       target: 'User',
-      cascade: true
+      cascade: true,
     },
     city: {
       type: 'many-to-one',
       joinColumn: { name: 'cityId' },
       target: 'City',
-      cascade: true
+      cascade: true,
     },
     status: {
       type: 'many-to-one',
       joinColumn: { name: 'statusId' },
       target: 'Status',
-      cascade: true
-    }
-  }
+      cascade: true,
+    },
+  },
 });

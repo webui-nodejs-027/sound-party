@@ -1,4 +1,4 @@
-module.exports = app => {
+module.exports = (app) => {
   app.use((req, res) => {
     res.sendStatus(404);
   });

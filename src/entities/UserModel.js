@@ -7,7 +7,7 @@ class User {
     birthday,
     gender,
     socialLink,
-    roleId
+    roleId,
   ) {
     this.firstName = firstname;
     this.lastName = lastname;
