@@ -1,9 +1,7 @@
-const BaseService = require('../services/BaseService');
-
 class BaseController {
-  constructor(entity, service) {
-    this.service = new service(entity);
-}
+  constructor(entity, Service) {
+    this.service = new Service(entity);
+  }
 
   async getAllData(req, res) {
     const result = await this.service.getAllData();
@@ -18,6 +16,12 @@ class BaseController {
 
   async deleteById(req, res) {
     const result = await this.service.deleteById(req.params.id);
+    res.status(200).json(result.raw[0]);
+  }
+
+  async create(req, res) {
+    const result = await this.service.addData(req.body);
+    console.log(result);
     res.status(200).json(result);
   }
 }
