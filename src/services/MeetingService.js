@@ -14,7 +14,13 @@ class MeetingService extends BaseService {
 
   async makeMeeting(req) {
     const {
-      cityId, statusId, address, name, dateTime, genreId, authorId,
+      cityId,
+      statusId,
+      address,
+      name,
+      dateTime,
+      genreId,
+      authorId,
     } = req.body;
 
     const meeting = new MeetingModel(
