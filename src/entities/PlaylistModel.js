@@ -3,8 +3,9 @@ class Playlist {
     this.name = name;
     this.songs = songs;
     this.userId = userId;
-    this.typeOfPlayList = typeOfPlayList;
     this.favourite = favourite;
+    this.userId = userId;
+    this.typeOfPlayList = typeOfPlayList;
   }
 }
 
