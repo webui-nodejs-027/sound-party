@@ -5,8 +5,7 @@ const router = express.Router();
 
 function mustAuthenticated(req, res, next) {
   if (!req.isAuthenticated()) {
-    return res.status(400)
-      .send('Not Authenticated');
+    return res.status(400).send('Not Authenticated');
   }
   next();
   return null;

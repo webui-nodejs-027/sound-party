@@ -28,9 +28,6 @@ module.exports = new EntitySchema({
       type: 'int',
       nullable: true,
     },
-    userId: {
-      type: 'int',
-    },
     cityId: {
       type: 'int',
     },
@@ -49,12 +46,6 @@ module.exports = new EntitySchema({
       type: 'many-to-one',
       joinColumn: { name: 'genreId' },
       target: 'Genre',
-      cascade: true,
-    },
-    user: {
-      type: 'many-to-one',
-      joinColumn: { name: 'userId' },
-      target: 'User',
       cascade: true,
     },
     city: {
