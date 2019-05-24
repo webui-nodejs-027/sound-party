@@ -13,6 +13,7 @@ const RoleSchema = require('./src/db/schemas/RoleSchema');
 const SongSchema = require('./src/db/schemas/SongSchema');
 const StatusSchema = require('./src/db/schemas/StatusSchema');
 const UserSchema = require('./src/db/schemas/UserSchema');
+const UserMeetingSchema = require('./src/db/schemas/UserMeetingShema');
 
 const Author = require('./src/entities/AuthorModel');
 const City = require('./src/entities/CityModel');
@@ -22,7 +23,8 @@ const Playlist = require('./src/entities/PlaylistModel');
 const Role = require('./src/entities/RoleModel');
 const Song = require('./src/entities/SongModel');
 const Status = require('./src/entities/StatusModel');
-const User = require('./src/entities/UserModel');
+const { User } = require('./src/entities/UserModel');
+const UserMeeting = require('./src/entities/UserMeeting');
 
 function getRndmNum(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -189,7 +191,7 @@ async function initializeStatus(connection) {
   return statuses;
 }
 
-async function initializeMeeting(connection, authors, genres, users, cities, statuses) {
+async function initializeMeeting(connection, authors, genres, cities, statuses) {
   const adjectives = [
     'awesome',
     'great',
@@ -214,12 +216,10 @@ async function initializeMeeting(connection, authors, genres, users, cities, sta
     const address = `Party str., ${i}`;
     const author = authors[getRndmNum(0, 3)];
     const genre = genres[getRndmNum(0, 3)];
-    const creator = users[getRndmNum(0, 10)];
     const city = cities[getRndmNum(0, 5)];
     const status = statuses[getRndmNum(0, 3)];
     const meeting = new Meeting(
       name,
-      creator.id,
       dateTime,
       city.id,
       address,
@@ -232,6 +232,23 @@ async function initializeMeeting(connection, authors, genres, users, cities, sta
   await connection
     .getRepository(MeetingSchema)
     .save(meetings);
+  return meetings;
+}
+
+async function initializeUserMeting(connection, users, meetings) {
+  const ums = [];
+  for (let i = 0; i < 10; i += 1) {
+    const meetingId = meetings[i].id;
+    for (let j = 0; j < 10; j += 1) {
+      const isCreator = j % 10 === 0;
+      const userId = users[j].id;
+      const um = new UserMeeting(isCreator, userId, meetingId);
+      ums.push(um);
+    }
+  }
+  await connection
+    .getRepository(UserMeetingSchema)
+    .save(ums);
 }
 
 async function clearDB() {
@@ -253,14 +270,14 @@ async function initialize() {
     await initializePlaylist(connection, users, songs);
     const cities = await initializeCity(connection);
     const statuses = await initializeStatus(connection);
-    await initializeMeeting(
+    const meetings = await initializeMeeting(
       connection,
       authors,
       genres,
-      users,
       cities,
       statuses,
     );
+    await initializeUserMeting(connection, users, meetings);
   } catch (e) {
     throw e;
   } finally {
