@@ -8,8 +8,7 @@ const Genre = require('../db/schemas/GenreSchema');
 const Author = require('../db/schemas/AuthorSchema');
 const BaseService = require('./BaseService');
 const UserMeetingEnt = require('../db/schemas/UserMeetingShema');
-const UserMeetingModel = require( '../entities/UserMeeting');
-
+const UserMeetingModel = require('../entities/UserMeeting');
 
 class MeetingService extends BaseService {
   // eslint-disable-next-line no-useless-constructor
@@ -61,8 +60,8 @@ class MeetingService extends BaseService {
     const manager = getManager();
     await manager.save(MeetingEnt, meeting);
 
-    let creator = req.body.creatorId;
-    let userMeeting = new UserMeetingModel(true, creator, meeting.id);
+    const creator = req.body.creatorId;
+    const userMeeting = new UserMeetingModel(true, creator, meeting.id);
     await manager.save(UserMeetingEnt, userMeeting);
 
     return meeting;
