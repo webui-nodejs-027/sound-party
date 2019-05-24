@@ -22,7 +22,7 @@ const Playlist = require('./src/entities/PlaylistModel');
 const Role = require('./src/entities/RoleModel');
 const Song = require('./src/entities/SongModel');
 const Status = require('./src/entities/StatusModel');
-const User = require('./src/entities/UserModel');
+const { User } = require('./src/entities/UserModel');
 
 function getRndmNum(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -214,12 +214,10 @@ async function initializeMeeting(connection, authors, genres, users, cities, sta
     const address = `Party str., ${i}`;
     const author = authors[getRndmNum(0, 3)];
     const genre = genres[getRndmNum(0, 3)];
-    const creator = users[getRndmNum(0, 10)];
     const city = cities[getRndmNum(0, 5)];
     const status = statuses[getRndmNum(0, 3)];
     const meeting = new Meeting(
       name,
-      creator.id,
       dateTime,
       city.id,
       address,

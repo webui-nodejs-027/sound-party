@@ -7,6 +7,9 @@ const Status = require('../db/schemas/StatusSchema');
 const Genre = require('../db/schemas/GenreSchema');
 const Author = require('../db/schemas/AuthorSchema');
 const BaseService = require('./BaseService');
+const UserMeetingEnt = require('../db/schemas/UserMeetingShema');
+const UserMeetingModel = require( '../entities/UserMeeting');
+
 
 class MeetingService extends BaseService {
   // eslint-disable-next-line no-useless-constructor
@@ -23,7 +26,6 @@ class MeetingService extends BaseService {
 
     const city = cityName.id;
     const status = statusName.id;
-    const creator = req.body.userId; // изменить
     const { address, name, dateTime } = req.body;
     let genre = null;
     let author = null;
@@ -44,7 +46,6 @@ class MeetingService extends BaseService {
 
     const meeting = new MeetingModel(
       name,
-      creator,
       dateTime,
       city,
       address,
@@ -57,7 +58,13 @@ class MeetingService extends BaseService {
 
   async createMeeting(req) {
     const meeting = await this.makeMeeting(req);
-    await getManager().save(MeetingEnt, meeting);
+    const manager = getManager();
+    await manager.save(MeetingEnt, meeting);
+
+    let creator = req.body.creatorId;
+    let userMeeting = new UserMeetingModel(true, creator, meeting.id);
+    await manager.save(UserMeetingEnt, userMeeting);
+
     return meeting;
   }
 
