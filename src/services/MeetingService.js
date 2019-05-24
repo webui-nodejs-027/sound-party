@@ -2,10 +2,6 @@
 const { getManager } = require('typeorm');
 const MeetingModel = require('../entities/MeetingModel');
 const MeetingEnt = require('../db/schemas/MeetingSchema');
-const City = require('../db/schemas/CitySchema');
-const Status = require('../db/schemas/StatusSchema');
-const Genre = require('../db/schemas/GenreSchema');
-const Author = require('../db/schemas/AuthorSchema');
 const BaseService = require('./BaseService');
 const UserMeetingEnt = require('../db/schemas/UserMeetingShema');
 const UserMeetingModel = require('../entities/UserMeeting');
@@ -17,40 +13,18 @@ class MeetingService extends BaseService {
   }
 
   async makeMeeting(req) {
-    const entityManager = getManager();
-    const cityName = await entityManager.findOne(City, { name: req.body.city });
-    const statusName = await entityManager.findOne(Status, {
-      name: req.body.status,
-    });
-
-    const city = cityName.id;
-    const status = statusName.id;
-    const { address, name, dateTime } = req.body;
-    let genre = null;
-    let author = null;
-
-    if (req.body.genre) {
-      const genreName = await entityManager.findOne(Genre, {
-        name: req.body.genre,
-      });
-      genre = genreName.id;
-    }
-
-    if (req.body.author) {
-      const authorName = await entityManager.findOne(Author, {
-        name: req.body.author,
-      });
-      author = authorName.id;
-    }
+    const {
+      cityId, statusId, address, name, dateTime, genreId, authorId,
+    } = req.body;
 
     const meeting = new MeetingModel(
       name,
       dateTime,
-      city,
+      cityId,
       address,
-      status,
-      genre,
-      author,
+      statusId,
+      genreId,
+      authorId,
     );
     return meeting;
   }
