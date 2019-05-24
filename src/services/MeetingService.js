@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 const { getManager } = require('typeorm');
 const MeetingModel = require('../entities/MeetingModel');
 const MeetingEnt = require('../db/schemas/MeetingSchema');
@@ -7,10 +8,10 @@ const Genre = require('../db/schemas/GenreSchema');
 const Author = require('../db/schemas/AuthorSchema');
 const BaseService = require('./BaseService');
 
-
-class MeetingService {
+class MeetingService extends BaseService {
+  // eslint-disable-next-line no-useless-constructor
   constructor(entity) {
-
+    super(entity);
   }
 
   async makeMeeting(req) {
@@ -56,8 +57,7 @@ class MeetingService {
 
   async createMeeting(req) {
     const meeting = await this.makeMeeting(req);
-    await getManager()
-      .save(MeetingEnt, meeting);
+    await getManager().save(MeetingEnt, meeting);
     return meeting;
   }
 

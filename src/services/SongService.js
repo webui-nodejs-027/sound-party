@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-constructor */
 const { getConnection } = require('typeorm');
 const BaseService = require('./BaseService');
 const songShema = require('./../db/schemas/SongSchema');

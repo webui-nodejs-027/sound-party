@@ -1,8 +1,8 @@
+/* eslint-disable no-useless-constructor */
 const BaseController = require('./BaseController');
 const songService = require('../services/SongService');
 
 class SongController extends BaseController {
-  // eslint-disable-next-line no-useless-constructor
   constructor(entity, service) {
     super(entity, service);
   }

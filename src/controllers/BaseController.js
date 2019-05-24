@@ -20,7 +20,6 @@ class BaseController {
 
   async create(req, res) {
     const result = await this.service.addData(req.body);
-    console.log(result);
     res.status(200).json(result);
   }
 }

@@ -1,6 +1,8 @@
+/* eslint-disable no-useless-constructor,class-methods-use-this,no-shadow,consistent-return */
 const passport = require('passport');
 const BaseController = require('./BaseController');
 const userService = require('../services/UserService');
+const UserShema = require('../entities/UserModel');
 
 class UserController extends BaseController {
   constructor(service) {
@@ -38,8 +40,16 @@ class UserController extends BaseController {
       socialLink,
       roleId,
     } = data;
-    const user = new UserShema.User(firstname, lastname, email,
-      password, birthday, gender, socialLink, roleId);
+    const user = new UserShema.User(
+      firstname,
+      lastname,
+      email,
+      password,
+      birthday,
+      gender,
+      socialLink,
+      roleId,
+    );
     const result = await this.service.addData(user);
     res.send(result);
   }

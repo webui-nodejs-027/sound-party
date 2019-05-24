@@ -29,6 +29,7 @@
     "express-session": "^1.16.1",
     "cookie-parser": "~1.4.3",
     "passport-local": "1.0.0",
+    "passport-jwt": "^4.0.0",
     "session-file-store": "^1.2.0",
     "bcrypt": "^3.0.6"
   },

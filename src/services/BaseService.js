@@ -1,10 +1,8 @@
 const { getRepository } = require('typeorm');
-const services = require('./../data');
 
 class BaseService {
   constructor(entity) {
     this.entity = entity;
-    this.services = services;
   }
 
   async getAllData() {
@@ -40,6 +38,5 @@ class BaseService {
   }
 }
 
-console.log('Base service');
-console.log(BaseService);
+
 module.exports = BaseService;

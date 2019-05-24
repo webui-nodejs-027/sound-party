@@ -3,6 +3,7 @@ const BaseService = require('./BaseService');
 const UserEntity = require('../db/schemas/UserSchema');
 
 class UserService extends BaseService {
+  // eslint-disable-next-line no-useless-constructor
   constructor(entity) {
     super(entity);
   }

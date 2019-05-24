@@ -13,7 +13,11 @@ function mustAuthenticated(req, res, next) {
 }
 
 router.get('/', userController.getAllData.bind(userController));
-router.get('/:id', mustAuthenticated, userController.getById.bind(userController));
+router.get(
+  '/:id',
+  mustAuthenticated,
+  userController.getById.bind(userController),
+);
 router.delete('/:id', userController.deleteById.bind(userController));
 router.post('/login', userController.login.bind(userController));
 router.post('/', userController.addUser.bind(userController));
