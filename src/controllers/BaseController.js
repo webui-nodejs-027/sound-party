@@ -1,15 +1,10 @@
-// eslint-disable-next-line no-unused-vars
-const BaseService = require('../services/BaseService');
-
 class BaseController {
-  constructor(entity, service) {
-    // eslint-disable-next-line new-cap
-    this.service = new service(entity);
+  constructor(service) {
+    this.service = service;
   }
 
   async getAllData(req, res) {
     const result = await this.service.getAllData();
-    console.log(result);
     res.status(200).json(result);
   }
 
@@ -20,6 +15,11 @@ class BaseController {
 
   async deleteById(req, res) {
     const result = await this.service.deleteById(req.params.id);
+    res.status(200).json(result.raw[0]);
+  }
+
+  async create(req, res) {
+    const result = await this.service.addData(req.body);
     res.status(200).json(result);
   }
 }
