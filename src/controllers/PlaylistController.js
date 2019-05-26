@@ -10,7 +10,6 @@ class PlaylistController extends BaseController {
 
   async getAllDataByIdUser(req, res) {
     const result = await this.service.getAllDataByIdUser(req.params.userId);
-    console.log(result);
     res.status(200).json(result);
   }
 
@@ -29,7 +28,6 @@ class PlaylistController extends BaseController {
       req.body.userId,
       req.body.isMain,
     );
-    console.log(playlist);
     res.status(200).json(playlist);
   }
 
@@ -39,7 +37,6 @@ class PlaylistController extends BaseController {
       req.body.favourite,
       req.params.id,
     );
-    console.log(updatedPlaylist);
     res.status(200).json(updatedPlaylist);
   }
 }
