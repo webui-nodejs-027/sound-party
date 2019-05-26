@@ -42,6 +42,16 @@ class BaseService {
       .update(this.entity.options.name)
       .set(content)
       .where('id = :id', { id })
+      .output(Object.getOwnPropertyNames(this.entity.options.columns))
+      .execute();
+  }
+
+  async addData(content) {
+    return getRepository(this.entity)
+      .createQueryBuilder()
+      .insert()
+      .into(this.entity.options.name)
+      .values(content)
       .execute();
   }
 }

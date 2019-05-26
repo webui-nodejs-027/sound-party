@@ -1,5 +1,3 @@
-const BaseService = require('../services/BaseService');
-
 class BaseController {
   constructor(entity) {
     this.baseService = new BaseService(entity);
