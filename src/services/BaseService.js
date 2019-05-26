@@ -45,15 +45,6 @@ class BaseService {
       .output(Object.getOwnPropertyNames(this.entity.options.columns))
       .execute();
   }
-
-  async addData(content) {
-    return getRepository(this.entity)
-      .createQueryBuilder()
-      .insert()
-      .into(this.entity.options.name)
-      .values(content)
-      .execute();
-  }
 }
 
 module.exports = BaseService;
