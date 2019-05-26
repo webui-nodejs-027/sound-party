@@ -1,8 +1,12 @@
 const express = require('express');
 const playlistController = require('../controllers/PlaylistController');
+const validator = require('../validators/playlistValidator');
+const baseValidator = require('../validators/baseValidator');
 
 const router = express.Router();
 
+router.use('/:id', baseValidator.checkId);
+router.use('/:userId', validator.checkUserId);
 router.get(
   '/users/:userId',
   playlistController.getAllDataByIdUser.bind(playlistController),
@@ -12,6 +16,14 @@ router.get(
   playlistController.getByIdUserAndIdPlaylist.bind(playlistController),
 );
 router.delete('/:id', playlistController.deleteById.bind(playlistController));
-router.post('/', playlistController.createPlaylist.bind(playlistController));
-router.put('/:id', playlistController.updatePlaylist.bind(playlistController));
+router.post(
+  '/',
+  validator.checkBody,
+  playlistController.createPlaylist.bind(playlistController),
+);
+router.put(
+  '/:id',
+  validator.checkBodyForPut,
+  playlistController.updatePlaylist.bind(playlistController),
+);
 module.exports = router;
