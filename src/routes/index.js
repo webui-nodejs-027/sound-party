@@ -9,5 +9,5 @@ module.exports = (app) => {
   app.use('/api/users', userRoute);
   app.use('/api/genres', genreRoute);
   app.use('/api/songs', songRoute);
-  app.use('/api/meeting', meetingRoute);
+  app.use('/api/meetings', meetingRoute);
 };
