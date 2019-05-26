@@ -5,6 +5,7 @@ const genreRoute = require('./genreRoute');
 const playlistRoute = require('./playlistRoute');
 const songRoute = require('./songRoute');
 const meetingRoute = require('./meetingRoute');
+const authorRoute = require('./authorRoute');
 
 module.exports = (app) => {
   app.use('/', mainRoute);
@@ -15,4 +16,5 @@ module.exports = (app) => {
   app.use('/api/playlists', playlistRoute);
   app.use('/api/songs', songRoute);
   app.use('/api/meetings', meetingRoute);
+  app.use('/api/authors', authorRoute);
 };
