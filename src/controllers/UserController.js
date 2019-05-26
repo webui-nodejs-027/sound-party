@@ -39,7 +39,8 @@ class UserController extends BaseController {
       birthday,
       gender,
       socialLink,
-      roleId,
+      // eslint-disable-next-line comma-dangle
+      roleId
     } = data;
     const user = new UserShema.User(
       firstname,
@@ -49,7 +50,8 @@ class UserController extends BaseController {
       birthday,
       gender,
       socialLink,
-      roleId,
+      // eslint-disable-next-line comma-dangle
+      roleId
     );
     const result = await this.service.addData(user);
     res.send(result);

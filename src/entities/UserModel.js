@@ -10,7 +10,8 @@ class User {
     birthday,
     gender,
     socialLink,
-    roleId,
+    // eslint-disable-next-line comma-dangle
+    roleId
   ) {
     this.firstName = firstname;
     this.lastName = lastname;

@@ -1,11 +1,8 @@
 const mainRoute = require('./mainRoute');
 const userRoute = require('./userRoute');
-<<<<<<< HEAD
 const genreRoute = require('./genreRoute');
-=======
 // const meetingRoute = require('./meetingRoute');
 const playlistRoute = require('./playlistRoute');
->>>>>>> crudOfPlaylist
 const songRoute = require('./songRoute');
 const meetingRoute = require('./meetingRoute');
 

@@ -1,5 +1,5 @@
 class Playlist {
-  constructor(name, userId, isMain, favourite) {
+  constructor(name, userId, favourite, isMain) {
     this.name = name;
     // this.songs = songs;
     this.userId = userId;
