@@ -22,12 +22,11 @@ module.exports = new EntitySchema({
     },
     authorId: {
       type: 'int',
+      nullable: true,
     },
     genreId: {
       type: 'int',
-    },
-    userId: {
-      type: 'int',
+      nullable: true,
     },
     cityId: {
       type: 'int',
@@ -42,19 +41,11 @@ module.exports = new EntitySchema({
       joinColumn: { name: 'authorId' },
       target: 'Author',
       cascade: true,
-      nullable: true,
     },
     genre: {
       type: 'many-to-one',
       joinColumn: { name: 'genreId' },
       target: 'Genre',
-      cascade: true,
-      nullable: true,
-    },
-    user: {
-      type: 'many-to-one',
-      joinColumn: { name: 'userId' },
-      target: 'User',
       cascade: true,
     },
     city: {

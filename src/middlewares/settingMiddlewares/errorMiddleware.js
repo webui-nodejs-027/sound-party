@@ -1,9 +1,11 @@
 module.exports = (app) => {
-  app.use((req, res, next) => {
+  // eslint-disable-next-line no-unused-vars
+  app.use((req, res) => {
     res.sendStatus(404);
   });
 
-  app.use((err, req, res, next) => {
+  // eslint-disable-next-line no-unused-vars
+  app.use((err, req, res) => {
     res.status(err.statusCode || 500).send({ errors: err.message });
   });
 };
