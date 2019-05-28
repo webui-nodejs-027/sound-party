@@ -1,12 +1,10 @@
+const inversify = require('inversify');
+const { TYPES } = require('../constants');
 const BaseService = require('./BaseService');
-// const GenreModel = require('../entities/GenreModel');
-const GenreEntity = require('../db/schemas/GenreSchema');
 
-class GenreService extends BaseService {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(entity) {
-    super(entity);
-  }
-}
+class GenreService extends BaseService {}
 
-module.exports = new GenreService(GenreEntity);
+inversify.decorate(inversify.injectable(), GenreService);
+inversify.decorate(inversify.inject(TYPES.GenreRepository), GenreService, 0);
+
+module.exports = GenreService;

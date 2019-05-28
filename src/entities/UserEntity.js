@@ -1,3 +1,4 @@
+/* eslint-disable indent,no-trailing-spaces */
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({
@@ -42,6 +43,8 @@ module.exports = new EntitySchema({
     playlist: {
       type: 'one-to-many',
       target: 'Playlist',
+      cascade: true,
+      onDelete: 'CASCADE',
     },
     roleId: {
       type: 'many-to-one',

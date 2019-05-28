@@ -1,22 +1,17 @@
+const inversify = require('inversify');
+const { TYPES } = require('../constants');
 const BaseService = require('./BaseService');
-// eslint-disable-next-line import/order
-const { getRepository } = require('typeorm');
 
 class PlaylistService extends BaseService {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(entity) {
-    super(entity);
-  }
-
   async getAllDataByUserId(userId) {
-    return getRepository(this.entity)
+    return this.repository
       .createQueryBuilder(`${this.entity.name}`)
       .where(`${this.entity.name}.userId = :userId`, { userId })
       .getMany();
   }
 
   async getByIdUserAndIdPlaylist(id, userId) {
-    return getRepository(this.entity)
+    return this.repository
       .createQueryBuilder(`${this.entity.name}`)
       .where(`${this.entity.name}.id = :id`, { id })
       .andWhere(`${this.entity.name}.userId = :userId`, { userId })
@@ -24,7 +19,7 @@ class PlaylistService extends BaseService {
   }
 
   async createPlaylist(name, favourite, userId, isMain) {
-    return getRepository(this.entity)
+    return this.repository
       .createQueryBuilder()
       .insert()
       .into(this.entity)
@@ -40,7 +35,7 @@ class PlaylistService extends BaseService {
   }
 
   async updatePlaylist(name, favourite, id) {
-    return getRepository(this.entity)
+    return this.repository
       .createQueryBuilder()
       .update(this.entity)
       .set({
@@ -51,5 +46,12 @@ class PlaylistService extends BaseService {
       .execute();
   }
 }
+
+inversify.decorate(inversify.injectable(), PlaylistService);
+inversify.decorate(
+  inversify.inject(TYPES.PlaylistRepository),
+  PlaylistService,
+  0,
+);
 
 module.exports = PlaylistService;

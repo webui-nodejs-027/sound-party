@@ -1,15 +1,10 @@
 /* eslint-disable no-useless-constructor,class-methods-use-this,no-shadow,consistent-return */
 const passport = require('passport');
 const BaseController = require('./BaseController');
-const userService = require('../services/UserService');
-const UserShema = require('../entities/UserModel');
+const { container } = require('../ioc');
+const { TYPES } = require('../constants');
 
 class UserController extends BaseController {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(entity) {
-    super(entity);
-  }
-
   async login(req, res, next) {
     passport.authenticate('local', (err, user) => {
       if (err) {
@@ -29,33 +24,9 @@ class UserController extends BaseController {
 
   async addUser(req, res) {
     // req.body.password = await UserShema.hashPassword(req.body.password);
-    const data = req.body;
-    data.password = await UserShema.hashPassword(req.body.password);
-    const {
-      firstname,
-      lastname,
-      email,
-      password,
-      birthday,
-      gender,
-      socialLink,
-      // eslint-disable-next-line comma-dangle
-      roleId
-    } = data;
-    const user = new UserShema.User(
-      firstname,
-      lastname,
-      email,
-      password,
-      birthday,
-      gender,
-      socialLink,
-      // eslint-disable-next-line comma-dangle
-      roleId
-    );
-    const result = await this.service.addData(user);
+    const result = await this.service.insertData(req.body);
     res.send(result);
   }
 }
 
-module.exports = new UserController(userService);
+module.exports = new UserController(container.get(TYPES.UserService));

@@ -20,12 +20,18 @@ class BaseController {
 
   async deleteById(req, res) {
     const result = await this.service.deleteById(req.params.id);
-    res.status(200).json(result);
+    const row = result.affected;
+    if (row) {
+      res.status(202).json({
+        id: req.params.id,
+        message: 'data has been deleted',
+      });
+    }
   }
 
   async updateById(req, res) {
     const result = await this.service.updateById(req.params.id, req.body);
-    res.status(200).json(result);
+    res.status(200).json(result.raw[0]);
   }
 }
 

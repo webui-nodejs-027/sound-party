@@ -1,19 +1,17 @@
-const { getRepository } = require('typeorm');
+const inversify = require('inversify');
+const { TYPES } = require('../constants');
 const BaseService = require('./BaseService');
-const UserEntity = require('../db/schemas/UserSchema');
 
 class UserService extends BaseService {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(entity) {
-    super(entity);
-  }
-
-  async getUserByEmail(email) {
-    return getRepository(this.entity)
+  getUserByEmail(email) {
+    return this.repository
       .createQueryBuilder(`${this.entity.name}`)
       .where('email = :email', { email })
       .getOne();
   }
 }
 
-module.exports = new UserService(UserEntity);
+inversify.decorate(inversify.injectable(), UserService);
+inversify.decorate(inversify.inject(TYPES.UserRepository), UserService, 0);
+
+module.exports = UserService;

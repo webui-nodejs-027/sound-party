@@ -1,12 +1,8 @@
-/* eslint-disable no-useless-constructor */
 const BaseController = require('./BaseController');
-const meetingService = require('../services/MeetingService');
+const { container } = require('../ioc');
+const { TYPES } = require('../constants');
 
 class MeetingController extends BaseController {
-  constructor(service) {
-    super(service);
-  }
-
   async createMeeting(req, res) {
     const result = await this.service.createMeeting(req);
     res.status(200).json(result);
@@ -18,4 +14,4 @@ class MeetingController extends BaseController {
   }
 }
 
-module.exports = new MeetingController(meetingService);
+module.exports = new MeetingController(container.get(TYPES.MeetingService));

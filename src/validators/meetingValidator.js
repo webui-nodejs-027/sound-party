@@ -1,18 +1,6 @@
-const {
-  param,
-  body,
-  oneOf,
-  validationResult,
-} = require('express-validator/check');
+const { param, body, oneOf } = require('express-validator/check');
 
-// eslint-disable-next-line consistent-return
-const checkResult = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  next();
-};
+const { checkResult } = require('./checkResult');
 
 module.exports.checkId = [
   param('id')

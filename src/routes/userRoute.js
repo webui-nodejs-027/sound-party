@@ -11,7 +11,9 @@ function mustAuthenticated(req, res, next) {
   return null;
 }
 
-router.get('/', userController.getAllData.bind(userController));
+router.get('/', (a, b) => {
+  userController.getAllData.call(userController, a, b);
+});
 router.get(
   '/:id',
   mustAuthenticated,
@@ -20,5 +22,6 @@ router.get(
 router.delete('/:id', userController.deleteById.bind(userController));
 router.post('/login', userController.login.bind(userController));
 router.post('/', userController.addUser.bind(userController));
+router.put('/:id', userController.updateById.bind(userController));
 
 module.exports = router;

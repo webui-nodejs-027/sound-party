@@ -1,11 +1,8 @@
 /* eslint-disable no-useless-constructor */
 const BaseController = require('./BaseController');
-const authorService = require('../services/AuthorService');
+const { container } = require('../ioc');
+const { TYPES } = require('../constants');
 
-class AuthorController extends BaseController {
-  constructor(service) {
-    super(service);
-  }
-}
+class AuthorController extends BaseController {}
 
-module.exports = new AuthorController(authorService);
+module.exports = new AuthorController(container.get(TYPES.AuthorService));

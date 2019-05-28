@@ -2,7 +2,7 @@ const passport = require('passport');
 const { Strategy } = require('passport-local');
 
 const userService = require('../src/services/UserService');
-const UserEntity = require('../src/entities/UserModel');
+//const UserEntity = require('../src/entities/UserModel');
 
 const userServiceObj = userService;
 
