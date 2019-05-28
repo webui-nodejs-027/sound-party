@@ -17,34 +17,6 @@ class PlaylistService extends BaseService {
       .andWhere(`${this.entity.name}.userId = :userId`, { userId })
       .getOne();
   }
-
-  async createPlaylist(name, favourite, userId, isMain) {
-    return this.repository
-      .createQueryBuilder()
-      .insert()
-      .into(this.entity)
-      .values([
-        {
-          name,
-          favourite,
-          userId,
-          isMain,
-        },
-      ])
-      .execute();
-  }
-
-  async updatePlaylist(name, favourite, id) {
-    return this.repository
-      .createQueryBuilder()
-      .update(this.entity)
-      .set({
-        name,
-        favourite,
-      })
-      .where('id = :id', { id })
-      .execute();
-  }
 }
 
 inversify.decorate(inversify.injectable(), PlaylistService);
