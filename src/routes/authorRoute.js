@@ -1,9 +1,6 @@
 const express = require('express');
 const authorController = require('../controllers/AuthorController');
-const {
-  baseValidator,
-  authorValidator,
-} = require('../validators/index.js');
+const { baseValidator, authorValidator } = require('../validators/index.js');
 
 const router = express.Router();
 

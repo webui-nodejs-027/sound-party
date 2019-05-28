@@ -1,9 +1,6 @@
 const express = require('express');
 const genreController = require('../controllers/GenreController');
-const {
-  baseValidator,
-  genreValidator,
-} = require('../validators/index.js');
+const { baseValidator, genreValidator } = require('../validators/index.js');
 
 const router = express.Router();
 

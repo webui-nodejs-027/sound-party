@@ -1,8 +1,4 @@
-const {
-  param,
-  body,
-  oneOf,
-} = require('express-validator/check');
+const { param, body, oneOf } = require('express-validator/check');
 
 const { checkResult } = require('./checkResult');
 

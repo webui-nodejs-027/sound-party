@@ -2,7 +2,6 @@ const { body, param } = require('express-validator/check');
 
 const { checkResult } = require('./checkResult');
 
-
 module.exports.checkUserId = [
   param('userId')
     .isInt()

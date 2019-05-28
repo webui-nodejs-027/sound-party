@@ -22,8 +22,8 @@ class BaseService {
   }
 
   updateById(id, content) {
-    // return this.repository.update(id, content);
-    return this.repository.createQueryBuilder()
+    return this.repository
+      .createQueryBuilder()
       .update()
       .set(content)
       .where('id=:id', { id })

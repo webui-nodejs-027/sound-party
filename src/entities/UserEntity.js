@@ -43,8 +43,8 @@ module.exports = new EntitySchema({
     playlist: {
       type: 'one-to-many',
       target: 'Playlist',
-        cascade: true,
-        onDelete: 'CASCADE',
+      cascade: true,
+      onDelete: 'CASCADE',
     },
     roleId: {
       type: 'many-to-one',
