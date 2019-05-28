@@ -1,6 +1,5 @@
 const BaseController = require('./BaseController');
 const PlaylistService = require('../services/PlaylistService');
-const Playlist = require('../db/schemas/PlaylistSchema');
 
 class PlaylistController extends BaseController {
   // eslint-disable-next-line no-useless-constructor
@@ -22,23 +21,17 @@ class PlaylistController extends BaseController {
   }
 
   async createPlaylist(req, res) {
-    const playlist = await this.service.createPlaylist(
-      req.body.name,
-      req.body.favourite,
-      req.body.userId,
-      req.body.isMain,
-    );
-    res.status(200).json(playlist);
+    const playlist = await this.service.createPlaylist(req.body);
+    res.status(200).json(playlist.raw[0]);
   }
 
   async updatePlaylist(req, res) {
     const updatedPlaylist = await this.service.updatePlaylist(
-      req.body.name,
-      req.body.favourite,
+      req.body,
       req.params.id,
     );
-    res.status(200).json(updatedPlaylist);
+    res.status(200).json(updatedPlaylist.raw[0]);
   }
 }
 
-module.exports = new PlaylistController(Playlist, PlaylistService);
+module.exports = new PlaylistController(PlaylistService);

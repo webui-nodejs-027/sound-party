@@ -1,3 +1,4 @@
+const playlistShema = require('./../db/schemas/PlaylistSchema');
 const BaseService = require('./BaseService');
 // eslint-disable-next-line import/order
 const { getRepository } = require('typeorm');
@@ -23,33 +24,23 @@ class PlaylistService extends BaseService {
       .getOne();
   }
 
-  async createPlaylist(name, favourite, userId, isMain) {
+  async createPlaylist(data) {
     return getRepository(this.entity)
       .createQueryBuilder()
       .insert()
       .into(this.entity)
-      .values([
-        {
-          name,
-          favourite,
-          userId,
-          isMain,
-        },
-      ])
+      .values(data)
       .execute();
   }
 
-  async updatePlaylist(name, favourite, id) {
+  async updatePlaylist(data, id) {
     return getRepository(this.entity)
       .createQueryBuilder()
       .update(this.entity)
-      .set({
-        name,
-        favourite,
-      })
+      .set(data)
       .where('id = :id', { id })
       .execute();
   }
 }
 
-module.exports = PlaylistService;
+module.exports = new PlaylistService(playlistShema);
