@@ -20,18 +20,21 @@
   },
   "homepage": "https://github.com/webui-nodejs-027/sound-party#readme",
   "dependencies": {
-    "express": "4.16.4",
-    "express-validator": "5.3.1",
-    "nodemailer": "6.1.1",
-    "passport": "0.4.0",
-    "pg": "7.11.0",
-    "typeorm": "0.2.17",
-    "express-session": "^1.16.1",
+    "bcrypt": "^3.0.6",
     "cookie-parser": "~1.4.3",
-    "passport-local": "1.0.0",
+    "express": "4.16.4",
+    "express-session": "^1.16.1",
+    "express-validator": "5.3.1",
+    "inversify": "^5.0.1",
+    "nodemailer": "6.1.1",
+    "nodemon": "^1.19.1",
+    "passport": "0.4.0",
     "passport-jwt": "^4.0.0",
+    "passport-local": "1.0.0",
+    "pg": "7.11.0",
+    "reflect-metadata": "^0.1.13",
     "session-file-store": "^1.2.0",
-    "bcrypt": "^3.0.6"
+    "typeorm": "0.2.17"
   },
   "devDependencies": {
     "chai": "4.2.0",
@@ -49,7 +52,7 @@
     "env": {
       "node": true
     },
-    "rules":{
+    "rules": {
       "linebreak-style": 0
     }
   },

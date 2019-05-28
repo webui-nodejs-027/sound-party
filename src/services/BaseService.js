@@ -1,50 +1,37 @@
-const { getRepository } = require('typeorm');
+const inversify = require('inversify');
 
 class BaseService {
-  constructor(entity) {
-    this.entity = entity;
+  constructor(repository) {
+    this.repository = repository;
   }
 
-  async getAllData() {
-    return getRepository(this.entity)
-      .createQueryBuilder()
-      .getMany();
+  getAllData() {
+    return this.repository.find();
   }
 
-  async getById(id) {
-    return getRepository(this.entity)
-      .createQueryBuilder()
-      .where('id = :id', { id })
-      .getOne();
+  getById(id) {
+    return this.repository.findOne({ where: { id } });
   }
 
-  async insertData(content) {
-    return getRepository(this.entity)
-      .createQueryBuilder()
-      .insert()
-      .into(this.entity.options.name)
-      .values(content)
-      .execute();
+  insertData(content) {
+    return this.repository.save(content);
   }
 
-  async deleteById(id) {
-    return getRepository(this.entity)
-      .createQueryBuilder()
-      .delete()
-      .from(this.entity.options.name)
-      .where('id = :id', { id })
-      .execute();
+  deleteById(id) {
+    return this.repository.delete(id);
   }
 
-  async updateDataById(id, content) {
-    return getRepository(this.entity)
-      .createQueryBuilder()
-      .update(this.entity.options.name)
+  updateById(id, content) {
+    // return this.repository.update(id, content);
+    return this.repository.createQueryBuilder()
+      .update()
       .set(content)
-      .where('id = :id', { id })
-      .output(Object.getOwnPropertyNames(this.entity.options.columns))
+      .where('id=:id', { id })
+      .returning('*')
       .execute();
   }
 }
+
+inversify.decorate(inversify.injectable(), BaseService);
 
 module.exports = BaseService;
