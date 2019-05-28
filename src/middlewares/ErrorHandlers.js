@@ -9,7 +9,7 @@ class AppError extends Error {
 
 class ValidationError extends AppError {
   constructor(errorsArray) {
-    super('Validation failed', 400);
+    super('Validation error', 400);
     this.errorsArray = errorsArray;
   }
 }
