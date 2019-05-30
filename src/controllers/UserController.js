@@ -60,6 +60,15 @@ class UserController extends BaseController {
     res.send(users);
   }
 
+  async subscribeOnMeeting(req, res) {
+    const { result, status, message } = await this.service.subscribeOnMeeting(
+      req,
+    );
+    res.status(status).json({
+      message: result || message,
+    });
+  }
+
   async mailCheck(req, res, next) {
     const { email } = req.body;
     try {
