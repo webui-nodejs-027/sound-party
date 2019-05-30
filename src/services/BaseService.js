@@ -5,8 +5,8 @@ class BaseService {
     this.repository = repository;
   }
 
-  getAllData() {
-    return this.repository.find();
+  getAllData(query) {
+    return this.repository.find(query);
   }
 
   getById(id) {

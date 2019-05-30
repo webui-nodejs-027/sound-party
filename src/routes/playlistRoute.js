@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.use('/:id', baseValidator.checkId);
 router.use('/:userId', validator.checkUserId);
+
+router.get('/', playlistController.getAllData.bind(playlistController));
 router.get(
   '/:userId',
   playlistController.getAllDataByUserId.bind(playlistController),

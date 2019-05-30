@@ -1,13 +1,17 @@
+/* eslint-disable no-param-reassign */
 const inversify = require('inversify');
+const bcrypt = require('./BcService');
 const { TYPES } = require('../constants');
 const BaseService = require('./BaseService');
 
 class UserService extends BaseService {
   getUserByEmail(email) {
-    return this.repository
-      .createQueryBuilder(`${this.entity.name}`)
-      .where('email = :email', { email })
-      .getOne();
+    return this.repository.findOne({ email });
+  }
+
+  async insertUserData(content) {
+    content.password = await bcrypt.hashPassword(content.password);
+    return this.repository.save(content);
   }
 }
 
