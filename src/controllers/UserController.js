@@ -55,6 +55,15 @@ class UserController extends BaseController {
     });
     res.send(users);
   }
+
+  async subscribeOnMeeting(req, res) {
+    const { result, status, message } = await this.service.subscribeOnMeeting(
+      req,
+    );
+    res.status(status).json({
+      message: result || message,
+    });
+  }
 }
 
 module.exports = new UserController(container.get(TYPES.UserService));

@@ -11,5 +11,9 @@ router.delete('/:id', userController.deleteById.bind(userController));
 router.post('/login', userController.login.bind(userController));
 router.post('/', userController.addUser.bind(userController));
 router.put('/:id', userController.updateById.bind(userController));
+router.post(
+  '/:id/subscribeOnMeeting',
+  userController.subscribeOnMeeting.bind(userController),
+);
 
 module.exports = router;
