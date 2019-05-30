@@ -4,13 +4,22 @@ const { TYPES } = require('../constants');
 
 class MeetingController extends BaseController {
   async createMeeting(req, res) {
-    const result = await this.service.createMeeting(req);
-    res.status(200).json(result);
+    const { result, status, message } = await this.service.createMeeting(req);
+    res.status(status).json({
+      message: result || message
+    });
   }
 
   async updateMeeting(req, res) {
-    const result = await this.service.updateMeeting(req);
-    res.status(200).json(result.raw[0]);
+    const { result, status, message } = await this.service.updateMeeting(req);
+    res.status(status).json({
+      message: result || message
+    });
+  }
+
+  async findMeeting(req, res) {
+    const result = await this.service.findMeeting(req);
+    res.status(200).json(result);
   }
 }
 

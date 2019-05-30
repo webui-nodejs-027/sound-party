@@ -1,13 +1,27 @@
-const { param, body, oneOf } = require('express-validator/check');
+const {
+  param,
+  body,
+  oneOf,
+  query,
+  validationResult
+} = require('express-validator/check');
 
-const { checkResult } = require('./checkResult');
+const { ValidationError } = require('../middlewares/ErrorHandlers');
+// eslint-disable-next-line consistent-return
+const checkResult = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    next(new ValidationError(errors.array()));
+    // return res.status(400).json({ errors: errors.array() });
+  }
+  next();
+};
 
 module.exports.checkId = [
   param('id')
     .isInt()
-    .not()
-    .isEmpty(),
-  checkResult,
+    .withMessage('must be a number'),
+  checkResult
 ];
 
 module.exports.checkBody = [
@@ -23,26 +37,42 @@ module.exports.checkBody = [
 
   oneOf(
     [
-      body('genreId')
-        .isInt()
-        .withMessage('must be a number')
-        .not()
-        .isEmpty()
-        .withMessage('must be not empty'),
-      body('authorId')
-        .isInt()
-        .withMessage('must be a number')
-        .not()
-        .isEmpty()
-        .withMessage('must be not empty'),
+      [
+        body('genreId').isInt(),
+        body('authorId')
+          .not()
+          .exists()
+      ],
+      [
+        body('genreId')
+          .not()
+          .exists(),
+        body('authorId').isInt()
+      ]
     ],
-    'genreId and authorId error',
+    'only one property must be provided: genreId or authorId'
   ),
 
-  body('dateTime', 'invalid time format')
-    .not()
-    .isEmpty()
-    .isISO8601(),
+  body('dateTime', 'invalid time format').isISO8601(),
 
-  checkResult,
+  checkResult
+];
+
+module.exports.checkFindQuery = [
+  oneOf([
+    [
+      query('genreId').isInt(),
+      query('authorId')
+        .not()
+        .exists()
+    ],
+    [
+      query('genreId')
+        .not()
+        .exists(),
+      query('authorId').isInt()
+    ],
+    [query('genreId').isInt(), query('authorId').isInt()]
+  ]),
+  checkResult
 ];

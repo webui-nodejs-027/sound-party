@@ -9,5 +9,5 @@ module.exports = {
   SongEntity: require('./SongEntity'),
   StatusEntity: require('./SongEntity'),
   UserEntity: require('./UserEntity'),
-  UserMeetingEntity: require('./UserMeetingEntity'),
+  UserMeetingEntity: require('./UserMeetingEntity')
 };

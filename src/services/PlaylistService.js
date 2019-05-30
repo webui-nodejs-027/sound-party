@@ -23,7 +23,7 @@ inversify.decorate(inversify.injectable(), PlaylistService);
 inversify.decorate(
   inversify.inject(TYPES.PlaylistRepository),
   PlaylistService,
-  0,
+  0
 );
 
 module.exports = PlaylistService;
