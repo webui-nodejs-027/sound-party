@@ -8,8 +8,8 @@ const router = express.Router();
 router.use('/:id', baseValidator.checkId);
 router.use('/:userId', validator.checkUserId);
 router.get(
-  '/users/:userId',
-  playlistController.getAllDataByIdUser.bind(playlistController),
+  '/:userId',
+  playlistController.getAllDataByUserId.bind(playlistController),
 );
 router.get(
   '/:id/users/:userId',
@@ -19,11 +19,15 @@ router.delete('/:id', playlistController.deleteById.bind(playlistController));
 router.post(
   '/',
   validator.checkBody,
-  playlistController.createPlaylist.bind(playlistController),
+  playlistController.insertData.bind(playlistController),
 );
+// router.post(
+//   '/:id/addsong/:songId',
+//   playlistController.addSongToPlaylist.bind(playlistController),
+// );
 router.put(
   '/:id',
   validator.checkBodyForPut,
-  playlistController.updatePlaylist.bind(playlistController),
+  playlistController.updateById.bind(playlistController),
 );
 module.exports = router;
