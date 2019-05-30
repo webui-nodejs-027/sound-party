@@ -11,9 +11,14 @@ router.delete('/:id', userController.deleteById.bind(userController));
 router.post('/login', userController.login.bind(userController));
 router.post('/reg/mailcheck', userController.mailCheck.bind(userController));
 router.post('/reg/adduser', userController.addUser.bind(userController));
-router.post('/reg/sendconfirm', userController.sendConfirm.bind(userController));
-router.get('/reg/userconfirm/:token',
-  userController.userConfirm.bind(userController));
+router.post(
+  '/reg/sendconfirm',
+  userController.sendConfirm.bind(userController),
+);
+router.get(
+  '/reg/userconfirm/:token',
+  userController.userConfirm.bind(userController),
+);
 router.put('/:id', userController.updateById.bind(userController));
 
 module.exports = router;
