@@ -4,7 +4,6 @@ const session = require('express-session');
 // eslint-disable-next-line import/no-unresolved
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
-require('../../../config/passport-config');
 
 module.exports = (app) => {
   app.use(express.json());

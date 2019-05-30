@@ -15,7 +15,6 @@ class PlaylistController extends BaseController {
     );
     res.status(200).json(result);
   }
-
 }
 
 module.exports = new PlaylistController(container.get(TYPES.PlaylistService));
