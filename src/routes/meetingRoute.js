@@ -11,13 +11,13 @@ router.get('/:id', meetingController.getById.bind(meetingController));
 router.post(
   '/',
   validator.checkBody,
-  meetingController.createMeeting.bind(meetingController)
+  meetingController.createMeeting.bind(meetingController),
 );
 
 router.put(
   '/:id',
   validator.checkBody,
-  meetingController.updateMeeting.bind(meetingController)
+  meetingController.updateMeeting.bind(meetingController),
 );
 
 router.delete('/:id', meetingController.deleteById.bind(meetingController));

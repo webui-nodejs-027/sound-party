@@ -24,14 +24,14 @@ class UserService extends BaseService {
     const userMeeting = {
       isCreator: false,
       meetingId: req.body.meetingId,
-      userId: req.params.id
+      userId: req.params.id,
     };
 
     const inMeeting = await this.meetingService.getById(req.body.meetingId);
     if (!inMeeting) {
       return {
         status: 404,
-        message: `can't find meeting with id:${req.body.meetingId} in DataBase`
+        message: `can't find meeting with id:${req.body.meetingId} in DataBase`,
       };
     }
 
@@ -39,19 +39,19 @@ class UserService extends BaseService {
     if (!inUser) {
       return {
         status: 404,
-        message: `can't find user with id:${req.params.id} in DataBase`
+        message: `can't find user with id:${req.params.id} in DataBase`,
       };
     }
 
     const subscribed = await this.userMeetingService.checkIfSubscribed(
-      userMeeting
+      userMeeting,
     );
     if (subscribed) {
       return {
         status: 404,
         message: `Error! user with id: ${
           req.params.id
-        } is already subscribed on meeting with id:${req.body.meetingId}`
+        } is already subscribed on meeting with id:${req.body.meetingId}`,
       };
     }
 
@@ -60,7 +60,7 @@ class UserService extends BaseService {
       status: 200,
       result: `user with id:${
         req.params.id
-      } was successfully subscribed on meeting with id:${req.body.meetingId}`
+      } was successfully subscribed on meeting with id:${req.body.meetingId}`,
     };
   }
 }

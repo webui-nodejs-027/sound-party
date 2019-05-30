@@ -9,5 +9,5 @@ module.exports = {
   genreValidator,
   authorValidator,
   meetingValidator,
-  playlistValidator
+  playlistValidator,
 };

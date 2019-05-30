@@ -2,5 +2,5 @@
 module.exports = {
   TYPES: require('./types'),
   SECRET: 'secret',
-  favourite: 'favourite'
+  favourite: 'favourite',
 };

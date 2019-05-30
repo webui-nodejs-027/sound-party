@@ -6,14 +6,14 @@ class MeetingController extends BaseController {
   async createMeeting(req, res) {
     const { result, status, message } = await this.service.createMeeting(req);
     res.status(status).json({
-      message: result || message
+      message: result || message,
     });
   }
 
   async updateMeeting(req, res) {
     const { result, status, message } = await this.service.updateMeeting(req);
     res.status(status).json({
-      message: result || message
+      message: result || message,
     });
   }
 
