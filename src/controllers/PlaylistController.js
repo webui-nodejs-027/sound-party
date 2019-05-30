@@ -3,8 +3,8 @@ const { container } = require('../ioc');
 const { TYPES } = require('../constants');
 
 class PlaylistController extends BaseController {
-  async getAllDataByIdUser(req, res) {
-    const result = await this.service.getAllDataByIdUser(req.params.userId);
+  async getAllDataByUserId(req, res) {
+    const result = await this.service.getAllDataByUserId(req.params.userId);
     res.status(200).json(result);
   }
 

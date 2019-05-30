@@ -10,8 +10,8 @@ router.use('/:userId', validator.checkUserId);
 
 router.get('/', playlistController.getAllData.bind(playlistController));
 router.get(
-  '/users/:userId',
-  playlistController.getAllDataByIdUser.bind(playlistController),
+  '/:userId',
+  playlistController.getAllDataByUserId.bind(playlistController),
 );
 router.get(
   '/:id/users/:userId',
@@ -23,6 +23,10 @@ router.post(
   validator.checkBody,
   playlistController.insertData.bind(playlistController),
 );
+// router.post(
+//   '/:id/addsong/:songId',
+//   playlistController.addSongToPlaylist.bind(playlistController),
+// );
 router.put(
   '/:id',
   validator.checkBodyForPut,
