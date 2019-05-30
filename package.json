@@ -20,20 +20,21 @@
   },
   "homepage": "https://github.com/webui-nodejs-027/sound-party#readme",
   "dependencies": {
-    "bcrypt": "^3.0.6",
-    "cookie-parser": "~1.4.3",
+    "bcrypt": "3.0.6",
+    "cookie-parser": "1.4.3",
     "express": "4.16.4",
-    "express-session": "^1.16.1",
+    "express-session": "1.16.1",
     "express-validator": "5.3.1",
-    "inversify": "^5.0.1",
+    "inversify": "5.0.1",
+    "multer": "1.4.1",
     "nodemailer": "6.1.1",
-    "nodemon": "^1.19.1",
+    "nodemon": "1.19.1",
     "passport": "0.4.0",
-    "passport-jwt": "^4.0.0",
+    "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
     "pg": "7.11.0",
-    "reflect-metadata": "^0.1.13",
-    "session-file-store": "^1.2.0",
+    "reflect-metadata": "0.1.13",
+    "session-file-store": "1.2.0",
     "typeorm": "0.2.17"
   },
   "devDependencies": {
@@ -43,9 +44,9 @@
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.1",
     "eslint-plugin-react": "7.11.0",
-    "husky": "^2.3.0",
+    "husky": "2.3.0",
     "mocha": "6.1.4",
-    "prettier": "^1.17.1"
+    "prettier": "1.17.1"
   },
   "eslintConfig": {
     "extends": "airbnb",

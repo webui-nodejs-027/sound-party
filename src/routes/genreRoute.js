@@ -17,5 +17,4 @@ router.delete('/:id', genreController.deleteById.bind(genreController));
 
 router.get('/', genreController.getAllData.bind(genreController));
 
-
 module.exports = router;
