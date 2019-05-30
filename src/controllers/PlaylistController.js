@@ -16,13 +16,13 @@ class PlaylistController extends BaseController {
     res.status(200).json(result);
   }
 
-  // async addSongToPlaylist(req, res) {
-  //   const result = await this.service.addSongToPlaylist(
-  //     req.params.id,
-  //     req.params.songId,
-  //   );
-  //   res.status(200).json(result);
-  // }
+  async addSongToPlaylist(req, res) {
+    const result = await this.service.addSongToPlaylist(
+      req.params.id,
+      req.params.songId,
+    );
+    res.status(200).json(result);
+  }
 }
 
 module.exports = new PlaylistController(container.get(TYPES.PlaylistService));

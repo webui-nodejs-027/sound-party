@@ -21,10 +21,10 @@ router.post(
   validator.checkBody,
   playlistController.insertData.bind(playlistController),
 );
-// router.post(
-//   '/:id/addsong/:songId',
-//   playlistController.addSongToPlaylist.bind(playlistController),
-// );
+router.post(
+  '/:id/addsong/:songId',
+  playlistController.addSongToPlaylist.bind(playlistController),
+);
 router.put(
   '/:id',
   validator.checkBodyForPut,
