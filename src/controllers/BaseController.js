@@ -4,7 +4,7 @@ class BaseController {
   }
 
   async getAllData(req, res) {
-    const result = await this.service.getAllData();
+    const result = await this.service.getAllData(req.query);
     res.status(200).json(result);
   }
 

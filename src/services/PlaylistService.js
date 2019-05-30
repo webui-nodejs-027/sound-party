@@ -4,19 +4,19 @@ const BaseService = require('./BaseService');
 
 class PlaylistService extends BaseService {
   async getAllDataByUserId(userId) {
-    return this.repository
-      .createQueryBuilder(`${this.entity.name}`)
-      .where(`${this.entity.name}.userId = :userId`, { userId })
-      .getMany();
+    return this.repository.find({ where: { userId } });
   }
 
   async getByIdUserAndIdPlaylist(id, userId) {
-    return this.repository
-      .createQueryBuilder(`${this.entity.name}`)
-      .where(`${this.entity.name}.id = :id`, { id })
-      .andWhere(`${this.entity.name}.userId = :userId`, { userId })
-      .getOne();
+    return this.repository.findOne({ where: { id, userId } });
   }
+
+  // async addSongToPlaylist(id, songId) {
+  // const playlist = await this.repository.findOne({ where: { id } });
+  // const song = await TYPES.SongRepository.findOne({ where: { songId } });
+  // playlist.songs.push(song);
+  // return this.repository.save(playlist);
+  // }
 }
 
 inversify.decorate(inversify.injectable(), PlaylistService);
