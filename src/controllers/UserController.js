@@ -35,10 +35,14 @@ class UserController extends BaseController {
     })(req, res, next);
   }
 
-  async addUser(req, res) {
-    const result = await this.service.insertUserData(req.body);
-    const { password, ...user } = result;
-    res.send(user);
+  async addUser(req, res, next) {
+    try {
+      const result = await this.service.insertUserData(req.body);
+      const { password, ...user } = result;
+      res.send(user);
+    } catch (e) {
+      next(e);
+    }
   }
 
   async getUser(req, res) {
@@ -54,6 +58,36 @@ class UserController extends BaseController {
       return userWithoutPassword;
     });
     res.send(users);
+  }
+
+  async mailCheck(req, res, next) {
+    const { email } = req.body;
+    try {
+      const result = await this.service.mailCheck(email);
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async sendConfirm(req, res, next) {
+    const { id } = req.body;
+    try {
+      const result = await this.service.sendConfirm(id);
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async userConfirm(req, res, next) {
+    const { token } = req.params;
+    try {
+      const result = await this.service.userConfirm(token);
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
   }
 }
 
