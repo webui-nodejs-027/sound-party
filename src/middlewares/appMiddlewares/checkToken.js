@@ -22,7 +22,7 @@ const checkToken = async (req, res, next) => {
     };
     return next();
   });
-  return next();
+  return null;
 };
 
 module.exports = checkToken;

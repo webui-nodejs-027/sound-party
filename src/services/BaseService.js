@@ -1,34 +1,55 @@
 const inversify = require('inversify');
+const { AppError } = require('../middlewares/ErrorHandlers');
 
 class BaseService {
   constructor(repository) {
     this.repository = repository;
   }
 
-  getAllData(query) {
-    return this.repository.find(query);
+  async getAllData(query) {
+    const data = await this.repository.find(query);
+    if (!data) {
+      throw new AppError('Data not found');
+    }
+    return data;
   }
 
-  getById(id) {
-    return this.repository.findOne({ where: { id } });
+  async getById(id) {
+    const data = await this.repository.findOne({ where: { id } });
+    if (!data) {
+      throw new AppError(`Data with  id = ${id}  not found`);
+    }
+    return data;
   }
 
-  insertData(content) {
-    return this.repository.save(content);
+  async insertData(content) {
+    const data = await this.repository.save(content);
+    if (!data) {
+      throw new AppError('Add error');
+    }
+    return data;
   }
 
-  deleteById(id) {
-    return this.repository.delete(id);
+  async deleteById(id) {
+    const data = this.repository.delete(id);
+    if (!data) {
+      throw new AppError('Delete error');
+    }
+    return data;
   }
 
   updateById(id, content) {
-    return this.repository
+    const data = this.repository
       .createQueryBuilder()
       .update()
       .set(content)
       .where('id=:id', { id })
       .returning('*')
       .execute();
+    if (!data) {
+      throw new AppError('Update error');
+    }
+    return data;
   }
 }
 

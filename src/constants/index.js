@@ -2,5 +2,9 @@
 module.exports = {
   TYPES: require('./types'),
   SECRET: 'secret',
-  favourite: 'favourite',
+  ROLES: {
+    admin: 'admin',
+    user: 'user',
+    guest: 'guest',
+  },
 };

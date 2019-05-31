@@ -35,16 +35,18 @@ class UserController extends BaseController {
     })(req, res, next);
   }
 
-  async addUser(req, res) {
-    const result = await this.service.insertUserData(req.body);
+  async addUser(req, res, next) {
+    const promise = this.service.insertUserData(req.body);
+    const result = await BaseController.checkError(promise, next);
     const { password, ...user } = result;
     res.send(user);
   }
 
-  async getUser(req, res) {
-    const result = await this.service.getById(req.params.id);
-    const { password, ...user } = result;
-    res.send(user);
+  async getUser(req, res, next) {
+    const promise = this.service.getById(req.params.id);
+    const result = await BaseController.checkError(promise, next);
+    res.status(200)
+      .json(result);
   }
 
   async getUsers(req, res) {
@@ -56,13 +58,10 @@ class UserController extends BaseController {
     res.send(users);
   }
 
-  async subscribeOnMeeting(req, res) {
-    const { result, status, message } = await this.service.subscribeOnMeeting(
-      req,
-    );
-    res.status(status).json({
-      message: result || message,
-    });
+  async subscribeOnMeeting(req, res, next) {
+    const promise = await this.service.subscribeOnMeeting(req);
+    const result = await BaseController.checkError(promise, next);
+    res.json(result);
   }
 }
 
