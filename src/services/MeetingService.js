@@ -43,7 +43,7 @@ class MeetingService extends BaseService {
       address: req.body.address,
       statusId: req.body.statusId,
       genreId: req.body.genreId,
-      authorId: req.body.authorId
+      authorId: req.body.authorId,
     };
   }
 
@@ -52,7 +52,7 @@ class MeetingService extends BaseService {
     if (propInDb.length !== 0) {
       return {
         status: 404,
-        message: `${propInDb}`
+        message: `${propInDb}`,
       };
     }
 
@@ -62,13 +62,13 @@ class MeetingService extends BaseService {
     const userMeeting = {
       isCreator: true,
       userId: req.body.creatorId,
-      meetingId: meeting.id
+      meetingId: meeting.id,
     };
 
     await this.userMeetingService.save(userMeeting);
     return {
       status: 200,
-      result: meeting
+      result: meeting,
     };
   }
 
@@ -77,7 +77,7 @@ class MeetingService extends BaseService {
     if (propInDb.length !== 0) {
       return {
         status: 404,
-        message: `${propInDb}`
+        message: `${propInDb}`,
       };
     }
 
@@ -85,7 +85,7 @@ class MeetingService extends BaseService {
     if (!idInDb) {
       return {
         status: 404,
-        message: `cannot find meeting with id:${req.params.id}`
+        message: `cannot find meeting with id:${req.params.id}`,
       };
     }
 
@@ -95,7 +95,7 @@ class MeetingService extends BaseService {
     console.log(result);
     return {
       status: 200,
-      result
+      result,
     };
   }
 
@@ -116,11 +116,11 @@ inversify.decorate(inversify.injectable(), MeetingService);
 inversify.decorate(
   inversify.inject(TYPES.MeetingRepository),
   MeetingService,
-  0
+  0,
 );
 inversify.decorate(
   inversify.inject(TYPES.UserMeetingService),
   MeetingService,
-  1
+  1,
 );
 module.exports = MeetingService;

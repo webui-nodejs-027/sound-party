@@ -43,8 +43,7 @@ class UserController extends BaseController {
 
   async getUser(req, res) {
     const result = await this.service.getById(req.params.id);
-    res.status(200)
-      .json(result);
+    res.status(200).json(result);
   }
 
   async getUsers(req, res) {
@@ -61,7 +60,7 @@ class UserController extends BaseController {
     res.json(result);
   }
 
-  async changePassword(req, res, next) {
+  async changePassword(req, res) {
     const result = await this.service.changePassword(
       req.body.id,
       req.body.oldpassword,

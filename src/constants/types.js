@@ -14,5 +14,5 @@ module.exports = {
   UserMeetingRepository: Symbol.for('UserMeetingRepository'),
   UserMeetingService: Symbol.for('UserMeetingService'),
   RoleRepository: Symbol.for('RoleRepository'),
-  RoleService: Symbol.for('RoleService')
+  RoleService: Symbol.for('RoleService'),
 };

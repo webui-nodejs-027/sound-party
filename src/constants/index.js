@@ -5,6 +5,6 @@ module.exports = {
   ROLES: {
     admin: 'admin',
     user: 'user',
-    guest: 'guest'
-  }
+    guest: 'guest',
+  },
 };

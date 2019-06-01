@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
       .update(file.originalname)
       .digest('hex')}${Date.now()}.mp3`;
     cb(null, hash);
-  }
+  },
 });
 
 const getSongSrc = () => `sound-party/${hash}`;
@@ -28,14 +28,14 @@ const upload = multer({
       return cb(new Error('Only mp3 file'));
     }
     return cb(null, true);
-  }
+  },
 }).single('fileName');
 
 module.exports.getSongSrc = getSongSrc;
 
 module.exports.checkBody = [
   (req, res, next) => {
-    upload(req, res, err => {
+    upload(req, res, (err) => {
       if (err instanceof multer.MulterError) {
         return res.status(400).json(err.message);
       }
@@ -44,5 +44,5 @@ module.exports.checkBody = [
       }
       return next();
     });
-  }
+  },
 ];

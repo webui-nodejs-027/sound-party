@@ -33,7 +33,7 @@ class UserService extends BaseService {
     const user = await this.getById(id);
     const comparePassword = await bcrypt.comparePassword(
       oldPassword,
-      user.password
+      user.password,
     );
     if (!comparePassword) {
       throw new AppError('Password is incorrect');
@@ -46,31 +46,31 @@ class UserService extends BaseService {
     const userMeeting = {
       isCreator: false,
       meetingId: req.body.meetingId,
-      userId: req.params.id
+      userId: req.params.id,
     };
 
     const inMeeting = await this.meetingService.getById(req.body.meetingId);
     if (!inMeeting) {
       throw new AppError(
-        `can't find meeting with id:${req.body.meetingId} in DataBase`
+        `can't find meeting with id:${req.body.meetingId} in DataBase`,
       );
     }
 
     const inUser = await this.userMeetingService.getById(req.params.id);
     if (!inUser) {
       throw new AppError(
-        `can't find user with id:${req.params.id} in DataBase`
+        `can't find user with id:${req.params.id} in DataBase`,
       );
     }
 
     const subscribed = await this.userMeetingService.checkIfSubscribed(
-      userMeeting
+      userMeeting,
     );
     if (subscribed) {
       throw new AppError(`Error! user with id: 
       ${req.params.id} is already subscribed on meeting with id:${
-        req.body.meetingId
-      }`);
+  req.body.meetingId
+}`);
     }
 
     this.userMeetingService.save(userMeeting);
