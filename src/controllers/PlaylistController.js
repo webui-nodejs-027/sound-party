@@ -11,7 +11,7 @@ class PlaylistController extends BaseController {
   async getByIdUserAndIdPlaylist(req, res) {
     const result = await this.service.getByIdUserAndIdPlaylist(
       req.params.id,
-      req.params.userId,
+      req.params.userId
     );
     res.status(200).json(result);
   }

@@ -3,7 +3,7 @@ const {
   body,
   oneOf,
   query,
-  validationResult,
+  validationResult
 } = require('express-validator/check');
 
 const { ValidationError } = require('../middlewares/ErrorHandlers');
@@ -21,7 +21,7 @@ module.exports.checkId = [
   param('id')
     .isInt()
     .withMessage('must be a number'),
-  checkResult,
+  checkResult
 ];
 
 module.exports.checkBody = [
@@ -41,21 +41,21 @@ module.exports.checkBody = [
         body('genreId').isInt(),
         body('authorId')
           .not()
-          .exists(),
+          .exists()
       ],
       [
         body('genreId')
           .not()
           .exists(),
-        body('authorId').isInt(),
-      ],
+        body('authorId').isInt()
+      ]
     ],
-    'only one property must be provided: genreId or authorId',
+    'only one property must be provided: genreId or authorId'
   ),
 
   body('dateTime', 'invalid time format').isISO8601(),
 
-  checkResult,
+  checkResult
 ];
 
 module.exports.checkFindQuery = [
@@ -64,15 +64,15 @@ module.exports.checkFindQuery = [
       query('genreId').isInt(),
       query('authorId')
         .not()
-        .exists(),
+        .exists()
     ],
     [
       query('genreId')
         .not()
         .exists(),
-      query('authorId').isInt(),
+      query('authorId').isInt()
     ],
-    [query('genreId').isInt(), query('authorId').isInt()],
+    [query('genreId').isInt(), query('authorId').isInt()]
   ]),
-  checkResult,
+  checkResult
 ];

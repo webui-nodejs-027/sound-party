@@ -31,15 +31,15 @@ class BaseService {
   }
 
   async deleteById(id) {
-    const data = this.repository.delete(id);
-    if (!data) {
-      throw new AppError('Delete error');
+    const data = await this.repository.delete(id);
+    if (!data.affected) {
+      throw new AppError(`Delete error ${id}`);
     }
     return data;
   }
 
-  updateById(id, content) {
-    const data = this.repository
+  async updateById(id, content) {
+    const data = await this.repository
       .createQueryBuilder()
       .update()
       .set(content)

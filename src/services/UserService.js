@@ -5,7 +5,6 @@ const { TYPES } = require('../constants');
 const BaseService = require('./BaseService');
 const { AppError } = require('../middlewares/ErrorHandlers');
 
-
 class UserService extends BaseService {
   constructor(repository, userMeetingService, meetingService) {
     super(repository);
@@ -30,27 +29,48 @@ class UserService extends BaseService {
     return user;
   }
 
+  async changePassword(id, oldPassword, password) {
+    const user = await this.getById(id);
+    const comparePassword = await bcrypt.comparePassword(
+      oldPassword,
+      user.password
+    );
+    if (!comparePassword) {
+      throw new AppError('Password is incorrect');
+    }
+    const result = await this.updateById(id, password);
+    return result;
+  }
+
   async subscribeOnMeeting(req) {
     const userMeeting = {
       isCreator: false,
       meetingId: req.body.meetingId,
-      userId: req.params.id,
+      userId: req.params.id
     };
 
     const inMeeting = await this.meetingService.getById(req.body.meetingId);
     if (!inMeeting) {
-      throw new AppError(`can't find meeting with id:${req.body.meetingId} in DataBase`);
+      throw new AppError(
+        `can't find meeting with id:${req.body.meetingId} in DataBase`
+      );
     }
 
     const inUser = await this.userMeetingService.getById(req.params.id);
     if (!inUser) {
-      throw new AppError(`can't find user with id:${req.params.id} in DataBase`);
+      throw new AppError(
+        `can't find user with id:${req.params.id} in DataBase`
+      );
     }
 
-    const subscribed = await this.userMeetingService.checkIfSubscribed(userMeeting);
+    const subscribed = await this.userMeetingService.checkIfSubscribed(
+      userMeeting
+    );
     if (subscribed) {
       throw new AppError(`Error! user with id: 
-      ${req.params.id} is already subscribed on meeting with id:${req.body.meetingId}`);
+      ${req.params.id} is already subscribed on meeting with id:${
+        req.body.meetingId
+      }`);
     }
 
     this.userMeetingService.save(userMeeting);

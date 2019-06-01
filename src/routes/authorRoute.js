@@ -10,7 +10,7 @@ router.get('/:id', authorController.getById.bind(authorController));
 router.post(
   '/',
   authorValidator.checkBody,
-  authorController.insertData.bind(authorController),
+  authorController.insertData.bind(authorController)
 );
 router.put('/:id', authorController.updateById.bind(authorController));
 router.delete('/:id', authorController.deleteById.bind(authorController));
