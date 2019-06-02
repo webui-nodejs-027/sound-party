@@ -1,6 +1,7 @@
 const inversify = require('inversify');
 const { TYPES } = require('../constants');
 const BaseService = require('./BaseService');
+const { AppError } = require('../middlewares/ErrorHandlers');
 
 class PlaylistService extends BaseService {
   constructor(repository, songRepository) {
@@ -9,7 +10,7 @@ class PlaylistService extends BaseService {
   }
 
   async getAllDataByUserId(userId) {
-    return this.repository.find({ where: { userId } });
+    return this.repository.findOne(userId);
   }
 
   async getByIdUserAndIdPlaylist(id, userId) {
@@ -17,10 +18,40 @@ class PlaylistService extends BaseService {
   }
 
   async addSongToPlaylist(id, songId) {
-    const playlist = await this.repository.findOne({ where: { id } });
-    const song = await this.songRepository.findOne({ where: { songId } });
-    playlist.songs = [];
-    playlist.songs.push(song);
+    const song = await this.songRepository.findOne(songId);
+    const playlist = await this.repository.find({ where: { id }, relations: ['songs'] });
+    const idsOfSongs = playlist[0].songs.map(item => item.id);
+
+    if (!playlist) {
+      throw new AppError(`There is not playlist with id ${id}`, 400);
+    }
+    if (!song) {
+      throw new AppError(`There is not song with id ${songId}`, 400);
+    }
+
+    if (idsOfSongs.indexOf(song.id) === -1) {
+      playlist[0].songs.push(song);
+    } else {
+      throw new AppError(`Song ${songId} already exists in playlist ${id}`, 400);
+    }
+    return this.repository.save(playlist);
+  }
+
+  async removeSongFromPlaylist(id, songId) {
+    const playlist = await this.repository.find({ where: { id }, relations: ['songs'] });
+    const song = await this.songRepository.findOne(songId);
+    const idsOfSongs = playlist[0].songs.map(item => item.id);
+    if (!playlist) {
+      throw new AppError(`There is not playlist with id ${id}`, 400);
+    }
+    if (!song) {
+      throw new AppError(`There is not song with id ${songId}`, 400);
+    }
+    if (idsOfSongs.indexOf(song.id) > -1) {
+      playlist[0].songs = playlist[0].songs.filter(value => value.id !== song.id);
+    } else {
+      throw new AppError(`Song ${songId} does not exist in playlist ${id}`, 400);
+    }
     return this.repository.save(playlist);
   }
 }
@@ -31,10 +62,6 @@ inversify.decorate(
   PlaylistService,
   0,
 );
-inversify.decorate(
-  inversify.inject(TYPES.SongRepository),
-  PlaylistService,
-  1,
-);
+inversify.decorate(inversify.inject(TYPES.SongRepository), PlaylistService, 1);
 
 module.exports = PlaylistService;

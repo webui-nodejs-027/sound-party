@@ -23,6 +23,14 @@ class PlaylistController extends BaseController {
     );
     res.status(200).json(result);
   }
+
+  async removeSongFromPlaylist(req, res) {
+    const result = await this.service.removeSongFromPlaylist(
+      req.params.id,
+      req.params.songId,
+    );
+    res.status(200).json(result);
+  }
 }
 
 module.exports = new PlaylistController(container.get(TYPES.PlaylistService));

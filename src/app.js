@@ -11,7 +11,7 @@ const app = express();
 const initial = async () => {
   await createDbConnection();
   await container.loadAsync(bindings);
-
+  require('../config/passport-config');
   const routers = require('./routes/');
   reqMiddleware(app);
   routers(app);
