@@ -12,7 +12,7 @@ const {
 const {
   confirmTemplate,
   resetPasswordTemplate,
-  newPasswordTemplate
+  newPasswordTemplate,
 } = require('../mail_templates');
 
 const transporter = nodemailer.createTransport(transpConf);
