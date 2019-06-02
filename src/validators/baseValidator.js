@@ -6,5 +6,5 @@ module.exports.checkId = [
     .isInt()
     .not()
     .isEmpty(),
-  checkResult
+  checkResult,
 ];

@@ -2,8 +2,9 @@
 const inversify = require('inversify');
 const bcrypt = require('./BcService');
 const { TYPES } = require('../constants');
-const BaseService = require('./BaseService');
 const { AppError } = require('../middlewares/ErrorHandlers');
+const BaseService = require('./BaseService');
+const mailer = require('./MailerService');
 
 class UserService extends BaseService {
   constructor(repository, userMeetingService, meetingService) {
@@ -21,11 +22,37 @@ class UserService extends BaseService {
     return this.repository.save(content);
   }
 
+  async mailCheck(email) {
+    const user = await this.getUserByEmail(email);
+    if (user) {
+      throw new AppError('This email is already taken', 400);
+    }
+    return { message: 'ok' };
+  }
+
+  async sendConfirm(id) {
+    const user = await this.getById(id);
+    if (!user) {
+      throw new AppError('There are is no user with such id', 400);
+    }
+    return mailer.sendConfirmation(user.id, user.email);
+  }
+
+  async userConfirm(token) {
+    try {
+      const decodedToken = mailer.verifyToken(token);
+      await this.updateById(decodedToken.id, { roleId: 1 });
+    } catch (e) {
+      throw new AppError(e.message, 400);
+    }
+    return { message: 'Email confirmed' };
+  }
+
   async subscribeOnMeeting(req) {
     const userMeeting = {
       isCreator: false,
       meetingId: req.body.meetingId,
-      userId: req.params.id
+      userId: req.params.id,
     };
 
     try {
@@ -33,7 +60,7 @@ class UserService extends BaseService {
       if (!inMeeting) {
         throw new AppError(
           `cannot find meeting with id:${req.body.meetingId}`,
-          404
+          404,
         );
       }
 
@@ -43,14 +70,14 @@ class UserService extends BaseService {
       }
 
       const subscribed = await this.userMeetingService.checkIfSubscribed(
-        userMeeting
+        userMeeting,
       );
       if (subscribed) {
         throw new AppError(
           `Error! user with id: ${
             req.params.id
           } is already subscribed on meeting with id:${req.body.meetingId}`,
-          400
+          400,
         );
       }
     } catch (e) {
@@ -67,7 +94,7 @@ class UserService extends BaseService {
     const userMeeting = {
       isCreator: false,
       meetingId: req.body.meetingId,
-      userId: req.params.id
+      userId: req.params.id,
     };
 
     try {
@@ -75,7 +102,7 @@ class UserService extends BaseService {
       if (!inMeeting) {
         throw new AppError(
           `cannot find meeting with id:${req.body.meetingId}`,
-          404
+          404,
         );
       }
 
@@ -85,14 +112,14 @@ class UserService extends BaseService {
       }
 
       const subscribed = await this.userMeetingService.checkIfSubscribed(
-        userMeeting
+        userMeeting,
       );
       if (!subscribed) {
         throw new AppError(
           `Error! user with id: ${
             req.params.id
           } is not subscribed on meeting with id:${req.body.meetingId}`,
-          400
+          400,
         );
       }
     } catch (e) {

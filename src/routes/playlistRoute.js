@@ -11,17 +11,17 @@ router.use('/:userId', validator.checkUserId);
 router.get('/', playlistController.getAllData.bind(playlistController));
 router.get(
   '/:userId',
-  playlistController.getAllDataByUserId.bind(playlistController)
+  playlistController.getAllDataByUserId.bind(playlistController),
 );
 router.get(
   '/:id/users/:userId',
-  playlistController.getByIdUserAndIdPlaylist.bind(playlistController)
+  playlistController.getByIdUserAndIdPlaylist.bind(playlistController),
 );
 router.delete('/:id', playlistController.deleteById.bind(playlistController));
 router.post(
   '/',
   validator.checkBody,
-  playlistController.insertData.bind(playlistController)
+  playlistController.insertData.bind(playlistController),
 );
 // router.post(
 //   '/:id/addsong/:songId',
@@ -30,6 +30,6 @@ router.post(
 router.put(
   '/:id',
   validator.checkBodyForPut,
-  playlistController.updateById.bind(playlistController)
+  playlistController.updateById.bind(playlistController),
 );
 module.exports = router;

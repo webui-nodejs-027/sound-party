@@ -2,5 +2,6 @@
 module.exports = {
   TYPES: require('./types'),
   SECRET: 'secret',
-  favourite: 'favourite'
+  M_SECRET: 'mailer_secret',
+  favourite: 'favourite',
 };

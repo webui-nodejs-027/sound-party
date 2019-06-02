@@ -10,7 +10,7 @@ class SongController extends BaseController {
       source: songValidator.getSongSrc(),
       year: req.body.year,
       authorId: req.body.authorId,
-      genreId: req.body.genreId
+      genreId: req.body.genreId,
     };
     const result = await this.service.insertData(req.body);
     res.status(200).json(result);
