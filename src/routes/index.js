@@ -6,7 +6,7 @@ const playlistRoute = require('./playlistRoute');
 const songRoute = require('./songRoute');
 const userRoute = require('./userRoute');
 
-module.exports = (app) => {
+module.exports = app => {
   app.use('/', mainRoute);
   app.use('/api/authors', authorRoute);
   app.use('/api/genres', genreRoute);

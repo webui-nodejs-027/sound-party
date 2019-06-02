@@ -10,12 +10,16 @@ class UserMeetingService extends BaseService {
   checkIfSubscribed(obj) {
     return this.repository.findOne(obj);
   }
+
+  deleteById(obj) {
+    this.repository.delete(obj);
+  }
 }
 
 inversify.decorate(inversify.injectable(), UserMeetingService);
 inversify.decorate(
   inversify.inject(TYPES.UserMeetingRepository),
   UserMeetingService,
-  0,
+  0
 );
 module.exports = UserMeetingService;

@@ -13,7 +13,11 @@ router.post('/', userController.addUser.bind(userController));
 router.put('/:id', userController.updateById.bind(userController));
 router.post(
   '/:id/subscribeOnMeeting',
-  userController.subscribeOnMeeting.bind(userController),
+  userController.subscribeOnMeeting.bind(userController)
+);
+router.post(
+  '/:id/unsubscribeFromMeeting',
+  userController.unsubscribeFromMeeting.bind(userController)
 );
 
 module.exports = router;

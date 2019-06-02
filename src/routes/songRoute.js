@@ -9,7 +9,7 @@ router.get('/:id', songController.getById.bind(songController));
 router.post(
   '/',
   songValidator.checkBody,
-  songController.addSong.bind(songController),
+  songController.addSong.bind(songController)
 );
 router.put('/:id', songController.updateById.bind(songController));
 router.delete('/:id', songController.deleteById.bind(songController));

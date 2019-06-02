@@ -3,23 +3,43 @@ const { container } = require('../ioc');
 const { TYPES } = require('../constants');
 
 class MeetingController extends BaseController {
-  async createMeeting(req, res) {
-    const { result, status, message } = await this.service.createMeeting(req);
-    res.status(status).json({
-      message: result || message,
-    });
+  async createMeeting(req, res, next) {
+    try {
+      const result = await this.service.createMeeting(req);
+      if (result.name === 'AppError') {
+        next(result);
+      } else {
+        res.status(200).json(result);
+      }
+    } catch (e) {
+      next(e);
+    }
   }
 
-  async updateMeeting(req, res) {
-    const { result, status, message } = await this.service.updateMeeting(req);
-    res.status(status).json({
-      message: result || message,
-    });
+  async updateMeeting(req, res, next) {
+    try {
+      const result = await this.service.updateMeeting(req);
+      if (result.name === 'AppError') {
+        next(result);
+      } else {
+        res.status(200).json(result);
+      }
+    } catch (e) {
+      next(e);
+    }
   }
 
-  async findMeeting(req, res) {
-    const result = await this.service.findMeeting(req);
-    res.status(200).json(result);
+  async getMeetingsList(req, res, next) {
+    try {
+      const result = await this.service.getMeetingsList(req);
+      if (result.name === 'AppError') {
+        next(result);
+      } else {
+        res.status(200).json(result);
+      }
+    } catch (e) {
+      next(e);
+    }
   }
 }
 

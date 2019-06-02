@@ -24,7 +24,7 @@ class BaseController {
     if (row) {
       res.status(202).json({
         id: req.params.id,
-        message: 'data has been deleted',
+        message: 'data has been deleted'
       });
     }
   }
