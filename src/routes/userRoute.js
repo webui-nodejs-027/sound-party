@@ -36,4 +36,16 @@ router.post(
   errorWrap(userController.changePassword.bind(userController)),
 );
 
+router.post('/reg/mailcheck', userController.mailCheck.bind(userController));
+router.post('/reg/adduser', userController.addUser.bind(userController));
+router.post(
+  '/reg/sendconfirm',
+  userController.sendConfirm.bind(userController),
+);
+router.get(
+  '/reg/userconfirm/:token',
+  userController.userConfirm.bind(userController),
+);
+
+
 module.exports = router;

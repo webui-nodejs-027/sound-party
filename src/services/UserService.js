@@ -6,6 +6,7 @@ const BaseService = require('./BaseService');
 const { AppError } = require('../middlewares/ErrorHandlers');
 const mailer = require('./MailerService');
 
+
 class UserService extends BaseService {
   constructor(repository, userMeetingService, meetingService) {
     super(repository);
