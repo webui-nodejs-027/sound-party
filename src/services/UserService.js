@@ -52,7 +52,7 @@ class UserService extends BaseService {
     const userMeeting = {
       isCreator: false,
       meetingId: req.body.meetingId,
-      userId: req.params.id
+      userId: req.params.id,
     };
 
     try {
@@ -60,7 +60,7 @@ class UserService extends BaseService {
       if (!inMeeting) {
         throw new AppError(
           `cannot find meeting with id:${req.body.meetingId}`,
-          404
+          404,
         );
       }
 
@@ -70,14 +70,14 @@ class UserService extends BaseService {
       }
 
       const subscribed = await this.userMeetingService.checkIfSubscribed(
-        userMeeting
+        userMeeting,
       );
       if (subscribed) {
         throw new AppError(
           `Error! user with id: ${
             req.params.id
           } is already subscribed on meeting with id:${req.body.meetingId}`,
-          400
+          400,
         );
       }
     } catch (e) {
@@ -94,7 +94,7 @@ class UserService extends BaseService {
     const userMeeting = {
       isCreator: false,
       meetingId: req.body.meetingId,
-      userId: req.params.id
+      userId: req.params.id,
     };
 
     try {
@@ -102,7 +102,7 @@ class UserService extends BaseService {
       if (!inMeeting) {
         throw new AppError(
           `cannot find meeting with id:${req.body.meetingId}`,
-          404
+          404,
         );
       }
 
@@ -112,14 +112,14 @@ class UserService extends BaseService {
       }
 
       const subscribed = await this.userMeetingService.checkIfSubscribed(
-        userMeeting
+        userMeeting,
       );
       if (!subscribed) {
         throw new AppError(
           `Error! user with id: ${
             req.params.id
           } is not subscribed on meeting with id:${req.body.meetingId}`,
-          400
+          400,
         );
       }
     } catch (e) {

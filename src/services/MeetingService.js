@@ -30,7 +30,7 @@ class MeetingService extends BaseService {
         const result = await manager.findOne(newKey, req.body[val]);
         if (result === undefined) {
           throw new AppError(
-            `cannot find ${newKey}Id with value:${req.body[val]} in DB`
+            `cannot find ${newKey}Id with value:${req.body[val]} in DB`,
           );
         }
       }
@@ -46,7 +46,7 @@ class MeetingService extends BaseService {
       address: req.body.address,
       statusId: req.body.statusId,
       genreId: req.body.genreId,
-      authorId: req.body.authorId
+      authorId: req.body.authorId,
     };
   }
 
@@ -57,7 +57,7 @@ class MeetingService extends BaseService {
     const userMeeting = {
       isCreator: true,
       userId: req.body.creatorId,
-      meetingId: meeting.id
+      meetingId: meeting.id,
     };
 
     await this.userMeetingService.save(userMeeting);
@@ -76,9 +76,9 @@ class MeetingService extends BaseService {
   async getMeetingsList(req) {
     const queryParams = Object.entries(req.query);
     const findOptions = {
-      where: {}
+      where: {},
     };
-    queryParams.forEach(elem => {
+    queryParams.forEach((elem) => {
       if (elem[0] !== 'page' && elem[0] !== 'limit') {
         [, findOptions.where[elem[0]]] = elem;
       }
@@ -93,7 +93,7 @@ class MeetingService extends BaseService {
       perPage: req.query.limit,
       total: dataCount,
       totalPages: pages,
-      data
+      data,
     };
   }
 }
@@ -102,11 +102,11 @@ inversify.decorate(inversify.injectable(), MeetingService);
 inversify.decorate(
   inversify.inject(TYPES.MeetingRepository),
   MeetingService,
-  0
+  0,
 );
 inversify.decorate(
   inversify.inject(TYPES.UserMeetingService),
   MeetingService,
-  1
+  1,
 );
 module.exports = MeetingService;
