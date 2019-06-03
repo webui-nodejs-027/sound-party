@@ -10,16 +10,27 @@ class PlaylistService extends BaseService {
   }
 
   async getAllDataByUserId(userId) {
-    return this.repository.findOne(userId);
+    const data = this.repository.findOne(userId);
+    if (!data) {
+      throw new AppError('Cannot find userId', 400);
+    }
+    return data;
   }
 
   async getByIdUserAndIdPlaylist(id, userId) {
-    return this.repository.findOne({ where: { id, userId } });
+    const data = this.repository.findOne({ where: { id, userId } });
+    if (!data) {
+      throw new AppError('Cannot find playlist or user', 400);
+    }
+    return data;
   }
 
   async addSongToPlaylist(id, songId) {
     const song = await this.songRepository.findOne(songId);
-    const playlist = await this.repository.find({ where: { id }, relations: ['songs'] });
+    const playlist = await this.repository.find({
+      where: { id },
+      relations: ['songs'],
+    });
     const idsOfSongs = playlist[0].songs.map(item => item.id);
 
     if (!playlist) {
@@ -32,13 +43,19 @@ class PlaylistService extends BaseService {
     if (idsOfSongs.indexOf(song.id) === -1) {
       playlist[0].songs.push(song);
     } else {
-      throw new AppError(`Song ${songId} already exists in playlist ${id}`, 400);
+      throw new AppError(
+        `Song ${songId} already exists in playlist ${id}`,
+        400,
+      );
     }
     return this.repository.save(playlist);
   }
 
   async removeSongFromPlaylist(id, songId) {
-    const playlist = await this.repository.find({ where: { id }, relations: ['songs'] });
+    const playlist = await this.repository.find({
+      where: { id },
+      relations: ['songs'],
+    });
     const song = await this.songRepository.findOne(songId);
     const idsOfSongs = playlist[0].songs.map(item => item.id);
     if (!playlist) {
@@ -48,9 +65,14 @@ class PlaylistService extends BaseService {
       throw new AppError(`There is not song with id ${songId}`, 400);
     }
     if (idsOfSongs.indexOf(song.id) > -1) {
-      playlist[0].songs = playlist[0].songs.filter(value => value.id !== song.id);
+      playlist[0].songs = playlist[0].songs.filter(
+        value => value.id !== song.id,
+      );
     } else {
-      throw new AppError(`Song ${songId} does not exist in playlist ${id}`, 400);
+      throw new AppError(
+        `Song ${songId} does not exist in playlist ${id}`,
+        400,
+      );
     }
     return this.repository.save(playlist);
   }

@@ -3,33 +3,49 @@ const { container } = require('../ioc');
 const { TYPES } = require('../constants');
 
 class PlaylistController extends BaseController {
-  async getAllDataByUserId(req, res) {
-    const result = await this.service.getAllDataByUserId(req.params.userId);
-    res.status(200).json(result);
+  async getAllDataByUserId(req, res, next) {
+    try {
+      const result = await this.service.getAllDataByUserId(req.params.userId);
+      res.status(200).json(result);
+    } catch (e) {
+      next(e);
+    }
   }
 
-  async getByIdUserAndIdPlaylist(req, res) {
-    const result = await this.service.getByIdUserAndIdPlaylist(
-      req.params.id,
-      req.params.userId,
-    );
-    res.status(200).json(result);
+  async getByIdUserAndIdPlaylist(req, res, next) {
+    try {
+      const result = await this.service.getByIdUserAndIdPlaylist(
+        req.params.id,
+        req.params.userId,
+      );
+      res.status(200).json(result);
+    } catch (e) {
+      next(e);
+    }
   }
 
-  async addSongToPlaylist(req, res) {
-    const result = await this.service.addSongToPlaylist(
-      req.params.id,
-      req.params.songId,
-    );
-    res.status(200).json(result);
+  async addSongToPlaylist(req, res, next) {
+    try {
+      const result = await this.service.addSongToPlaylist(
+        req.params.id,
+        req.params.songId,
+      );
+      res.status(200).json(result);
+    } catch (e) {
+      next(e);
+    }
   }
 
-  async removeSongFromPlaylist(req, res) {
-    const result = await this.service.removeSongFromPlaylist(
-      req.params.id,
-      req.params.songId,
-    );
-    res.status(200).json(result);
+  async removeSongFromPlaylist(req, res, next) {
+    try {
+      const result = await this.service.removeSongFromPlaylist(
+        req.params.id,
+        req.params.songId,
+      );
+      res.status(200).json(result);
+    } catch (e) {
+      next(e);
+    }
   }
 }
 
