@@ -6,6 +6,7 @@ const { AppError } = require('../middlewares/ErrorHandlers');
 const BaseService = require('./BaseService');
 const mailer = require('./MailerService');
 
+
 class UserService extends BaseService {
   constructor(repository, userMeetingService, meetingService) {
     super(repository);
@@ -13,13 +14,34 @@ class UserService extends BaseService {
     this.meetingService = meetingService;
   }
 
-  getUserByEmail(email) {
-    return this.repository.findOne({ email });
+  async getUserByEmail(email) {
+    const user = await this.repository.findOne({ email });
+    if (!user) {
+      throw new AppError('User with this email not found');
+    }
+    return user;
   }
 
   async insertUserData(content) {
     content.password = await bcrypt.hashPassword(content.password);
-    return this.repository.save(content);
+    const user = await this.repository.save(content);
+    if (!user) {
+      throw new AppError('Add user error');
+    }
+    return user;
+  }
+
+  async changePassword(id, oldPassword, password) {
+    const user = await this.getById(id);
+    const comparePassword = await bcrypt.comparePassword(
+      oldPassword,
+      user.password,
+    );
+    if (!comparePassword) {
+      throw new AppError('Password is incorrect');
+    }
+    const result = await this.updateById(id, password);
+    return result;
   }
 
   async mailCheck(email) {
@@ -57,39 +79,31 @@ class UserService extends BaseService {
 
     const inMeeting = await this.meetingService.getById(req.body.meetingId);
     if (!inMeeting) {
-      return {
-        status: 404,
-        message: `can't find meeting with id:${req.body.meetingId} in DataBase`,
-      };
+      throw new AppError(
+        `can't find meeting with id:${req.body.meetingId} in DataBase`,
+      );
     }
 
     const inUser = await this.userMeetingService.getById(req.params.id);
     if (!inUser) {
-      return {
-        status: 404,
-        message: `can't find user with id:${req.params.id} in DataBase`,
-      };
+      throw new AppError(
+        `can't find user with id:${req.params.id} in DataBase`,
+      );
     }
 
     const subscribed = await this.userMeetingService.checkIfSubscribed(
       userMeeting,
     );
     if (subscribed) {
-      return {
-        status: 404,
-        message: `Error! user with id: ${
-          req.params.id
-        } is already subscribed on meeting with id:${req.body.meetingId}`,
-      };
+      throw new AppError(`Error! user with id: 
+      ${req.params.id} is already subscribed on meeting with id:${
+  req.body.meetingId
+}`);
     }
 
     this.userMeetingService.save(userMeeting);
-    return {
-      status: 200,
-      result: `user with id:${
-        req.params.id
-      } was successfully subscribed on meeting with id:${req.body.meetingId}`,
-    };
+    return `user with id:${req.params.id} was successfully subscribed 
+    on meeting with id:${req.body.meetingId}`;
   }
 }
 
