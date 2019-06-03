@@ -7,4 +7,6 @@ module.exports = {
     user: 'user',
     guest: 'guest',
   },
+  M_SECRET: 'mailer_secret',
+  favourite: 'favourite',
 };

@@ -22,6 +22,9 @@ router.delete(
 router.post('/login', errorWrap(userController.login.bind(userController)));
 router.post('/', errorWrap(userController.addUser.bind(userController)));
 router.put('/:id', errorWrap(userController.updateById.bind(userController)));
+router.get('/:id', checkToken, userController.getUser.bind(userController));
+router.delete('/:id', userController.deleteById.bind(userController));
+router.post('/login', userController.login.bind(userController));
 router.post(
   '/:id/subscribeOnMeeting',
   errorWrap(userController.subscribeOnMeeting.bind(userController)),
@@ -30,5 +33,17 @@ router.post(
   '/changePassword',
   errorWrap(userController.changePassword.bind(userController)),
 );
+
+router.post('/reg/mailcheck', userController.mailCheck.bind(userController));
+router.post('/reg/adduser', userController.addUser.bind(userController));
+router.post(
+  '/reg/sendconfirm',
+  userController.sendConfirm.bind(userController),
+);
+router.get(
+  '/reg/userconfirm/:token',
+  userController.userConfirm.bind(userController),
+);
+
 
 module.exports = router;
