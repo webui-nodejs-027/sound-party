@@ -7,7 +7,7 @@ const {
   PlaylistService,
   MeetingService,
   SongService,
-  UserMeetingService,
+  UserMeetingService
 } = require('../services');
 const {
   UserEntity,
@@ -16,11 +16,11 @@ const {
   PlaylistEntity,
   MeetingEntity,
   SongEntity,
-  UserMeetingEntity,
+  UserMeetingEntity
 } = require('../entities');
 const { TYPES } = require('../constants');
 
-module.exports = new AsyncContainerModule((bind) => {
+module.exports = new AsyncContainerModule(bind => {
   bind(TYPES.UserRepository)
     .toDynamicValue(() => getRepository(UserEntity))
     .inRequestScope();

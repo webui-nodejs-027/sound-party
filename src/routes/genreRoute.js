@@ -10,7 +10,7 @@ router.get('/:id', genreController.getById.bind(genreController));
 router.post(
   '/',
   genreValidator.checkBody,
-  genreController.insertData.bind(genreController),
+  genreController.insertData.bind(genreController)
 );
 router.put('/:id', genreController.updateById.bind(genreController));
 router.delete('/:id', genreController.deleteById.bind(genreController));

@@ -11,5 +11,5 @@ module.exports = {
   authorValidator,
   meetingValidator,
   playlistValidator,
-  songValidator,
+  songValidator
 };

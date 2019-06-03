@@ -20,6 +20,6 @@ inversify.decorate(inversify.injectable(), UserMeetingService);
 inversify.decorate(
   inversify.inject(TYPES.UserMeetingRepository),
   UserMeetingService,
-  0,
+  0
 );
 module.exports = UserMeetingService;
