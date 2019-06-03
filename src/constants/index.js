@@ -8,5 +8,4 @@ module.exports = {
     guest: 'guest',
   },
   M_SECRET: 'mailer_secret',
-  favourite: 'favourite',
 };

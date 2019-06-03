@@ -2,8 +2,8 @@
 const inversify = require('inversify');
 const bcrypt = require('./BcService');
 const { TYPES } = require('../constants');
-const { AppError } = require('../middlewares/ErrorHandlers');
 const BaseService = require('./BaseService');
+const { AppError } = require('../middlewares/ErrorHandlers');
 const mailer = require('./MailerService');
 
 
