@@ -13,4 +13,6 @@ module.exports = {
   SongService: Symbol.for('SongService'),
   UserMeetingRepository: Symbol.for('UserMeetingRepository'),
   UserMeetingService: Symbol.for('UserMeetingService'),
+  RoleRepository: Symbol.for('RoleRepository'),
+  RoleService: Symbol.for('RoleService'),
 };

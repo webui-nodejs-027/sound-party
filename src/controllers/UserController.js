@@ -47,8 +47,7 @@ class UserController extends BaseController {
 
   async getUser(req, res) {
     const result = await this.service.getById(req.params.id);
-    const { password, ...user } = result;
-    res.send(user);
+    res.status(200).json(result);
   }
 
   async getUsers(req, res) {
@@ -60,30 +59,18 @@ class UserController extends BaseController {
     res.send(users);
   }
 
-  async subscribeOnMeeting(req, res, next) {
-    try {
-      const result = await this.service.subscribeOnMeeting(req);
-      if (result.name === 'AppError') {
-        next(result);
-      } else {
-        res.status(200).json(result);
-      }
-    } catch (e) {
-      next(e);
-    }
+  async subscribeOnMeeting(req, res) {
+    const result = await this.service.subscribeOnMeeting(req);
+    res.json(result);
   }
 
-  async unsubscribeFromMeeting(req, res, next) {
-    try {
-      const result = await this.service.unsubscribeFromMeeting(req);
-      if (result.name === 'AppError') {
-        next(result);
-      } else {
-        res.status(200).json(result);
-      }
-    } catch (e) {
-      next(e);
-    }
+  async changePassword(req, res) {
+    const result = await this.service.changePassword(
+      req.body.id,
+      req.body.oldpassword,
+      req.body.password,
+    );
+    res.json(result);
   }
 
   async mailCheck(req, res, next) {
