@@ -10,7 +10,10 @@ router.use('/:id', baseValidator.checkId);
 router.use('/:userId', validator.checkUserId);
 router.use('/:songId', validator.checkSongId);
 
-router.get('/', errorWrap(playlistController.getAllData.bind(playlistController)));
+router.get(
+  '/',
+  errorWrap(playlistController.getAllData.bind(playlistController)),
+);
 router.get(
   '/:userId',
   errorWrap(playlistController.getAllDataByUserId.bind(playlistController)),
@@ -19,7 +22,10 @@ router.get(
   '/:id/users/:userId',
   playlistController.getByIdUserAndIdPlaylist.bind(playlistController),
 );
-router.delete('/:id', errorWrap(playlistController.deleteById.bind(playlistController)));
+router.delete(
+  '/:id',
+  errorWrap(playlistController.deleteById.bind(playlistController)),
+);
 router.post(
   '/',
   validator.checkBody,

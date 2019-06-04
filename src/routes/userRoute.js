@@ -23,7 +23,7 @@ router.delete(
 router.post('/login', errorWrap(userController.login.bind(userController)));
 router.post(
   '/',
-  userValidator,
+  userValidator.checkWholeBody,
   errorWrap(userController.addUser.bind(userController)),
 );
 router.put('/:id', errorWrap(userController.updateById.bind(userController)));
@@ -49,14 +49,8 @@ router.post(
   '/passwordreset',
   userController.sendTokenForReset.bind(userController),
 );
-router.post(
-  '/reg/mailcheck',
-  userController.mailCheck.bind(userController),
-);
-router.post(
-  '/reg/adduser',
-  userController.addUser.bind(userController),
-);
+router.post('/reg/mailcheck', userController.mailCheck.bind(userController));
+router.post('/reg/adduser', userController.addUser.bind(userController));
 router.post(
   '/reg/sendconfirm',
   userController.sendConfirm.bind(userController),
