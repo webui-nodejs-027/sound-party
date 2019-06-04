@@ -43,8 +43,7 @@ class UserController extends BaseController {
 
   async getUser(req, res) {
     const result = await this.service.getById(req.params.id);
-    const { password, ...user } = result;
-    res.send(user);
+    res.status(200).json(result);
   }
 
   async getUsers(req, res) {
@@ -57,12 +56,17 @@ class UserController extends BaseController {
   }
 
   async subscribeOnMeeting(req, res) {
-    const { result, status, message } = await this.service.subscribeOnMeeting(
-      req,
+    const result = await this.service.subscribeOnMeeting(req);
+    res.json(result);
+  }
+
+  async changePassword(req, res) {
+    const result = await this.service.changePassword(
+      req.body.id,
+      req.body.oldpassword,
+      req.body.password,
     );
-    res.status(status).json({
-      message: result || message,
-    });
+    res.json(result);
   }
 
   async mailCheck(req, res) {

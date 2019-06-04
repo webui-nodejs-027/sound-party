@@ -1,5 +1,4 @@
 const { body } = require('express-validator/check');
-
 const { checkResult } = require('./checkResult');
 
 module.exports.checkEmail = [
@@ -21,11 +20,18 @@ module.exports.checkBodyId = [
 ];
 
 module.exports.checkWholeBody = [
-  body(['firstName', 'lastName', 'password', 'gender'])
+  body(['firstName', 'lastName', 'gender'])
     .isString()
     .not()
     .isEmpty()
     .escape(),
+
+  body(['password'])
+    .isString()
+    .isLength({
+      min: 8,
+      max: 20,
+    }),
 
   body('email')
     .isEmail()
