@@ -10,6 +10,14 @@ module.exports.checkUserId = [
   checkResult,
 ];
 
+module.exports.checkSongId = [
+  param('songId')
+    .isInt()
+    .not()
+    .isEmpty(),
+  checkResult,
+];
+
 module.exports.checkBody = [
   body('name')
     .isString()
@@ -41,4 +49,4 @@ module.exports.checkBodyForPut = [
     .isEmpty(),
 
   checkResult,
-]; //
+];
