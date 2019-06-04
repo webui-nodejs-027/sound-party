@@ -3,19 +3,19 @@ const credentials = {
   pass: 'abc123mde856',
 };
 
+const domain = 'http://localhost:3000';
+
 const transporter = {
   service: 'gmail',
   auth: credentials,
 };
 
-const message = {
+const messageConfig = {
   from: '"no-reply"<noreplywebui@gmail.com>',
-  to: null,
-  subject: null,
-  text: null,
 };
 
 module.exports = {
+  domain,
   transporter,
-  message,
+  messageConfig,
 };

@@ -38,6 +38,25 @@ router.post(
 
 router.post('/reg/mailcheck', userController.mailCheck.bind(userController));
 router.post('/reg/adduser', userController.addUser.bind(userController));
+router.get('/:id', checkToken, userController.getUser.bind(userController));
+router.get(
+  '/passwordreset/:token',
+  userController.passwordReset.bind(userController),
+);
+router.delete('/:id', userController.deleteById.bind(userController));
+router.post('/login', userController.login.bind(userController));
+router.post(
+  '/passwordreset',
+  userController.sendTokenForReset.bind(userController),
+);
+router.post(
+  '/reg/mailcheck',
+  userController.mailCheck.bind(userController),
+);
+router.post(
+  '/reg/adduser',
+  userController.addUser.bind(userController),
+);
 router.post(
   '/reg/sendconfirm',
   userController.sendConfirm.bind(userController),

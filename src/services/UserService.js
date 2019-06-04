@@ -61,12 +61,8 @@ class UserService extends BaseService {
   }
 
   async userConfirm(token) {
-    try {
-      const decodedToken = mailer.verifyToken(token);
-      await this.updateById(decodedToken.id, { roleId: 1 });
-    } catch (e) {
-      throw new AppError(e.message, 400);
-    }
+    const decodedToken = mailer.verifyToken(token);
+    await this.updateById(decodedToken.id, { roleId: 2 });
     return { message: 'Email confirmed' };
   }
 
@@ -104,6 +100,28 @@ class UserService extends BaseService {
     this.userMeetingService.save(userMeeting);
     return `user with id:${req.params.id} was successfully subscribed 
     on meeting with id:${req.body.meetingId}`;
+  }
+
+  async sendTokenForReset(email) {
+    const user = await this.getUserByEmail(email);
+    if (!user) {
+      throw new AppError('There are is no user with such email', 400);
+    }
+    return mailer.sendResetLink(user.id, user.email);
+  }
+
+  async passwordReset(token) {
+    const decodedToken = mailer.verifyToken(token);
+    let password = '';
+    let randomCharCode;
+    for (let i = 0; i < 20; i += 1) {
+      randomCharCode = Math.floor(Math.random() * (127 - 33)) + 33;
+      password += String.fromCharCode(randomCharCode);
+    }
+    const hashedPassword = await bcrypt.hashPassword(password);
+    await this.updateById(decodedToken.id, { password: hashedPassword });
+    await mailer.sendPassword(decodedToken.email, password);
+    return { message: 'New password was sent on email' };
   }
 }
 
