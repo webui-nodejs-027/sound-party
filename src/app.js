@@ -12,6 +12,7 @@ const initial = async () => {
   await createDbConnection();
   await container.loadAsync(bindings);
   require('../config/passport-config');
+  require('express-async-errors');
   const routers = require('./routes/');
   reqMiddleware(app);
   routers(app);
