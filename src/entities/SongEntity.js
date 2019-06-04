@@ -14,7 +14,7 @@ module.exports = new EntitySchema({
     },
     source: {
       type: 'varchar',
-      nullable: false,
+      nullable: true,
     },
     year: {
       type: 'int',
