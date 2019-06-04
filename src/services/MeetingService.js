@@ -72,30 +72,6 @@ class MeetingService extends BaseService {
     await this.repository.update(req.params.id, meeting);
     return this.repository.findOne(req.params.id);
   }
-
-  async getMeetingsList(req) {
-    const queryParams = Object.entries(req.query);
-    const findOptions = {
-      where: {},
-    };
-    queryParams.forEach((elem) => {
-      if (elem[0] !== 'page' && elem[0] !== 'limit') {
-        [, findOptions.where[elem[0]]] = elem;
-      }
-    });
-
-    findOptions.take = req.query.limit;
-    findOptions.skip = findOptions.take * (req.query.page - 1);
-    const [data, dataCount] = await this.repository.findAndCount(findOptions);
-    const pages = dataCount / req.query.limit;
-    return {
-      page: req.query.page,
-      perPage: req.query.limit,
-      total: dataCount,
-      totalPages: pages,
-      data,
-    };
-  }
 }
 
 inversify.decorate(inversify.injectable(), MeetingService);

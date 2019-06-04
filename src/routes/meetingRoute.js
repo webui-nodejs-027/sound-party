@@ -1,10 +1,6 @@
 const express = require('express');
 const meetingController = require('../controllers/MeetingController');
-const {
-  checkId,
-  checkBody,
-  checkFindQuery,
-} = require('../validators/meetingValidator');
+const { checkId, checkBody } = require('../validators/meetingValidator');
 const errorWrap = require('../middlewares/appMiddlewares/errorWrap');
 
 const router = express.Router();
@@ -13,8 +9,7 @@ router.use('/:id', checkId);
 
 router.get(
   '/',
-  checkFindQuery,
-  errorWrap(meetingController.getMeetingsList.bind(meetingController)),
+  errorWrap(meetingController.getAllData.bind(meetingController)),
 );
 router.get(
   '/:id',
