@@ -30,8 +30,10 @@ router.post(
   '/changePassword',
   errorWrap(userController.changePassword.bind(userController)),
 );
-router.post('/reg/adduser',
-  errorWrap(userController.addUser.bind(userController)));
+router.post(
+  '/reg/adduser',
+  errorWrap(userController.addUser.bind(userController)),
+);
 router.get(
   '/passwordreset/:token',
   errorWrap(userController.passwordReset.bind(userController)),
@@ -41,11 +43,15 @@ router.post(
   userValidator.checkEmail,
   userController.sendTokenForReset.bind(userController),
 );
-router.post('/reg/mailcheck',
-  errorWrap(userController.mailCheck.bind(userController)));
-router.post('/reg/adduser',
+router.post(
+  '/reg/mailcheck',
+  errorWrap(userController.mailCheck.bind(userController)),
+);
+router.post(
+  '/reg/adduser',
   userValidator.checkWholeBody,
-  errorWrap(userController.addUser.bind(userController)));
+  errorWrap(userController.addUser.bind(userController)),
+);
 router.post(
   '/reg/sendconfirm',
   userValidator.checkBodyId,
