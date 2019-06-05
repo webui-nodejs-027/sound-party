@@ -8,7 +8,7 @@ module.exports = (app) => {
   app.use((err, req, res, next) => {
     switch (err.name) {
       case 'AppError':
-        res.status(err.statusCode || 500).json({ errors: err.message });
+        res.status(err.statusCode || 400).json({ errors: err.message });
         break;
       case 'ValidationError':
         res.status(err.statusCode || 400).json({
