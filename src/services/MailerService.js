@@ -30,7 +30,7 @@ module.exports.sendConfirmation = async (id, email) => {
   ${address}`;
   messageConfig.html = confirmTemplate(email, address);
   await transporter.sendMail(messageConfig);
-  return { messageConfig: 'ok' };
+  return { message: 'ok' };
 };
 
 module.exports.sendResetLink = async (id, email) => {
