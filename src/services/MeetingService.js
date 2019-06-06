@@ -17,26 +17,6 @@ class MeetingService extends BaseService {
     }
   }
 
-  async _checkPropsInDb(req) {
-    const { manager } = this.repository;
-    const properties = Object.getOwnPropertyNames(req.body);
-
-    for (const val of properties) {
-      if (val.includes('Id')) {
-        let newKey = val.replace('Id', '');
-        if (newKey.includes('creator')) {
-          newKey = newKey.replace('creator', 'user');
-        }
-        const result = await manager.findOne(newKey, req.body[val]);
-        if (result === undefined) {
-          throw new AppError(
-            `cannot find ${newKey}Id with value:${req.body[val]} in DB`,
-          );
-        }
-      }
-    }
-  }
-
   // eslint-disable-next-line class-methods-use-this
   makeMeeting(req) {
     return {
@@ -51,7 +31,6 @@ class MeetingService extends BaseService {
   }
 
   async createMeeting(req) {
-    await this._checkPropsInDb(req);
     const meeting = this.makeMeeting(req);
     await this.repository.save(meeting);
     const userMeeting = {
@@ -66,8 +45,6 @@ class MeetingService extends BaseService {
 
   async updateMeeting(req) {
     await this._checkIdInDb(req.params.id);
-    await this._checkPropsInDb(req);
-
     const meeting = await this.makeMeeting(req);
     await this.repository.update(req.params.id, meeting);
     return this.repository.findOne(req.params.id);
