@@ -63,7 +63,7 @@ const errorHandler = (req, res, next) => {
   return null;
 };
 
-const getSongSrc = () => `localhost:3000/music/${hash}`;
+const getSongSrc = () => hash;
 
 module.exports.getSongSrc = getSongSrc;
 
