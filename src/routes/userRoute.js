@@ -21,11 +21,6 @@ router.delete(
   errorWrap(userController.deleteById.bind(userController)),
 );
 router.post('/login', errorWrap(userController.login.bind(userController)));
-router.post(
-  '/',
-  userValidator,
-  errorWrap(userController.addUser.bind(userController)),
-);
 router.put('/:id', errorWrap(userController.updateById.bind(userController)));
 router.post(
   '/:id/subscribeOnMeeting',
@@ -35,36 +30,36 @@ router.post(
   '/changePassword',
   errorWrap(userController.changePassword.bind(userController)),
 );
-
-router.post('/reg/mailcheck', userController.mailCheck.bind(userController));
-router.post('/reg/adduser', userController.addUser.bind(userController));
-router.get('/:id', checkToken, userController.getUser.bind(userController));
+router.post(
+  '/reg/adduser',
+  errorWrap(userController.addUser.bind(userController)),
+);
 router.get(
   '/passwordreset/:token',
-  userController.passwordReset.bind(userController),
+  errorWrap(userController.passwordReset.bind(userController)),
 );
-router.delete('/:id', userController.deleteById.bind(userController));
-router.post('/login', userController.login.bind(userController));
 router.post(
   '/passwordreset',
+  userValidator.checkEmail,
   userController.sendTokenForReset.bind(userController),
 );
 router.post(
   '/reg/mailcheck',
-  userController.mailCheck.bind(userController),
+  errorWrap(userController.mailCheck.bind(userController)),
 );
 router.post(
   '/reg/adduser',
-  userController.addUser.bind(userController),
+  userValidator.checkWholeBody,
+  errorWrap(userController.addUser.bind(userController)),
 );
 router.post(
   '/reg/sendconfirm',
-  userController.sendConfirm.bind(userController),
+  userValidator.checkBodyId,
+  errorWrap(userController.sendConfirm.bind(userController)),
 );
 router.get(
   '/reg/userconfirm/:token',
-  userController.userConfirm.bind(userController),
+  errorWrap(userController.userConfirm.bind(userController)),
 );
-
 
 module.exports = router;
