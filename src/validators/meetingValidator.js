@@ -10,19 +10,14 @@ const { ValidationError } = require('../middlewares/ErrorHandlers');
 // eslint-disable-next-line consistent-return
 const checkResult = (req, res, next) => {
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     next(new ValidationError(errors.array()));
-    // return res.status(400).json({ errors: errors.array() });
   }
   next();
 };
 
-module.exports.checkId = [
-  param('id')
-    .isInt()
-    .withMessage('must be a number'),
-  checkResult,
-];
+module.exports.checkId = [param('id', 'must be a number').isInt(), checkResult];
 
 module.exports.checkBody = [
   body(['address', 'name'])
@@ -59,9 +54,12 @@ module.exports.checkBody = [
 ];
 
 module.exports.checkFindQuery = [
+  query(['page', 'limit'], 'must be a positive number!').isInt({
+    min: 1,
+  }),
   oneOf([
     [
-      query('genreId').isInt(),
+      query('genreId', 'must be a number!').isInt(),
       query('authorId')
         .not()
         .exists(),
@@ -70,9 +68,12 @@ module.exports.checkFindQuery = [
       query('genreId')
         .not()
         .exists(),
-      query('authorId').isInt(),
+      query('authorId', 'must be a number!').isInt(),
     ],
-    [query('genreId').isInt(), query('authorId').isInt()],
+    query(['genreId', 'authorId'], 'must be a number!').isInt(),
+    query(['genreId', 'authorId'])
+      .not()
+      .exists(),
   ]),
   checkResult,
 ];

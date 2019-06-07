@@ -7,7 +7,7 @@ module.exports = {
   PlaylistEntity: require('./PlaylistEntity'),
   RoleEntity: require('./RoleEntity'),
   SongEntity: require('./SongEntity'),
-  StatusEntity: require('./SongEntity'),
+  StatusEntity: require('./StatusEntity'),
   UserEntity: require('./UserEntity'),
   UserMeetingEntity: require('./UserMeetingEntity'),
 };

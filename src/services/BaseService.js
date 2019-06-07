@@ -7,11 +7,28 @@ class BaseService {
   }
 
   async getAllData(query) {
-    const data = await this.repository.find(query);
-    if (!data) {
-      throw new AppError('Data not found');
+    const queryParams = Object.entries(query);
+    const findOptions = {
+      where: {},
+      order: {},
+    };
+    queryParams.forEach((elem) => {
+      if (elem[0] in this.repository.metadata.propertiesMap) {
+        [, findOptions.where[elem[0]]] = elem;
+      }
+    });
+    findOptions.take = query.limit || 10;
+    findOptions.skip = findOptions.take * (query.page - 1) || 0;
+    if (query.sortBy) {
+      findOptions.order[`${query.sortBy}`] = query.order || 'ASC';
     }
-    return data;
+    const [data, dataCount] = await this.repository.findAndCount(findOptions);
+    return {
+      page: parseInt(query.page, 10) || 1,
+      limit: parseInt(query.limit, 10) || 10,
+      total: dataCount,
+      data,
+    };
   }
 
   async getById(id) {
