@@ -14,7 +14,10 @@ router.post(
   errorWrap(genreController.insertData.bind(genreController)),
 );
 router.put('/:id', errorWrap(genreController.updateById.bind(genreController)));
-router.delete('/:id', errorWrap(genreController.deleteById.bind(genreController)));
+router.delete(
+  '/:id',
+  errorWrap(genreController.deleteById.bind(genreController)),
+);
 
 router.get('/', errorWrap(genreController.getAllData.bind(genreController)));
 
