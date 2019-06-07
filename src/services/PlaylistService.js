@@ -9,8 +9,8 @@ class PlaylistService extends BaseService {
     this.songRepository = songRepository;
   }
 
-  async getAllDataByUserId(userId) {
-    const data = this.repository.findOne(userId);
+  async getAllDataByUserId(id) {
+    const data = this.repository.find({ where: { userId: id } });
     if (!data) {
       throw new AppError('Cannot find userId', 400);
     }

@@ -25,5 +25,6 @@ module.exports = (app) => {
   app.use(cookieParser());
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use('/apidoc', express.static(path.join(__dirname, '../../../apidoc')));
   app.use('/music', express.static(path.join(__dirname, '../../../music')));
 };

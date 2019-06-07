@@ -3,6 +3,7 @@ const { getRepository } = require('typeorm');
 const {
   UserService,
   AuthorService,
+  CityService,
   GenreService,
   PlaylistService,
   MeetingService,
@@ -14,6 +15,7 @@ const {
 const {
   UserEntity,
   AuthorEntity,
+  CityEntity,
   GenreEntity,
   PlaylistEntity,
   MeetingEntity,
@@ -34,6 +36,11 @@ module.exports = new AsyncContainerModule((bind) => {
     .toDynamicValue(() => getRepository(AuthorEntity))
     .inRequestScope();
   bind(TYPES.AuthorService).to(AuthorService);
+
+  bind(TYPES.CityRepository)
+    .toDynamicValue(() => getRepository(CityEntity))
+    .inRequestScope();
+  bind(TYPES.CityService).to(CityService);
 
   bind(TYPES.GenreRepository)
     .toDynamicValue(() => getRepository(GenreEntity))

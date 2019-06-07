@@ -31,7 +31,7 @@ const inputBody = {
       negated: true,
     },
     isString: {
-      errorMessage: 'Name isn\'t a string',
+      errorMessage: "Name isn't a string",
     },
   },
   year: {
