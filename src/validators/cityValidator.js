@@ -22,20 +22,14 @@ const inputBody = {
       negated: true,
     },
     isString: {
-      errorMessage: 'Name isn\'t a string',
+      errorMessage: "Name isn't a string",
     },
     isAlpha: {
-      errorMessage: 'Name isn\'t a string',
+      errorMessage: "Name isn't a string",
     },
   },
 };
 
-module.exports.checkBody = [
-  checkSchema(inputBody),
-  checkResult,
-];
+module.exports.checkBody = [checkSchema(inputBody), checkResult];
 
-module.exports.checkId = [
-  checkSchema(inputParam),
-  checkResult,
-];
+module.exports.checkId = [checkSchema(inputParam), checkResult];

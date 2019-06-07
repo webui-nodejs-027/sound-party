@@ -4,6 +4,7 @@ const session = require('express-session');
 // eslint-disable-next-line import/no-unresolved
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
+const path = require('path');
 
 module.exports = (app) => {
   app.use(express.json());
@@ -26,4 +27,5 @@ module.exports = (app) => {
   app.use(express.urlencoded({ extended: false }));
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use('/apidoc', express.static(path.join(__dirname, '../../../apidoc')));
 };
