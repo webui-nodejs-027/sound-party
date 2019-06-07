@@ -40,7 +40,6 @@ router.use('/:songId', validator.checkSongId);
 ]
  */
 
-
 router.get(
   '/',
   errorWrap(playlistController.getAllData.bind(playlistController)),

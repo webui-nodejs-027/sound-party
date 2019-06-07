@@ -22,6 +22,7 @@ const initial = async () => {
   await createDbConnection();
   await container.loadAsync(bindings);
   require('../config/passport-config');
+  // eslint-disable-next-line import/no-unresolved
   require('express-async-errors');
   const routers = require('./routes/');
   reqMiddleware(app);

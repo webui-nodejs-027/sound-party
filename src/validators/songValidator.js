@@ -30,21 +30,19 @@ const inputBody = {
       options: { ignore_whitespace: true },
       negated: true,
     },
+    isString: {
+      errorMessage: "Name isn't a string",
+    },
   },
   year: {
     in: 'body',
     exists: {
       errorMessage: "Year doesn't exist",
     },
-    isEmpty: {
-      errorMessage: 'Year is empty',
-      options: { ignore_whitespace: true },
-      negated: true,
-    },
     custom: {
       options: (value) => {
         const regex = /^\d{4}$/;
-        if (!regex.test(value)) {
+        if (!regex.test(value) || typeof value === 'string') {
           throw new Error('Year is incorrect');
         }
         return true;
@@ -56,14 +54,9 @@ const inputBody = {
     exists: {
       errorMessage: "AuthorId doesn't exist",
     },
-    isEmpty: {
-      errorMessage: 'AuthorId is empty',
-      options: { ignore_whitespace: true },
-      negated: true,
-    },
     custom: {
       options: (value) => {
-        if (!Number(value)) {
+        if (typeof value === 'string') {
           throw new Error('AuthorId is incorrect');
         }
         return true;
@@ -75,14 +68,9 @@ const inputBody = {
     exists: {
       errorMessage: "GenreId doesn't exist",
     },
-    isEmpty: {
-      errorMessage: 'GenreId is empty',
-      options: { ignore_whitespace: true },
-      negated: true,
-    },
     custom: {
       options: (value) => {
-        if (!Number(value)) {
+        if (typeof value === 'string') {
           throw new Error('GenreId is incorrect');
         }
         return true;
