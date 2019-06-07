@@ -50,7 +50,7 @@ const router = express.Router();
 
  */
 
-router.get('/', userController.getUsers.bind(userController));
+router.get('/', errorWrap(userController.getUsers.bind(userController)));
 /**
  * @api {get} /users/:id Get user by id
  * @apiVersion 0.0.0
@@ -349,7 +349,7 @@ router.get(
 router.post(
   '/passwordreset',
   userValidator.checkEmail,
-  userController.sendTokenForReset.bind(userController),
+  errorWrap(userController.sendTokenForReset.bind(userController)),
 );
 router.post(
   '/reg/mailcheck',
