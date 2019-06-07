@@ -9,4 +9,5 @@ module.exports = {
   MeetingService: require('./MeetingService'),
   UserMeetingService: require('./UserMeetingService'),
   RoleService: require('./RoleService'),
+  StatusService: require('./StatusService'),
 };

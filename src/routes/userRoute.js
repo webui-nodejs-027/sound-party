@@ -186,6 +186,7 @@ router.delete(
  */
 router.post('/login', errorWrap(userController.login.bind(userController)));
 
+
 /**
  * @api {post} /users Create new user
  * @apiVersion 0.0.0
@@ -322,6 +323,13 @@ router.post(
     ]
 }
  */
+
+
+router.post(
+  '/',
+  userValidator.checkWholeBody,
+  errorWrap(userController.addUser.bind(userController)),
+);
 
 router.put('/:id', errorWrap(userController.updateById.bind(userController)));
 router.post(
