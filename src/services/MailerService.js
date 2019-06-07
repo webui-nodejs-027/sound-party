@@ -1,12 +1,19 @@
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 
-const { M_SECRET: secret } = require('../constants/');
+const { M_SECRET: secret } = require('../constants');
 
 const {
+  domain,
   transporter: transpConf,
-  message,
+  messageConfig,
 } = require('../../config/mailerconfig');
+
+const {
+  confirmTemplate,
+  resetPasswordTemplate,
+  newPasswordTemplate,
+} = require('../mail_templates');
 
 const transporter = nodemailer.createTransport(transpConf);
 
@@ -15,13 +22,42 @@ module.exports.sendConfirmation = async (id, email) => {
     id,
   };
   const token = jwt.sign(payload, secret, { expiresIn: 10 * 60 });
-  const address = `http://localhost:3000/api/users/reg/userconfirm/${token}`;
-  message.to = email;
-  message.subject = 'Sound party email confirmation';
-  message.text = `
+  const address = `${domain}/api/users/reg/userconfirm/${token}`;
+  messageConfig.to = email;
+  messageConfig.subject = 'Sound party email confirmation';
+  messageConfig.text = `
   To confirm your email click on:
   ${address}`;
-  await transporter.sendMail(message);
+  messageConfig.html = confirmTemplate(email, address);
+  await transporter.sendMail(messageConfig);
+  return { message: 'ok' };
+};
+
+module.exports.sendResetLink = async (id, email) => {
+  const payload = {
+    id,
+    email,
+  };
+  const token = jwt.sign(payload, secret, { expiresIn: 10 * 60 });
+  const address = `${domain}/api/users/passwordreset/${token}`;
+  messageConfig.to = email;
+  messageConfig.subject = 'Sound party password reset';
+  messageConfig.text = `
+  To reset password click on link:
+  ${address}`;
+  messageConfig.html = resetPasswordTemplate(email, address);
+  await transporter.sendMail(messageConfig);
+  return { message: 'ok' };
+};
+
+module.exports.sendPassword = async (email, password) => {
+  messageConfig.to = email;
+  messageConfig.subject = 'Sound party new password';
+  messageConfig.text = `
+  New password:
+  ${password}`;
+  messageConfig.html = newPasswordTemplate(password);
+  await transporter.sendMail(messageConfig);
   return { message: 'ok' };
 };
 

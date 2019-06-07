@@ -38,13 +38,14 @@ router.use('/:songId', validator.checkSongId);
         "userId": 1
  *     }
 ]
-
  */
+
 
 router.get(
   '/',
   errorWrap(playlistController.getAllData.bind(playlistController)),
 );
+
 /**
  * @api {get} /playlists/:userId Get all playlists by user id
  * @apiVersion 0.0.0
@@ -101,6 +102,7 @@ router.get(
     ]
 }
  */
+
 router.get(
   '/:userId',
   errorWrap(playlistController.getAllDataByUserId.bind(playlistController)),
@@ -149,6 +151,7 @@ router.get(
   '/:id/users/:userId',
   playlistController.getByIdUserAndIdPlaylist.bind(playlistController),
 );
+
 /**
  * @api {delete} /playlists/:id Delete playlist by id
  * @apiVersion 0.0.0
@@ -177,10 +180,12 @@ router.get(
     ]
 }
  */
+
 router.delete(
   '/:id',
   errorWrap(playlistController.deleteById.bind(playlistController)),
 );
+
 /**
  * @api {post} /playlists Create new playlist
  * @apiVersion 0.0.0
@@ -233,6 +238,7 @@ router.delete(
     ]
 }
  */
+
 router.post(
   '/',
   validator.checkBody,
