@@ -35,19 +35,16 @@ class UserController extends BaseController {
     })(req, res, next);
   }
 
-  async addUser(req, res, next) {
-    try {
-      const result = await this.service.insertUserData(req.body);
-      const { password, ...user } = result;
-      res.send(user);
-    } catch (e) {
-      next(e);
-    }
+  async addUser(req, res) {
+    const result = await this.service.insertUserData(req.body);
+    const { password, ...user } = result;
+    res.json(user);
   }
 
   async getUser(req, res) {
     const result = await this.service.getById(req.params.id);
-    res.status(200).json(result);
+    const { password, ...user } = result;
+    res.json(user);
   }
 
   async getUsers(req, res) {
@@ -73,34 +70,34 @@ class UserController extends BaseController {
     res.json(result);
   }
 
-  async mailCheck(req, res, next) {
+  async mailCheck(req, res) {
     const { email } = req.body;
-    try {
-      const result = await this.service.mailCheck(email);
-      res.json(result);
-    } catch (e) {
-      next(e);
-    }
+    const result = await this.service.mailCheck(email);
+    res.json(result);
   }
 
-  async sendConfirm(req, res, next) {
+  async sendConfirm(req, res) {
     const { id } = req.body;
-    try {
-      const result = await this.service.sendConfirm(id);
-      res.json(result);
-    } catch (e) {
-      next(e);
-    }
+    const result = await this.service.sendConfirm(id);
+    res.json(result);
   }
 
-  async userConfirm(req, res, next) {
+  async userConfirm(req, res) {
     const { token } = req.params;
-    try {
-      const result = await this.service.userConfirm(token);
-      res.json(result);
-    } catch (e) {
-      next(e);
-    }
+    const result = await this.service.userConfirm(token);
+    res.json(result);
+  }
+
+  async sendTokenForReset(req, res) {
+    const { email } = req.body;
+    const result = await this.service.sendTokenForReset(email);
+    res.json(result);
+  }
+
+  async passwordReset(req, res) {
+    const { token } = req.params;
+    const result = await this.service.passwordReset(token);
+    res.json(result);
   }
 }
 

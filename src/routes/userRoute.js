@@ -185,6 +185,7 @@ router.delete(
 
  */
 router.post('/login', errorWrap(userController.login.bind(userController)));
+
 /**
  * @api {post} /users Create new user
  * @apiVersion 0.0.0
@@ -321,6 +322,7 @@ router.post(
     ]
 }
  */
+
 router.put('/:id', errorWrap(userController.updateById.bind(userController)));
 router.post(
   '/:id/subscribeOnMeeting',
@@ -330,16 +332,36 @@ router.post(
   '/changePassword',
   errorWrap(userController.changePassword.bind(userController)),
 );
-
-router.post('/reg/mailcheck', userController.mailCheck.bind(userController));
-router.post('/reg/adduser', userController.addUser.bind(userController));
+router.post(
+  '/reg/adduser',
+  errorWrap(userController.addUser.bind(userController)),
+);
+router.get(
+  '/passwordreset/:token',
+  errorWrap(userController.passwordReset.bind(userController)),
+);
+router.post(
+  '/passwordreset',
+  userValidator.checkEmail,
+  userController.sendTokenForReset.bind(userController),
+);
+router.post(
+  '/reg/mailcheck',
+  errorWrap(userController.mailCheck.bind(userController)),
+);
+router.post(
+  '/reg/adduser',
+  userValidator.checkWholeBody,
+  errorWrap(userController.addUser.bind(userController)),
+);
 router.post(
   '/reg/sendconfirm',
-  userController.sendConfirm.bind(userController),
+  userValidator.checkBodyId,
+  errorWrap(userController.sendConfirm.bind(userController)),
 );
 router.get(
   '/reg/userconfirm/:token',
-  userController.userConfirm.bind(userController),
+  errorWrap(userController.userConfirm.bind(userController)),
 );
 
 module.exports = router;
