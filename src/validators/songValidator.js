@@ -1,48 +1,88 @@
-const multer = require('multer');
-const crypto = require('crypto');
-// const { body } = require('express-validator/check');
-// const { checkResult } = require('./checkResult');
+const { checkSchema } = require('express-validator/check');
+const { checkResult } = require('./checkResult');
 
-let hash = null;
+const getContentType = (req, res, next) => {
+  if (req.get('Content-Type') !== 'application/json') {
+    return res.status(400).json({
+      message: 'Invalid content-type',
+    });
+  }
+  return next();
+};
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'music');
+const inputParam = {
+  id: {
+    in: 'params',
+    isInt: {
+      errorMessage: 'Invalid id',
+    },
   },
-  filename: (req, file, cb) => {
-    hash = `${crypto
-      .createHash('md5')
-      .update(file.originalname)
-      .digest('hex')}${Date.now()}.mp3`;
-    cb(null, hash);
+};
+
+const inputBody = {
+  name: {
+    in: 'body',
+    exists: {
+      errorMessage: "Name doesn't exist",
+    },
+    isEmpty: {
+      errorMessage: 'Name is empty',
+      options: { ignore_whitespace: true },
+      negated: true,
+    },
+    isString: {
+      errorMessage: 'Name isn\'t a string',
+    },
   },
-});
-
-const getSongSrc = () => `sound-party/${hash}`;
-
-const upload = multer({
-  storage,
-  limits: { fileSize: 20000000 },
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype !== 'audio/mpeg') {
-      return cb(new Error('Only mp3 file'));
-    }
-    return cb(null, true);
+  year: {
+    in: 'body',
+    exists: {
+      errorMessage: "Year doesn't exist",
+    },
+    custom: {
+      options: (value) => {
+        const regex = /^\d{4}$/;
+        if (!regex.test(value) || typeof value === 'string') {
+          throw new Error('Year is incorrect');
+        }
+        return true;
+      },
+    },
   },
-}).single('fileName');
-
-module.exports.getSongSrc = getSongSrc;
+  authorId: {
+    in: 'body',
+    exists: {
+      errorMessage: "AuthorId doesn't exist",
+    },
+    custom: {
+      options: (value) => {
+        if (typeof value === 'string') {
+          throw new Error('AuthorId is incorrect');
+        }
+        return true;
+      },
+    },
+  },
+  genreId: {
+    in: 'body',
+    exists: {
+      errorMessage: "GenreId doesn't exist",
+    },
+    custom: {
+      options: (value) => {
+        if (typeof value === 'string') {
+          throw new Error('GenreId is incorrect');
+        }
+        return true;
+      },
+    },
+  },
+};
 
 module.exports.checkBody = [
-  (req, res, next) => {
-    upload(req, res, (err) => {
-      if (err instanceof multer.MulterError) {
-        return res.status(400).json(err.message);
-      }
-      if (err) {
-        return res.status(400).json(err.message);
-      }
-      return next();
-    });
-  },
+  getContentType,
+  checkSchema(inputBody),
+  checkResult,
 ];
+
+module.exports.checkId = [checkSchema(inputParam), checkResult];
