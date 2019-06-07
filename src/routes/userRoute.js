@@ -255,7 +255,7 @@ router.post('/login', errorWrap(userController.login.bind(userController)));
  */
 router.post(
   '/',
-  userValidator,
+  userValidator.checkWholeBody,
   errorWrap(userController.addUser.bind(userController)),
 );
 /**
