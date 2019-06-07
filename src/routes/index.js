@@ -1,5 +1,6 @@
 const mainRoute = require('./mainRoute');
 const authorRoute = require('./authorRoute');
+const cityRoute = require('./cityRoute');
 const genreRoute = require('./genreRoute');
 const meetingRoute = require('./meetingRoute');
 const playlistRoute = require('./playlistRoute');
@@ -10,6 +11,7 @@ const roleRoute = require('./roleRoute');
 module.exports = (app) => {
   app.use('/', mainRoute);
   app.use('/api/authors', authorRoute);
+  app.use('/api/cities', cityRoute);
   app.use('/api/genres', genreRoute);
   app.use('/api/meetings', meetingRoute);
   app.use('/api/playlists', playlistRoute);

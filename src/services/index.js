@@ -2,6 +2,7 @@
 module.exports = {
   UserService: require('./UserService'),
   AuthorService: require('./AuthorService'),
+  CityService: require('./CityService'),
   GenreService: require('./GenreService'),
   PlaylistService: require('./PlaylistService'),
   SongService: require('./SongService'),
