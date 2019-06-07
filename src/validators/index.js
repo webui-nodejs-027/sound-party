@@ -5,6 +5,7 @@ const genreValidator = require('./genreValidator');
 const authorValidator = require('./authorValidator');
 const cityValidator = require('./cityValidator');
 const songValidator = require('./songValidator');
+const userValidator = require('./userValidator');
 
 module.exports = {
   baseValidator,
@@ -14,4 +15,5 @@ module.exports = {
   meetingValidator,
   playlistValidator,
   songValidator,
+  userValidator,
 };

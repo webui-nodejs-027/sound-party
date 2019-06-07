@@ -7,4 +7,7 @@ module.exports = {
   PlaylistService: require('./PlaylistService'),
   SongService: require('./SongService'),
   MeetingService: require('./MeetingService'),
+  UserMeetingService: require('./UserMeetingService'),
+  RoleService: require('./RoleService'),
+  StatusService: require('./StatusService'),
 };

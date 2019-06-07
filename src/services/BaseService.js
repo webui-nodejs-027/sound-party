@@ -1,34 +1,72 @@
 const inversify = require('inversify');
+const { AppError } = require('../middlewares/ErrorHandlers');
 
 class BaseService {
   constructor(repository) {
     this.repository = repository;
   }
 
-  getAllData(query) {
-    return this.repository.find(query);
+  async getAllData(query) {
+    const queryParams = Object.entries(query);
+    const findOptions = {
+      where: {},
+      order: {},
+    };
+    queryParams.forEach((elem) => {
+      if (elem[0] in this.repository.metadata.propertiesMap) {
+        [, findOptions.where[elem[0]]] = elem;
+      }
+    });
+    findOptions.take = query.limit || 10;
+    findOptions.skip = findOptions.take * (query.page - 1) || 0;
+    if (query.sortBy) {
+      findOptions.order[`${query.sortBy}`] = query.order || 'ASC';
+    }
+    const [data, dataCount] = await this.repository.findAndCount(findOptions);
+    return {
+      page: parseInt(query.page, 10) || 1,
+      limit: parseInt(query.limit, 10) || 10,
+      total: dataCount,
+      data,
+    };
   }
 
-  getById(id) {
-    return this.repository.findOne({ where: { id } });
+  async getById(id) {
+    const data = await this.repository.findOne({ where: { id } });
+    if (!data) {
+      throw new AppError(`Data with  id = ${id}  not found`);
+    }
+    return data;
   }
 
-  insertData(content) {
-    return this.repository.save(content);
+  async insertData(content) {
+    const data = await this.repository.save(content);
+    if (!data) {
+      throw new AppError('Add error');
+    }
+    return data;
   }
 
-  deleteById(id) {
-    return this.repository.delete(id);
+  async deleteById(id) {
+    const data = await this.repository.delete(id);
+    if (!data.affected) {
+      throw new AppError(`Delete error ${id}`);
+    }
+    return data;
   }
 
-  updateById(id, content) {
-    return this.repository
+  async updateById(id, content) {
+    const data = await this.repository
       .createQueryBuilder()
       .update()
       .set(content)
       .where('id=:id', { id })
       .returning('*')
       .execute();
+    if (!data) {
+      throw new AppError('Update error');
+    }
+    return data;
   }
 }
 

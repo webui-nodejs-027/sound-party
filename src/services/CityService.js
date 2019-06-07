@@ -14,7 +14,7 @@ class CityService extends BaseService {
   async checkIdCity(id) {
     const result = await this.repository.findOne({ where: { id } });
     if (!result) {
-      throw new AppError('Id doesn\'t exist', 400);
+      throw new AppError("Id doesn't exist", 400);
     }
   }
 }

@@ -38,13 +38,13 @@ class UserController extends BaseController {
   async addUser(req, res) {
     const result = await this.service.insertUserData(req.body);
     const { password, ...user } = result;
-    res.send(user);
+    res.json(user);
   }
 
   async getUser(req, res) {
     const result = await this.service.getById(req.params.id);
     const { password, ...user } = result;
-    res.send(user);
+    res.json(user);
   }
 
   async getUsers(req, res) {
@@ -54,6 +54,50 @@ class UserController extends BaseController {
       return userWithoutPassword;
     });
     res.send(users);
+  }
+
+  async subscribeOnMeeting(req, res) {
+    const result = await this.service.subscribeOnMeeting(req);
+    res.json(result);
+  }
+
+  async changePassword(req, res) {
+    const result = await this.service.changePassword(
+      req.body.id,
+      req.body.oldpassword,
+      req.body.password,
+    );
+    res.json(result);
+  }
+
+  async mailCheck(req, res) {
+    const { email } = req.body;
+    const result = await this.service.mailCheck(email);
+    res.json(result);
+  }
+
+  async sendConfirm(req, res) {
+    const { id } = req.body;
+    const result = await this.service.sendConfirm(id);
+    res.json(result);
+  }
+
+  async userConfirm(req, res) {
+    const { token } = req.params;
+    const result = await this.service.userConfirm(token);
+    res.json(result);
+  }
+
+  async sendTokenForReset(req, res) {
+    const { email } = req.body;
+    const result = await this.service.sendTokenForReset(email);
+    res.json(result);
+  }
+
+  async passwordReset(req, res) {
+    const { token } = req.params;
+    const result = await this.service.passwordReset(token);
+    res.json(result);
   }
 }
 

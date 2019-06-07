@@ -13,4 +13,10 @@ module.exports = {
   PlaylistService: Symbol.for('PlaylistService'),
   SongRepository: Symbol.for('SongRepository'),
   SongService: Symbol.for('SongService'),
+  UserMeetingRepository: Symbol.for('UserMeetingRepository'),
+  UserMeetingService: Symbol.for('UserMeetingService'),
+  RoleRepository: Symbol.for('RoleRepository'),
+  RoleService: Symbol.for('RoleService'),
+  StatusRepository: Symbol.for('StatusRepository'),
+  StatusService: Symbol.for('StatusService'),
 };
