@@ -18,7 +18,12 @@ class PlaylistService extends BaseService {
   }
 
   async getByIdUserAndIdPlaylist(id, userId) {
-    const data = this.repository.findOne({ where: { id, userId } });
+    const data = this.repository.findOne({
+      where: {
+        id,
+        userId,
+      },
+    });
     if (!data) {
       throw new AppError('Cannot find playlist or user', 400);
     }

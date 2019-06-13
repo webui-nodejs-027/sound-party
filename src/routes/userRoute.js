@@ -8,8 +8,8 @@ const { ROLES } = require('../constants');
 
 const router = express.Router();
 
-router.get('/', userController.getUsers.bind(userController));
-
+router.get('/', errorWrap(userController.getUsers.bind(userController)));
+router.get('/getUsersPercent/:id', errorWrap(userController.getUsersPercent.bind(userController)));
 router.get(
   '/:id',
   checkToken,
@@ -21,11 +21,7 @@ router.delete(
   errorWrap(userController.deleteById.bind(userController)),
 );
 router.post('/login', errorWrap(userController.login.bind(userController)));
-router.post(
-  '/',
-  userValidator,
-  errorWrap(userController.addUser.bind(userController)),
-);
+router.post('/', userValidator.checkWholeBody, errorWrap(userController.addUser.bind(userController)));
 router.put('/:id', errorWrap(userController.updateById.bind(userController)));
 router.post(
   '/:id/subscribeOnMeeting',
