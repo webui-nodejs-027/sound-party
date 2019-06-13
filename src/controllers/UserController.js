@@ -44,8 +44,8 @@ class UserController extends BaseController {
 
   async getUser(req, res) {
     const result = await this.service.getById(req.params.id);
-    res.status(200)
-      .json(result);
+    const { password, ...user } = result;
+    res.json(user);
   }
 
   async getUsers(req, res) {

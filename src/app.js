@@ -19,11 +19,20 @@ app.all('*', (req, res, next) => {
 });
 
 
+app.all('*', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
+  res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
+  res.header('Content-Type', 'application/json;charset=utf-8');
+  next();
+});
 const initial = async () => {
   await createDbConnection();
   await container.loadAsync(bindings);
   require('../config/passport-config');
-  require('express-async-errors');
   const routers = require('./routes/');
   reqMiddleware(app);
   routers(app);

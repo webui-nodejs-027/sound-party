@@ -3,22 +3,26 @@ const { getRepository } = require('typeorm');
 const {
   UserService,
   AuthorService,
+  CityService,
   GenreService,
   PlaylistService,
   MeetingService,
   SongService,
   UserMeetingService,
   RoleService,
+  StatusService,
 } = require('../services');
 const {
   UserEntity,
   AuthorEntity,
+  CityEntity,
   GenreEntity,
   PlaylistEntity,
   MeetingEntity,
   SongEntity,
   UserMeetingEntity,
   RoleEntity,
+  StatusEntity,
 } = require('../entities');
 const { TYPES } = require('../constants');
 
@@ -32,6 +36,11 @@ module.exports = new AsyncContainerModule((bind) => {
     .toDynamicValue(() => getRepository(AuthorEntity))
     .inRequestScope();
   bind(TYPES.AuthorService).to(AuthorService);
+
+  bind(TYPES.CityRepository)
+    .toDynamicValue(() => getRepository(CityEntity))
+    .inRequestScope();
+  bind(TYPES.CityService).to(CityService);
 
   bind(TYPES.GenreRepository)
     .toDynamicValue(() => getRepository(GenreEntity))
@@ -62,4 +71,9 @@ module.exports = new AsyncContainerModule((bind) => {
     .toDynamicValue(() => getRepository(RoleEntity))
     .inRequestScope();
   bind(TYPES.RoleService).to(RoleService);
+
+  bind(TYPES.StatusRepository)
+    .toDynamicValue(() => getRepository(StatusEntity))
+    .inRequestScope();
+  bind(TYPES.StatusService).to(StatusService);
 });

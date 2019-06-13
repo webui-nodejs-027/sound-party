@@ -8,6 +8,14 @@
     "lint": "eslint --fix ./src/**/*.js",
     "pretty": "prettier --single-quote --write ./src/**/*.js"
   },
+  "apidoc": {
+    "title": "Custom apiDoc browser title",
+    "url" : "http://localhost:3000/api",
+    "template": {
+      "forceLanguage": "en"
+    },
+    "sampleUrl": "http://localhost:3000/api"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webui-nodejs-027/sound-party.git"

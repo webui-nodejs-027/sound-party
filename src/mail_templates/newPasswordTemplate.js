@@ -96,7 +96,7 @@ module.exports = password => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Trans
                                                             <td class="es-m-txt-c" align="center" style="padding:0;Margin:0;"> <h2 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#333333;">Hey there!<br></h2> </td>
                                                         </tr>
                                                         <tr style="border-collapse:collapse;">
-                                                            <td class="es-m-txt-c" align="center" style="padding:0;Margin:0;padding-top:15px;"> <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;">Password was changed. You new password is: ${password}</p> </td>
+                                                            <td class="es-m-txt-c" align="center" style="padding:0;Margin:0;padding-top:15px;"> <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;">Password was changed. You new password is: <b>${password}</b></p> </td>
                                                         </tr>
                                                     </table> </td>
                                             </tr>

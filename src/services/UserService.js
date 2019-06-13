@@ -8,12 +8,12 @@ const { AppError } = require('../middlewares/ErrorHandlers');
 const mailer = require('./MailerService');
 const FindPeople = require('./FindPeopleService');
 
-
 class UserService extends BaseService {
-  constructor(repository, userMeetingService, meetingService) {
+  constructor(repository, userMeetingService, meetingService, roleService) {
     super(repository);
     this.userMeetingService = userMeetingService;
     this.meetingService = meetingService;
+    this.roleService = roleService;
   }
 
   async getUserByEmail(email) {
@@ -71,6 +71,8 @@ class UserService extends BaseService {
 
   async insertUserData(content) {
     content.password = await bcrypt.hashPassword(content.password);
+    const guestRole = await this.roleService.getAllData({ name: 'guest' });
+    content.roleId = guestRole[0].id;
     const user = await this.repository.save(content);
     if (!user) {
       throw new AppError('Add user error');
@@ -92,11 +94,12 @@ class UserService extends BaseService {
   }
 
   async mailCheck(email) {
-    const user = await this.getUserByEmail(email);
-    if (user) {
-      throw new AppError('This email is already taken', 400);
+    try {
+      await this.getUserByEmail(email);
+    } catch (e) {
+      return { message: 'ok' };
     }
-    return { message: 'ok' };
+    throw new AppError('This email is already taken', 400);
   }
 
   async sendConfirm(id) {
@@ -109,7 +112,8 @@ class UserService extends BaseService {
 
   async userConfirm(token) {
     const decodedToken = mailer.verifyToken(token);
-    await this.updateById(decodedToken.id, { roleId: 2 });
+    const userRole = await this.roleService.getAllData({ name: 'user' });
+    await this.updateById(decodedToken.id, { roleId: userRole[0].id });
     return { message: 'Email confirmed' };
   }
 
@@ -162,7 +166,7 @@ class UserService extends BaseService {
     let password = '';
     let randomCharCode;
     for (let i = 0; i < 20; i += 1) {
-      randomCharCode = Math.floor(Math.random() * (127 - 33)) + 33;
+      randomCharCode = Math.floor(Math.random() * (91 - 48)) + 48;
       password += String.fromCharCode(randomCharCode);
     }
     const hashedPassword = await bcrypt.hashPassword(password);
@@ -176,4 +180,5 @@ inversify.decorate(inversify.injectable(), UserService);
 inversify.decorate(inversify.inject(TYPES.UserRepository), UserService, 0);
 inversify.decorate(inversify.inject(TYPES.UserMeetingService), UserService, 1);
 inversify.decorate(inversify.inject(TYPES.MeetingService), UserService, 2);
+inversify.decorate(inversify.inject(TYPES.RoleService), UserService, 3);
 module.exports = UserService;

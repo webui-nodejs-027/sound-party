@@ -1,20 +1,24 @@
 const express = require('express');
 const genreController = require('../controllers/GenreController');
 const { baseValidator, genreValidator } = require('../validators/index.js');
+const errorWrap = require('../middlewares/appMiddlewares/errorWrap');
 
 const router = express.Router();
 
-router.use('/:id', baseValidator.checkId);
+router.use('/:id', errorWrap(baseValidator.checkId));
 
-router.get('/:id', genreController.getById.bind(genreController));
+router.get('/:id', errorWrap(genreController.getById.bind(genreController)));
 router.post(
   '/',
   genreValidator.checkBody,
-  genreController.insertData.bind(genreController),
+  errorWrap(genreController.insertData.bind(genreController)),
 );
-router.put('/:id', genreController.updateById.bind(genreController));
-router.delete('/:id', genreController.deleteById.bind(genreController));
+router.put('/:id', errorWrap(genreController.updateById.bind(genreController)));
+router.delete(
+  '/:id',
+  errorWrap(genreController.deleteById.bind(genreController)),
+);
 
-router.get('/', genreController.getAllData.bind(genreController));
+router.get('/', errorWrap(genreController.getAllData.bind(genreController)));
 
 module.exports = router;
