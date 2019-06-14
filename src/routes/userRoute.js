@@ -97,7 +97,10 @@ router.get('/', errorWrap(userController.getUsers.bind(userController)));
     ]
 }
  */
-router.get('/getUsersPercent/:id', errorWrap(userController.getUsersPercent.bind(userController)));
+router.get(
+  '/getUsersPercent/:id',
+  errorWrap(userController.getUsersPercent.bind(userController)),
+);
 router.get(
   '/:id',
   checkToken,

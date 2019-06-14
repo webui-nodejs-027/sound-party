@@ -9,10 +9,14 @@ const getSongData = (song, amount) => ({
 
 const initialUsersGenres = (playlists) => {
   const usersSonsGenresArray = [];
-  const usersId = _.uniq(_.map(playlists, 'userId.id'));
-  _.forEach(usersId, (value) => {
+  const usersId = _.uniqBy(_.map(playlists, 'userId'), 'id');
+  const usersResult = usersId.map((value) => {
+    const { roleId, password, ...user } = value;
+    return user;
+  });
+  _.forEach(usersResult, (value) => {
     usersSonsGenresArray.push({
-      userId: value,
+      user: value,
       amountSongs: 0,
       songs: [],
     });
@@ -23,7 +27,7 @@ const initialUsersGenres = (playlists) => {
 const convertToPercentSongs = (songUserGenre) => {
   songUserGenre.forEach((songObject) => {
     songObject.songs.forEach((song) => {
-      song.percent = Math.floor(song.amount * 100 / songObject.amountSongs);
+      song.percent = Math.floor((song.amount * 100) / songObject.amountSongs);
     });
   });
   return songUserGenre;
@@ -33,7 +37,7 @@ const allSongUser = (userPlaylist) => {
   const songUserGenre = initialUsersGenres(userPlaylist);
   songUserGenre.forEach((userSong) => {
     userPlaylist.forEach((playlist) => {
-      if (userSong.userId === playlist.userId.id) {
+      if (userSong.user.id === playlist.userId.id) {
         playlist.songs.forEach((song) => {
           userSong.amountSongs += 1;
           if (userSong.songs.length === 0) {
@@ -48,7 +52,10 @@ const allSongUser = (userPlaylist) => {
           if (!hasSongInUser) {
             userSong.songs.push(getSongData(song, 1));
           } else {
-            const index = _.findIndex(userSong.songs, (o => o.genreId === song.genreId.id));
+            const index = _.findIndex(
+              userSong.songs,
+              o => o.genreId === song.genreId.id,
+            );
             userSong.songs[index].amount += 1;
           }
         });
@@ -57,6 +64,5 @@ const allSongUser = (userPlaylist) => {
   });
   return convertToPercentSongs(songUserGenre);
 };
-
 
 module.exports.allSongUser = userPlaylist => allSongUser(userPlaylist);

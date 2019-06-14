@@ -6,8 +6,7 @@ class PlaylistController extends BaseController {
   async getAllDataByUserId(req, res, next) {
     try {
       const result = await this.service.getAllDataByUserId(req.params.userId);
-      res.status(200)
-        .json(result);
+      res.status(200).json(result);
     } catch (e) {
       next(e);
     }
@@ -19,8 +18,7 @@ class PlaylistController extends BaseController {
         req.params.id,
         req.params.userId,
       );
-      res.status(200)
-        .json(result);
+      res.status(200).json(result);
     } catch (e) {
       next(e);
     }
@@ -32,8 +30,7 @@ class PlaylistController extends BaseController {
         req.params.id,
         req.params.songId,
       );
-      res.status(200)
-        .json(result);
+      res.status(200).json(result);
     } catch (e) {
       next(e);
     }
@@ -45,8 +42,7 @@ class PlaylistController extends BaseController {
         req.params.id,
         req.params.songId,
       );
-      res.status(200)
-        .json(result);
+      res.status(200).json(result);
     } catch (e) {
       next(e);
     }

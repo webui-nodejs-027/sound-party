@@ -31,35 +31,47 @@ class UserService extends BaseService {
       .getMany();
 
     idUser = Number(idUser);
-    const usersGenresPlaylists = _.remove(FindPeople.allSongUser(allPlaylistsSong),
-      n => n.userId !== idUser);
-    const userGenresPlaylists = _.remove(FindPeople.allSongUser(allPlaylistsSong),
-      n => n.userId === idUser);
+    const usersGenresPlaylists = _.remove(
+      FindPeople.allSongUser(allPlaylistsSong),
+      n => n.user.id !== idUser,
+    );
+    const userGenresPlaylists = _.remove(
+      FindPeople.allSongUser(allPlaylistsSong),
+      n => n.user.id === idUser,
+    );
     const result = [];
 
-    usersGenresPlaylists.forEach((value) => {
+    usersGenresPlaylists.forEach((user) => {
       const usersSongs = [];
       let allGanresArray = [];
-      value.songs.forEach((song, index) => {
+      user.songs.forEach((song, index) => {
         allGanresArray.push(song);
-        const sameGenre = _.findIndex(userGenresPlaylists[0].songs,
-          (x => x.genreId === song.genreId));
+        const sameGenre = _.findIndex(
+          userGenresPlaylists[0].songs,
+          x => x.genreId === song.genreId,
+        );
         if (userGenresPlaylists[0].songs[sameGenre].percent < 20) {
           return;
         }
         if (sameGenre !== -1) {
-          const diffencePrecent = Math.abs(userGenresPlaylists[0].songs[index].percent
-            - song.percent);
+          const diffencePrecent = Math.abs(
+            userGenresPlaylists[0].songs[index].percent - song.percent,
+          );
           if (diffencePrecent < 10) {
             usersSongs.push(song);
           }
         }
       });
       if (usersSongs.length > 0) {
-        allGanresArray = _.uniqBy(_.concat(allGanresArray, userGenresPlaylists[0].songs), 'genreId');
-        const sameMusicPercent = Math.floor(usersSongs.length * 100 / allGanresArray.length);
+        allGanresArray = _.uniqBy(
+          _.concat(allGanresArray, userGenresPlaylists[0].songs),
+          'genreId',
+        );
+        const sameMusicPercent = Math.floor(
+          (usersSongs.length * 100) / allGanresArray.length,
+        );
         result.push({
-          userId: value.userId,
+          user: user.user,
           sameMusicPercent,
           songs: usersSongs,
         });
@@ -144,8 +156,8 @@ class UserService extends BaseService {
     if (subscribed) {
       throw new AppError(`Error! user with id: 
       ${req.params.id} is already subscribed on meeting with id:${
-  req.body.meetingId
-}`);
+        req.body.meetingId
+        }`);
     }
 
     this.userMeetingService.save(userMeeting);

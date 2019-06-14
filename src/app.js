@@ -18,7 +18,6 @@ app.all('*', (req, res, next) => {
   next();
 });
 
-
 app.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(

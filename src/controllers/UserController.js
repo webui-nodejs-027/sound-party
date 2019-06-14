@@ -13,8 +13,7 @@ class UserController extends BaseController {
         return next(err);
       }
       if (!user) {
-        return res.status(400)
-          .json({ message: 'User doesnt found ' });
+        return res.status(400).json({ message: 'User doesnt found ' });
       }
       req.logIn(user, { session: false }, (err) => {
         if (err) {
