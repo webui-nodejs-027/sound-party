@@ -424,4 +424,8 @@ router.put(
   '/:id',
   errorWrap(playlistController.updateById.bind(playlistController)),
 );
+router.get(
+  '/:id/songs',
+  errorWrap(playlistController.getAllSongsFromPlaylist.bind(playlistController)),
+);
 module.exports = router;

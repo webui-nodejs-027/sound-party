@@ -25,6 +25,20 @@ class PlaylistService extends BaseService {
     return data;
   }
 
+  async getAllSongsFromPlaylist(id) {
+    const playlist = await this.repository.find({
+      where: { id },
+      relations: ['songs'],
+    });
+    if (!playlist) {
+      throw new AppError(`There is not playlist with id ${id}`, 400);
+    }
+    // eslint-disable-next-line prefer-destructuring
+    const songs = playlist[0].songs;
+
+    return songs;
+  }
+
   async addSongToPlaylist(id, songId) {
     const song = await this.songRepository.findOne(songId);
     const playlist = await this.repository.find({
