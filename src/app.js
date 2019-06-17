@@ -8,6 +8,7 @@ const createDbConnection = require('./db/');
 
 const app = express();
 
+app.use('/apidoc', express.static('apidoc'));
 app.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
@@ -23,11 +24,12 @@ const initial = async () => {
   await container.loadAsync(bindings);
   require('../config/passport-config');
   const routers = require('./routes/');
+  // app.use('/apidoc', express.static('apidoc'));
   reqMiddleware(app);
   routers(app);
   errorMiddleware(app);
   console.log('Database connected');
-  app.listen(3000, () => {
+  app.listen(3001, () => {
     console.log('Server created');
   });
 };

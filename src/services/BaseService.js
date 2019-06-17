@@ -34,7 +34,7 @@ class BaseService {
   async getById(id) {
     const data = await this.repository.findOne({ where: { id } });
     if (!data) {
-      throw new AppError(`Data with  id = ${id}  not found`);
+      throw new AppError(`Data with id = ${id}  not found`);
     }
     return data;
   }
