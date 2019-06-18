@@ -10,10 +10,12 @@ const router = express.Router();
 
 router.get('/', userController.getUsers.bind(userController));
 
-router.get('/checkAuthorization',
+router.get(
+  '/checkAuthorization',
   checkToken,
   checkAccess(ROLES.admin, ROLES.user),
-  userController.checkAuthorization.bind(userController));
+  userController.checkAuthorization.bind(userController),
+);
 
 router.get(
   '/:id',
