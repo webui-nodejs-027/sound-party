@@ -84,7 +84,7 @@ class UserService extends BaseService {
   async insertUserData(content) {
     content.password = await bcrypt.hashPassword(content.password);
     const guestRole = await this.roleService.getAllData({ name: 'guest' });
-    content.roleId = guestRole[0].id;
+    content.roleId = guestRole.data[0].id;
     const user = await this.repository.save(content);
     if (!user) {
       throw new AppError('Add user error');

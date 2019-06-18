@@ -107,8 +107,8 @@ router.get(
 
 router.get(
   '/:userId',
-//   checkToken,
-//   checkAccess(ROLES.admin, ROLES.user),
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   errorWrap(playlistController.getAllDataByUserId.bind(playlistController)),
 );
 /**
@@ -247,8 +247,8 @@ router.delete(
 
 router.post(
   '/',
-//   checkToken,
-//   checkAccess(ROLES.admin, ROLES.user),
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   validator.checkBody,
   errorWrap(playlistController.insertData.bind(playlistController)),
 );
