@@ -98,6 +98,10 @@ router.get('/', errorWrap(userController.getUsers.bind(userController)));
 }
  */
 router.get(
+  '/getUsersPercent/:id',
+  errorWrap(userController.getUsersPercent.bind(userController)),
+);
+router.get(
   '/:id',
   checkToken,
   checkAccess(ROLES.admin, ROLES.user),
@@ -323,12 +327,6 @@ router.post(
 }
  */
 
-router.post(
-  '/',
-  userValidator.checkWholeBody,
-  errorWrap(userController.addUser.bind(userController)),
-);
-
 router.put('/:id', errorWrap(userController.updateById.bind(userController)));
 router.post(
   '/:id/subscribeOnMeeting',
@@ -338,10 +336,7 @@ router.post(
   '/changePassword',
   errorWrap(userController.changePassword.bind(userController)),
 );
-router.post(
-  '/reg/adduser',
-  errorWrap(userController.addUser.bind(userController)),
-);
+
 router.get(
   '/passwordreset/:token',
   errorWrap(userController.passwordReset.bind(userController)),
