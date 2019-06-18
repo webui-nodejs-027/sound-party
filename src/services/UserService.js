@@ -156,8 +156,8 @@ class UserService extends BaseService {
     if (subscribed) {
       throw new AppError(`Error! user with id: 
       ${req.params.id} is already subscribed on meeting with id:${
-        req.body.meetingId
-        }`);
+  req.body.meetingId
+}`);
     }
 
     this.userMeetingService.save(userMeeting);
