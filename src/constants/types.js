@@ -18,5 +18,5 @@ module.exports = {
   RoleRepository: Symbol.for('RoleRepository'),
   RoleService: Symbol.for('RoleService'),
   StatusRepository: Symbol.for('StatusRepository'),
-  StatusService: Symbol.for('StatusService'),
+  StatusService: Symbol.for('StatusService')
 };

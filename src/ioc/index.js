@@ -5,5 +5,5 @@ const container = new inversify.Container();
 
 module.exports = {
   container,
-  bindings,
+  bindings
 };

@@ -10,9 +10,9 @@ class BaseService {
     const queryParams = Object.entries(query);
     const findOptions = {
       where: {},
-      order: {},
+      order: {}
     };
-    queryParams.forEach((elem) => {
+    queryParams.forEach(elem => {
       if (elem[0] in this.repository.metadata.propertiesMap) {
         [, findOptions.where[elem[0]]] = elem;
       }
@@ -27,7 +27,7 @@ class BaseService {
       page: parseInt(query.page, 10) || 1,
       limit: parseInt(query.limit, 10) || 10,
       total: dataCount,
-      data,
+      data
     };
   }
 

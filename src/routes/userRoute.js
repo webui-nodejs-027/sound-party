@@ -101,7 +101,7 @@ router.get(
   '/:id',
   checkToken,
   checkAccess(ROLES.admin, ROLES.user),
-  errorWrap(userController.getUser.bind(userController)),
+  errorWrap(userController.getUser.bind(userController))
 );
 /**
  * @api {delete} /users/:id Delete user by id
@@ -132,7 +132,7 @@ router.get(
  */
 router.delete(
   '/:id',
-  errorWrap(userController.deleteById.bind(userController)),
+  errorWrap(userController.deleteById.bind(userController))
 );
 /**
  * @api {post} /users/login Log in to app
@@ -256,7 +256,7 @@ router.post('/login', errorWrap(userController.login.bind(userController)));
 router.post(
   '/',
   userValidator.checkWholeBody,
-  errorWrap(userController.addUser.bind(userController)),
+  errorWrap(userController.addUser.bind(userController))
 );
 /**
  * @api {put} /users/:id Update playlist by id
@@ -326,48 +326,49 @@ router.post(
 router.post(
   '/',
   userValidator.checkWholeBody,
-  errorWrap(userController.addUser.bind(userController)),
+  errorWrap(userController.addUser.bind(userController))
 );
 
 router.put('/:id', errorWrap(userController.updateById.bind(userController)));
 router.post(
   '/:id/subscribeOnMeeting',
-  errorWrap(userController.subscribeOnMeeting.bind(userController)),
+  userValidator.checkBodyMeetingId,
+  errorWrap(userController.subscribeOnMeeting.bind(userController))
 );
 router.post(
   '/changePassword',
-  errorWrap(userController.changePassword.bind(userController)),
+  errorWrap(userController.changePassword.bind(userController))
 );
 router.post(
   '/reg/adduser',
-  errorWrap(userController.addUser.bind(userController)),
+  errorWrap(userController.addUser.bind(userController))
 );
 router.get(
   '/passwordreset/:token',
-  errorWrap(userController.passwordReset.bind(userController)),
+  errorWrap(userController.passwordReset.bind(userController))
 );
 router.post(
   '/passwordreset',
   userValidator.checkEmail,
-  errorWrap(userController.sendTokenForReset.bind(userController)),
+  errorWrap(userController.sendTokenForReset.bind(userController))
 );
 router.post(
   '/reg/mailcheck',
-  errorWrap(userController.mailCheck.bind(userController)),
+  errorWrap(userController.mailCheck.bind(userController))
 );
 router.post(
   '/reg/adduser',
   userValidator.checkWholeBody,
-  errorWrap(userController.addUser.bind(userController)),
+  errorWrap(userController.addUser.bind(userController))
 );
 router.post(
   '/reg/sendconfirm',
   userValidator.checkBodyId,
-  errorWrap(userController.sendConfirm.bind(userController)),
+  errorWrap(userController.sendConfirm.bind(userController))
 );
 router.get(
   '/reg/userconfirm/:token',
-  errorWrap(userController.userConfirm.bind(userController)),
+  errorWrap(userController.userConfirm.bind(userController))
 );
 
 module.exports = router;

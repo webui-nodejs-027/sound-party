@@ -42,7 +42,7 @@ router.use('/:songId', validator.checkSongId);
 
 router.get(
   '/',
-  errorWrap(playlistController.getAllData.bind(playlistController)),
+  errorWrap(playlistController.getAllData.bind(playlistController))
 );
 
 /**
@@ -104,7 +104,7 @@ router.get(
 
 router.get(
   '/:userId',
-  errorWrap(playlistController.getAllDataByUserId.bind(playlistController)),
+  errorWrap(playlistController.getAllDataByUserId.bind(playlistController))
 );
 /**
  * @api {get}  /playlists/:id/users/:userId Request info about one playlist for user
@@ -148,7 +148,7 @@ router.get(
 
 router.get(
   '/:id/users/:userId',
-  playlistController.getByIdUserAndIdPlaylist.bind(playlistController),
+  playlistController.getByIdUserAndIdPlaylist.bind(playlistController)
 );
 
 /**
@@ -182,7 +182,7 @@ router.get(
 
 router.delete(
   '/:id',
-  errorWrap(playlistController.deleteById.bind(playlistController)),
+  errorWrap(playlistController.deleteById.bind(playlistController))
 );
 
 /**
@@ -241,7 +241,7 @@ router.delete(
 router.post(
   '/',
   validator.checkBody,
-  errorWrap(playlistController.insertData.bind(playlistController)),
+  errorWrap(playlistController.insertData.bind(playlistController))
 );
 /**
  * @api {post}  /playlists/:id/addsong/:songId Add song to playlist
@@ -306,7 +306,7 @@ HTTP/1.1 400 Bad Request
 
 router.post(
   '/:id/addsong/:songId',
-  errorWrap(playlistController.addSongToPlaylist.bind(playlistController)),
+  errorWrap(playlistController.addSongToPlaylist.bind(playlistController))
 );
 /**
  * @api {post}  /playlists/:id/removesong/:songId Removesong from playlist
@@ -362,7 +362,7 @@ HTTP/1.1 400 Bad Request
 
 router.post(
   '/:id/removesong/:songId',
-  errorWrap(playlistController.removeSongFromPlaylist.bind(playlistController)),
+  errorWrap(playlistController.removeSongFromPlaylist.bind(playlistController))
 );
 /**
  * @api {put} /playlists/:id Update playlist by id
@@ -414,6 +414,6 @@ router.post(
 router.put(
   '/:id',
   validator.checkBodyForPut,
-  errorWrap(playlistController.updateById.bind(playlistController)),
+  errorWrap(playlistController.updateById.bind(playlistController))
 );
 module.exports = router;
