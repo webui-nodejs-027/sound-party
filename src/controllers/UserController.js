@@ -105,6 +105,11 @@ class UserController extends BaseController {
     const result = await this.service.getUsersPercent(id);
     res.send(result);
   }
+
+  checkAuthorization(req, res) {
+    const { user } = req;
+    res.send(user);
+  }
 }
 
 module.exports = new UserController(container.get(TYPES.UserService));
