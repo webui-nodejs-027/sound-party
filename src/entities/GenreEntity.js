@@ -6,25 +6,25 @@ module.exports = new EntitySchema({
     id: {
       primary: true,
       type: 'int',
-      generated: true,
+      generated: true
     },
     name: {
       type: 'varchar',
-      nullable: false,
-    },
+      nullable: false
+    }
   },
   relations: {
     song: {
       type: 'one-to-many',
       joinColumn: { name: 'genreId' },
       target: 'Song',
-      cascade: true,
+      cascade: true
     },
     meeting: {
       type: 'one-to-many',
       joinColumn: { name: 'genreId' },
       target: 'Meeting',
-      cascade: true,
-    },
-  },
+      cascade: true
+    }
+  }
 });

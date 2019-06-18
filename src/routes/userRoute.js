@@ -46,7 +46,8 @@ router.post(
 router.put('/:id', errorWrap(userController.updateById.bind(userController)));
 router.post(
   '/:id/subscribeOnMeeting',
-  errorWrap(userController.subscribeOnMeeting.bind(userController)),
+  userValidator.checkBodyMeetingId,
+  errorWrap(userController.subscribeOnMeeting.bind(userController))
 );
 router.post(
   '/changePassword',

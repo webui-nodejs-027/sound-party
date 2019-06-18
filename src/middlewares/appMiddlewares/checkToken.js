@@ -18,7 +18,7 @@ const checkToken = async (req, res, next) => {
     const { id, roleId } = decoded;
     req.user = {
       id,
-      roleId,
+      roleId
     };
     return next();
   });
