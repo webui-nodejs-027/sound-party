@@ -101,9 +101,20 @@ class UserController extends BaseController {
   }
 
   async getUsersPercent(req, res) {
-    const { id } = req.params;
-    const result = await this.service.getUsersPercent(id);
+    const { user } = req;
+    const result = await this.service.getUsersPercent(user.id);
     res.send(result);
+  }
+
+  async getUserMusicStats(req, res) {
+    const { user } = req;
+    const result = await this.service.getUserMusicStatistic(user.id);
+    res.send(result);
+  }
+
+  checkAuthorization(req, res) {
+    const { user } = req;
+    res.send(user);
   }
 }
 

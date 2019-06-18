@@ -21,7 +21,26 @@ class UserService extends BaseService {
     return user;
   }
 
+  async getUserMusicStatistic(idUser) {
+    const allPlaylistsSong = await this.repository.manager
+      .createQueryBuilder('Playlist', 'playlist')
+      .innerJoinAndSelect('playlist.userId', 'user')
+      .innerJoinAndSelect('playlist.songs', 'songs')
+      .innerJoinAndSelect('songs.genreId', 'genre')
+      .where('user.id =:userId', { userId: idUser })
+      .getMany();
+
+    idUser = Number(idUser);
+    const userGenresPlaylists = _.remove(
+      FindPeople.allSongUser(allPlaylistsSong),
+      n => n.user.id === idUser,
+    );
+
+    return userGenresPlaylists;
+  }
+
   async getUsersPercent(idUser) {
+    this.getUserMusicStatistic(idUser);
     const allPlaylistsSong = await this.repository.manager
       .createQueryBuilder('Playlist', 'playlist')
       .innerJoinAndSelect('playlist.userId', 'user')
@@ -84,7 +103,7 @@ class UserService extends BaseService {
   async insertUserData(content) {
     content.password = await bcrypt.hashPassword(content.password);
     const guestRole = await this.roleService.getAllData({ name: 'guest' });
-    content.roleId = guestRole[0].id;
+    content.roleId = guestRole.data[0].id;
     const user = await this.repository.save(content);
     if (!user) {
       throw new AppError('Add user error');
@@ -156,8 +175,8 @@ class UserService extends BaseService {
     if (subscribed) {
       throw new AppError(`Error! user with id: 
       ${req.params.id} is already subscribed on meeting with id:${
-        req.body.meetingId
-        }`);
+  req.body.meetingId
+}`);
     }
 
     this.userMeetingService.save(userMeeting);
