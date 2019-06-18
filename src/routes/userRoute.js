@@ -10,12 +10,18 @@ const router = express.Router();
 
 router.get('/', userController.getUsers.bind(userController));
 
+router.get('/checkAuthorization',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
+  userController.checkAuthorization.bind(userController));
+
 router.get(
   '/:id',
   checkToken,
   checkAccess(ROLES.admin, ROLES.user),
   errorWrap(userController.getUser.bind(userController)),
 );
+
 router.delete(
   '/:id',
   errorWrap(userController.deleteById.bind(userController)),
@@ -30,10 +36,6 @@ router.post(
   '/changePassword',
   errorWrap(userController.changePassword.bind(userController)),
 );
-router.post(
-  '/reg/adduser',
-  errorWrap(userController.addUser.bind(userController)),
-);
 router.get(
   '/passwordreset/:token',
   errorWrap(userController.passwordReset.bind(userController)),
@@ -45,6 +47,7 @@ router.post(
 );
 router.post(
   '/reg/mailcheck',
+  userValidator.checkEmailAndPassword,
   errorWrap(userController.mailCheck.bind(userController)),
 );
 router.post(

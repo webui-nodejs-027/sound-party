@@ -10,6 +10,23 @@ module.exports.checkEmail = [
   checkResult,
 ];
 
+module.exports.checkEmailAndPassword = [
+  body('email')
+    .isEmail()
+    .not()
+    .isEmpty(),
+
+  body(['password'])
+    .isString()
+    .isLength({
+      min: 8,
+      max: 20,
+    })
+    .withMessage('Password must be between 8 and 20 characters'),
+
+  checkResult,
+];
+
 module.exports.checkBodyId = [
   body('id')
     .isInt()

@@ -99,6 +99,11 @@ class UserController extends BaseController {
     const result = await this.service.passwordReset(token);
     res.json(result);
   }
+
+  checkAuthorization(req, res) {
+    const { user } = req;
+    res.send(user);
+  }
 }
 
 module.exports = new UserController(container.get(TYPES.UserService));
