@@ -1,14 +1,23 @@
-const { param, body, oneOf } = require('express-validator/check');
+const {
+  param,
+  body,
+  oneOf,
+  query,
+  validationResult,
+} = require('express-validator/check');
 
-const { checkResult } = require('./checkResult');
+const { ValidationError } = require('../middlewares/ErrorHandlers');
+// eslint-disable-next-line consistent-return
+const checkResult = (req, res, next) => {
+  const errors = validationResult(req);
 
-module.exports.checkId = [
-  param('id')
-    .isInt()
-    .not()
-    .isEmpty(),
-  checkResult,
-];
+  if (!errors.isEmpty()) {
+    next(new ValidationError(errors.array()));
+  }
+  next();
+};
+
+module.exports.checkId = [param('id', 'must be a number').isInt(), checkResult];
 
 module.exports.checkBody = [
   body(['address', 'name'])
@@ -23,26 +32,48 @@ module.exports.checkBody = [
 
   oneOf(
     [
-      body('genreId')
-        .isInt()
-        .withMessage('must be a number')
-        .not()
-        .isEmpty()
-        .withMessage('must be not empty'),
-      body('authorId')
-        .isInt()
-        .withMessage('must be a number')
-        .not()
-        .isEmpty()
-        .withMessage('must be not empty'),
+      [
+        body('genreId').isInt(),
+        body('authorId')
+          .not()
+          .exists(),
+      ],
+      [
+        body('genreId')
+          .not()
+          .exists(),
+        body('authorId').isInt(),
+      ],
     ],
-    'genreId and authorId error',
+    'only one property must be provided: genreId or authorId',
   ),
 
-  body('dateTime', 'invalid time format')
-    .not()
-    .isEmpty()
-    .isISO8601(),
+  body('dateTime', 'invalid time format').isISO8601(),
 
+  checkResult,
+];
+
+module.exports.checkFindQuery = [
+  query(['page', 'limit'], 'must be a positive number!').isInt({
+    min: 1,
+  }),
+  oneOf([
+    [
+      query('genreId', 'must be a number!').isInt(),
+      query('authorId')
+        .not()
+        .exists(),
+    ],
+    [
+      query('genreId')
+        .not()
+        .exists(),
+      query('authorId', 'must be a number!').isInt(),
+    ],
+    query(['genreId', 'authorId'], 'must be a number!').isInt(),
+    query(['genreId', 'authorId'])
+      .not()
+      .exists(),
+  ]),
   checkResult,
 ];

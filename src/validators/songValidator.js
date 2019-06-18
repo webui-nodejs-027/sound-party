@@ -23,7 +23,7 @@ const inputBody = {
   name: {
     in: 'body',
     exists: {
-      errorMessage: "Name doesn't exist",
+      errorMessage: 'Name doesn\'t exist',
     },
     isEmpty: {
       errorMessage: 'Name is empty',
@@ -37,7 +37,7 @@ const inputBody = {
   year: {
     in: 'body',
     exists: {
-      errorMessage: "Year doesn't exist",
+      errorMessage: 'Year doesn\'t exist',
     },
     custom: {
       options: (value) => {
@@ -52,7 +52,7 @@ const inputBody = {
   authorId: {
     in: 'body',
     exists: {
-      errorMessage: "AuthorId doesn't exist",
+      errorMessage: 'AuthorId doesn\'t exist',
     },
     custom: {
       options: (value) => {
@@ -66,7 +66,7 @@ const inputBody = {
   genreId: {
     in: 'body',
     exists: {
-      errorMessage: "GenreId doesn't exist",
+      errorMessage: 'GenreId doesn\'t exist',
     },
     custom: {
       options: (value) => {

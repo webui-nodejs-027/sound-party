@@ -8,6 +8,14 @@
     "lint": "eslint --fix ./src/**/*.js",
     "pretty": "prettier --single-quote --write ./src/**/*.js"
   },
+  "apidoc": {
+    "title": "Custom apiDoc browser title",
+    "url": "http://localhost:3000/api",
+    "template": {
+      "forceLanguage": "en"
+    },
+    "sampleUrl": "http://localhost:3000/api"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webui-nodejs-027/sound-party.git"
@@ -22,7 +30,9 @@
   "dependencies": {
     "bcrypt": "3.0.6",
     "cookie-parser": "1.4.3",
+    "cors": "2.8.5",
     "express": "4.16.4",
+    "express-async-errors": "^3.1.1",
     "express-session": "1.16.1",
     "express-validator": "5.3.1",
     "inversify": "5.0.1",
