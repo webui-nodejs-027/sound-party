@@ -107,14 +107,15 @@ async function initializeGenre(connection) {
 
 async function initializeSong(connection, authors, genres) {
   const songs = [];
-  for (let i = 0; i < 11; i += 1) {
-    const songName = `Song${i}`;
-    const source = `file://localhost/d:/storage/song${i}.mp3`;
+  const songName = ['Dancing With A Stranger', 'bad guy', 'I Don\'t Care', 'ME!', 'Please Me', 'Nothing Breaks Like a Heart', 'If I Can\'t have You', 'MIDDLE CHILD', 'Here with Me', 'Easier'];
+  for (let i = 0; i <= 9; i += 1) {
+    const name = songName[i];
+    const source = `63f49327b755045c801c851d03a9cd94155991323203${i}.mp3`;
     const year = `${getRndmNum(1980, 2011)}`;
     const song = {
-      name: songName,
-      source: source,
-      year: year,
+      name,
+      source,
+      year,
       authorId: authors[getRndmNum(0, 3)].id,
       genreId: genres[getRndmNum(0, 3)].id,
     };

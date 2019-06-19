@@ -34,7 +34,7 @@ const initial = async () => {
   routers(app);
   errorMiddleware(app);
   console.log('Database connected');
-  app.listen(3001, () => {
+  app.listen(3000, () => {
     console.log('Server created');
   });
 };

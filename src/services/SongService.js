@@ -1,11 +1,45 @@
 /* eslint-disable class-methods-use-this */
 const fs = require('fs');
+const path = require('path');
 const inversify = require('inversify');
 const { TYPES } = require('../constants');
 const BaseService = require('./BaseService');
 const { AppError } = require('../middlewares/ErrorHandlers');
 
 class SongService extends BaseService {
+  async getAllData(query) {
+    const take = query.limit || 10;
+    const skip = take * (query.page - 1) || 0;
+    let sortBy = '';
+    const orderBy = query.order || 'ASC';
+
+    if (query.sortBy === 'authorName') {
+      sortBy = 'author.name';
+    } else if (query.sortBy === 'songName') {
+      sortBy = 'song.name';
+    } else if (query.sortBy === 'genre') {
+      sortBy = 'genre.name';
+    } else if (query.sortBy === 'year') {
+      sortBy = 'song.year';
+    }
+
+    const [data, dataCount] = await this.repository
+      .createQueryBuilder('song')
+      .innerJoinAndSelect('song.authorId', 'author')
+      .innerJoinAndSelect('song.genreId', 'genre')
+      .take(take)
+      .skip(skip)
+      .orderBy(sortBy, orderBy)
+      .getManyAndCount();
+
+    return {
+      page: parseInt(query.page, 10) || 1,
+      limit: parseInt(query.limit, 10) || 10,
+      total: dataCount,
+      data,
+    };
+  }
+
   async checkNameSong(name, authorId) {
     const result = await this.repository.findOne({ where: { name, authorId } });
     if (result) {
@@ -16,7 +50,7 @@ class SongService extends BaseService {
   async checkIdSongSrc(id, source) {
     const result = await super.getById(id);
     if (!result) {
-      fs.unlink(source, err => {
+      fs.unlink(source, (err) => {
         if (err) {
           throw new AppError('File not found', 400);
         }
@@ -34,7 +68,9 @@ class SongService extends BaseService {
 
   deleteSong(data) {
     const { source } = data;
-    fs.unlink(source, err => {
+    const folder = path.join(__dirname, '../../music');
+    const delSource = path.join(folder, source);
+    fs.unlink(delSource, (err) => {
       if (err) {
         throw new AppError('File not found', 400);
       }
