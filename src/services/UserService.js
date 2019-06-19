@@ -124,13 +124,13 @@ class UserService extends BaseService {
     return result;
   }
 
-    async mailCheck(email) {
-        const user = await this.getUserByEmail(email);
-        if (user) {
-            throw new AppError('This email is already taken', 400);
-        }
-        return { message: 'ok' };
+  async mailCheck(email) {
+    const user = await this.getUserByEmail(email);
+    if (user) {
+      throw new AppError('This email is already taken', 400);
     }
+    return { message: 'ok' };
+  }
 
   async sendConfirm(id) {
     const user = await this.getById(id);
@@ -183,15 +183,15 @@ class UserService extends BaseService {
     on meeting with id:${req.body.meetingId}`;
   }
 
-    async unsubscribeFromMeeting(req) {
+  async unsubscribeFromMeeting(req) {
     const b = await this.userMeetingService.deleteById({
       meetingId: req.body.meetingId,
-        userId: req.params.id,
-        isCreator: false
+      userId: req.params.id,
+      isCreator: false,
     });
-        console.log(b);
-       return b;
-    }
+    console.log(b);
+    return b;
+  }
 
   async sendTokenForReset(email) {
     const user = await this.getUserByEmail(email);

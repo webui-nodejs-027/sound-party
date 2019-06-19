@@ -51,10 +51,10 @@ router.post(
   errorWrap(userController.subscribeOnMeeting.bind(userController)),
 );
 router.post(
-    '/:id/unsubscribeFromMeeting',
-    checkToken,
-    userValidator.checkBodyMeetingId,
-    errorWrap(userController.unsubscribeFromMeeting.bind(userController)),
+  '/:id/unsubscribeFromMeeting',
+  checkToken,
+  userValidator.checkBodyMeetingId,
+  errorWrap(userController.unsubscribeFromMeeting.bind(userController)),
 );
 router.post(
   '/changePassword',

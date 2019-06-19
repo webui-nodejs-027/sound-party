@@ -61,10 +61,10 @@ class UserController extends BaseController {
     res.json(result);
   }
 
-    async unsubscribeFromMeeting(req, res) {
-        const result = await this.service.unsubscribeFromMeeting(req);
-        res.json(result);
-    }
+  async unsubscribeFromMeeting(req, res) {
+    const result = await this.service.unsubscribeFromMeeting(req);
+    res.json(result);
+  }
 
   async changePassword(req, res) {
     const result = await this.service.changePassword(

@@ -45,19 +45,19 @@ class MeetingService extends BaseService {
       if (nameProps.find(item => elem[0] === item)) {
         if (whereQuery.length === 0) {
           whereQuery = `${elem[0]}.name = '${elem[1]}'`;
-        } else if(elem[0] === 'isCreator'){
-            whereQuery = `${whereQuery} AND um.${elem[0]} = ${elem[1]}`;
-        }else {
+        } else if (elem[0] === 'isCreator') {
+          whereQuery = `${whereQuery} AND um.${elem[0]} = ${elem[1]}`;
+        } else {
           whereQuery = `${whereQuery} AND ${elem[0]}.name = '${elem[1]}'`;
         }
       }
     });
 
-    if(query.userId){
-      andWhereQuery = `um.userId = ${query.userId}`
+    if (query.userId) {
+      andWhereQuery = `um.userId = ${query.userId}`;
     }
-    if(query.isCreator) {
-      andWhereQuery = andWhereQuery + 'AND um.isCreator = true'
+    if (query.isCreator) {
+      andWhereQuery += 'AND um.isCreator = true';
     }
 
     if (query.sortBy) {
@@ -67,8 +67,6 @@ class MeetingService extends BaseService {
         opts.sortBy = `meeting.${query.sortBy}`;
       }
     }
-
-
 
     const [data, dataCount] = await this.repository
       .createQueryBuilder('meeting')
@@ -82,15 +80,20 @@ class MeetingService extends BaseService {
       .leftJoinAndSelect('meeting.author', 'author')
       .leftJoinAndSelect('meeting.city', 'city')
       .leftJoinAndSelect('meeting.status', 'status')
-        .leftJoinAndMapOne('meeting.um','UserMeeting', 'um', 'um.meetingId = meeting.id')
-        .where(`${whereQuery}`)
-        .andWhere(`${andWhereQuery}`)
+      .leftJoinAndMapOne(
+        'meeting.um',
+        'UserMeeting',
+        'um',
+        'um.meetingId = meeting.id',
+      )
+      .where(`${whereQuery}`)
+      .andWhere(`${andWhereQuery}`)
       .orderBy(`${opts.sortBy}`, `${order}`)
       .skip(skip)
       .take(take)
       .getManyAndCount();
 
-      return {
+    return {
       page: parseInt(query.page, 10) || 1,
       limit: parseInt(query.limit, 10) || 10,
       total: dataCount,
