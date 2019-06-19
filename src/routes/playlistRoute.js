@@ -15,7 +15,6 @@ router.get(
   errorWrap(playlistController.getAllData.bind(playlistController))
 );
 
-
 router.get(
   '/:userId',
   errorWrap(playlistController.getAllDataByUserId.bind(playlistController))
@@ -26,19 +25,16 @@ router.get(
   playlistController.getByIdUserAndIdPlaylist.bind(playlistController)
 );
 
-
 router.delete(
   '/:id',
   errorWrap(playlistController.deleteById.bind(playlistController))
 );
-
 
 router.post(
   '/',
   validator.checkBody,
   errorWrap(playlistController.insertData.bind(playlistController))
 );
-
 
 router.post(
   '/:id/addsong/:songId',

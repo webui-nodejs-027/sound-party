@@ -33,7 +33,7 @@ class UserService extends BaseService {
     idUser = Number(idUser);
     const userGenresPlaylists = _.remove(
       FindPeople.allSongUser(allPlaylistsSong),
-      n => n.user.id === idUser,
+      n => n.user.id === idUser
     );
 
     return userGenresPlaylists;
@@ -52,29 +52,29 @@ class UserService extends BaseService {
     idUser = Number(idUser);
     const usersGenresPlaylists = _.remove(
       FindPeople.allSongUser(allPlaylistsSong),
-      n => n.user.id !== idUser,
+      n => n.user.id !== idUser
     );
     const userGenresPlaylists = _.remove(
       FindPeople.allSongUser(allPlaylistsSong),
-      n => n.user.id === idUser,
+      n => n.user.id === idUser
     );
     const result = [];
 
-    usersGenresPlaylists.forEach((user) => {
+    usersGenresPlaylists.forEach(user => {
       const usersSongs = [];
       let allGanresArray = [];
       user.songs.forEach((song, index) => {
         allGanresArray.push(song);
         const sameGenre = _.findIndex(
           userGenresPlaylists[0].songs,
-          x => x.genreId === song.genreId,
+          x => x.genreId === song.genreId
         );
         if (userGenresPlaylists[0].songs[sameGenre].percent < 20) {
           return;
         }
         if (sameGenre !== -1) {
           const diffencePrecent = Math.abs(
-            userGenresPlaylists[0].songs[index].percent - song.percent,
+            userGenresPlaylists[0].songs[index].percent - song.percent
           );
           if (diffencePrecent < 10) {
             usersSongs.push(song);
@@ -84,15 +84,15 @@ class UserService extends BaseService {
       if (usersSongs.length > 0) {
         allGanresArray = _.uniqBy(
           _.concat(allGanresArray, userGenresPlaylists[0].songs),
-          'genreId',
+          'genreId'
         );
         const sameMusicPercent = Math.floor(
-          (usersSongs.length * 100) / allGanresArray.length,
+          (usersSongs.length * 100) / allGanresArray.length
         );
         result.push({
           user: user.user,
           sameMusicPercent,
-          songs: usersSongs,
+          songs: usersSongs
         });
       }
     });
