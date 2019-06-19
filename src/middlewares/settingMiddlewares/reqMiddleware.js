@@ -5,8 +5,10 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const path = require('path');
+const cors = require('cors');
 
 module.exports = (app) => {
+  app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(
@@ -25,6 +27,5 @@ module.exports = (app) => {
   app.use(cookieParser());
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use('/apidoc', express.static(path.join(__dirname, '../../../apidoc')));
   app.use('/music', express.static(path.join(__dirname, '../../../music')));
 };
