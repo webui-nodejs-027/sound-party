@@ -10,34 +10,34 @@ router.get('/', errorWrap(songController.getAllData.bind(songController)));
 router.get(
   '/:id',
   songValidator.checkId,
-  errorWrap(songController.getById.bind(songController))
+  errorWrap(songController.getById.bind(songController)),
 );
 router.post(
   '/',
   songValidator.checkBody,
-  errorWrap(songController.addSongData.bind(songController))
+  errorWrap(songController.addSongData.bind(songController)),
 );
 router.post(
   '/upload-file',
   fileValidator.checkBody,
-  errorWrap(songController.addSongSrc.bind(songController))
+  errorWrap(songController.addSongSrc.bind(songController)),
 );
 router.put(
   '/:id',
   songValidator.checkId,
   songValidator.checkBody,
-  errorWrap(songController.updateSongData.bind(songController))
+  errorWrap(songController.updateSongData.bind(songController)),
 );
 router.put(
   '/:id/upload-file',
   songValidator.checkId,
   fileValidator.checkBody,
-  errorWrap(songController.updateSongFile.bind(songController))
+  errorWrap(songController.updateSongFile.bind(songController)),
 );
 router.delete(
   '/:id',
   songValidator.checkId,
-  errorWrap(songController.deleteSong.bind(songController))
+  errorWrap(songController.deleteSong.bind(songController)),
 );
 
 module.exports = router;

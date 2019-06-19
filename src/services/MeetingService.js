@@ -26,7 +26,7 @@ class MeetingService extends BaseService {
       address: req.body.address,
       statusId: req.body.statusId,
       genreId: req.body.genreId,
-      authorId: req.body.authorId
+      authorId: req.body.authorId,
     };
   }
 
@@ -34,13 +34,13 @@ class MeetingService extends BaseService {
     const queryParams = Object.entries(query);
     const nameProps = ['genre', 'author', 'city', 'status'];
     const opts = {
-      sortBy: 'meeting.dateTime'
+      sortBy: 'meeting.dateTime',
     };
     const take = query.limit || 10;
     const skip = take * (query.page - 1) || 0;
     const order = query.order || 'ASC';
     let whereQuery = '';
-    queryParams.forEach(elem => {
+    queryParams.forEach((elem) => {
       if (nameProps.find(item => elem[0] === item)) {
         if (whereQuery.length === 0) {
           whereQuery = `${elem[0]}.name = '${elem[1]}'`;
@@ -64,7 +64,7 @@ class MeetingService extends BaseService {
         'meeting.id',
         'meeting.name',
         'meeting.dateTime',
-        'meeting.address'
+        'meeting.address',
       ])
       .leftJoinAndSelect('meeting.genre', 'genre')
       .leftJoinAndSelect('meeting.author', 'author')
@@ -80,7 +80,7 @@ class MeetingService extends BaseService {
       page: parseInt(query.page, 10) || 1,
       limit: parseInt(query.limit, 10) || 10,
       total: dataCount,
-      data
+      data,
     };
   }
 
@@ -90,7 +90,7 @@ class MeetingService extends BaseService {
     const userMeeting = {
       isCreator: true,
       userId: req.body.creatorId,
-      meetingId: meeting.id
+      meetingId: meeting.id,
     };
 
     await this.userMeetingService.save(userMeeting);
@@ -109,11 +109,11 @@ inversify.decorate(inversify.injectable(), MeetingService);
 inversify.decorate(
   inversify.inject(TYPES.MeetingRepository),
   MeetingService,
-  0
+  0,
 );
 inversify.decorate(
   inversify.inject(TYPES.UserMeetingService),
   MeetingService,
-  1
+  1,
 );
 module.exports = MeetingService;

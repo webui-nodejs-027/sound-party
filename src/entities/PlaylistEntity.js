@@ -6,36 +6,36 @@ module.exports = new EntitySchema({
     id: {
       primary: true,
       type: 'int',
-      generated: true
+      generated: true,
     },
     name: {
       type: 'varchar',
-      nullable: false
+      nullable: false,
     },
     favourite: {
       type: 'boolean',
-      default: false
+      default: false,
     },
     isMain: {
       type: 'boolean',
-      default: false
+      default: false,
     },
     userId: {
-      type: 'int'
-    }
+      type: 'int',
+    },
   },
   relations: {
     songs: {
       target: 'Song',
       type: 'many-to-many',
       joinTable: true,
-      cascade: true
+      cascade: true,
     },
     userId: {
       type: 'many-to-one',
       joinColumn: { name: 'userId' },
       target: 'User',
-      cascade: true
-    }
-  }
+      cascade: true,
+    },
+  },
 });

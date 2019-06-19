@@ -6,20 +6,20 @@ const { M_SECRET: secret } = require('../constants');
 const {
   domain,
   transporter: transpConf,
-  messageConfig
+  messageConfig,
 } = require('../../config/mailerconfig');
 
 const {
   confirmTemplate,
   resetPasswordTemplate,
-  newPasswordTemplate
+  newPasswordTemplate,
 } = require('../mail_templates');
 
 const transporter = nodemailer.createTransport(transpConf);
 
 module.exports.sendConfirmation = async (id, email) => {
   const payload = {
-    id
+    id,
   };
   const token = jwt.sign(payload, secret, { expiresIn: 10 * 60 });
   const address = `${domain}/api/users/reg/userconfirm/${token}`;
@@ -36,7 +36,7 @@ module.exports.sendConfirmation = async (id, email) => {
 module.exports.sendResetLink = async (id, email) => {
   const payload = {
     id,
-    email
+    email,
   };
   const token = jwt.sign(payload, secret, { expiresIn: 10 * 60 });
   const address = `${domain}/api/users/passwordreset/${token}`;

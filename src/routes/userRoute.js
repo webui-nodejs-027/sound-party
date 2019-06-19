@@ -13,73 +13,73 @@ router.get('/', errorWrap(userController.getUsers.bind(userController)));
 router.get(
   '/getUsersPercent',
   checkToken,
-  errorWrap(userController.getUsersPercent.bind(userController))
+  errorWrap(userController.getUsersPercent.bind(userController)),
 );
 
 router.get(
   '/getUsersMusicStats',
   checkToken,
-  errorWrap(userController.getUserMusicStats.bind(userController))
+  errorWrap(userController.getUserMusicStats.bind(userController)),
 );
 
 router.get(
   '/checkAuthorization',
   checkToken,
   checkAccess(ROLES.admin, ROLES.user),
-  userController.checkAuthorization.bind(userController)
+  userController.checkAuthorization.bind(userController),
 );
 
 router.get(
   '/:id',
   checkToken,
   checkAccess(ROLES.admin, ROLES.user),
-  errorWrap(userController.getUser.bind(userController))
+  errorWrap(userController.getUser.bind(userController)),
 );
 router.post('/login', errorWrap(userController.login.bind(userController)));
 
 router.post(
   '/',
   userValidator.checkWholeBody,
-  errorWrap(userController.addUser.bind(userController))
+  errorWrap(userController.addUser.bind(userController)),
 );
 
 router.put('/:id', errorWrap(userController.updateById.bind(userController)));
 router.post(
   '/:id/subscribeOnMeeting',
   userValidator.checkBodyMeetingId,
-  errorWrap(userController.subscribeOnMeeting.bind(userController))
+  errorWrap(userController.subscribeOnMeeting.bind(userController)),
 );
 router.post(
   '/changePassword',
-  errorWrap(userController.changePassword.bind(userController))
+  errorWrap(userController.changePassword.bind(userController)),
 );
 
 router.get(
   '/passwordreset/:token',
-  errorWrap(userController.passwordReset.bind(userController))
+  errorWrap(userController.passwordReset.bind(userController)),
 );
 router.post(
   '/passwordreset',
   userValidator.checkEmail,
-  errorWrap(userController.sendTokenForReset.bind(userController))
+  errorWrap(userController.sendTokenForReset.bind(userController)),
 );
 router.post(
   '/reg/mailcheck',
-  errorWrap(userController.mailCheck.bind(userController))
+  errorWrap(userController.mailCheck.bind(userController)),
 );
 router.post(
   '/reg/adduser',
   userValidator.checkWholeBody,
-  errorWrap(userController.addUser.bind(userController))
+  errorWrap(userController.addUser.bind(userController)),
 );
 router.post(
   '/reg/sendconfirm',
   userValidator.checkBodyId,
-  errorWrap(userController.sendConfirm.bind(userController))
+  errorWrap(userController.sendConfirm.bind(userController)),
 );
 router.get(
   '/reg/userconfirm/:token',
-  errorWrap(userController.userConfirm.bind(userController))
+  errorWrap(userController.userConfirm.bind(userController)),
 );
 
 module.exports = router;

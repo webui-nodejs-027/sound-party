@@ -3,7 +3,7 @@ const {
   body,
   oneOf,
   query,
-  validationResult
+  validationResult,
 } = require('express-validator/check');
 
 const { ValidationError } = require('../middlewares/ErrorHandlers');
@@ -36,44 +36,44 @@ module.exports.checkBody = [
         body('genreId').isInt(),
         body('authorId')
           .not()
-          .exists()
+          .exists(),
       ],
       [
         body('genreId')
           .not()
           .exists(),
-        body('authorId').isInt()
-      ]
+        body('authorId').isInt(),
+      ],
     ],
-    'only one property must be provided: genreId or authorId'
+    'only one property must be provided: genreId or authorId',
   ),
 
   body('dateTime', 'invalid time format').isISO8601(),
 
-  checkResult
+  checkResult,
 ];
 
 module.exports.checkFindQuery = [
   query(['page', 'limit'], 'must be a positive number!').isInt({
-    min: 1
+    min: 1,
   }),
   oneOf([
     [
       query('genreId', 'must be a number!').isInt(),
       query('authorId')
         .not()
-        .exists()
+        .exists(),
     ],
     [
       query('genreId')
         .not()
         .exists(),
-      query('authorId', 'must be a number!').isInt()
+      query('authorId', 'must be a number!').isInt(),
     ],
     query(['genreId', 'authorId'], 'must be a number!').isInt(),
     query(['genreId', 'authorId'])
       .not()
-      .exists()
+      .exists(),
   ]),
-  checkResult
+  checkResult,
 ];
