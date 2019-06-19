@@ -10,33 +10,33 @@ router.use('/:id', checkId);
 
 router.get(
   '/',
-    checkToken,
+  checkToken,
   errorWrap(meetingController.getAllData.bind(meetingController))
 );
 
 router.get(
   '/:id',
-    checkToken,
+  checkToken,
   errorWrap(meetingController.getById.bind(meetingController))
 );
 
 router.post(
   '/',
-    checkToken,
+  checkToken,
   checkBody,
   errorWrap(meetingController.createMeeting.bind(meetingController))
 );
 
 router.put(
   '/:id',
-    checkToken,
+  checkToken,
   checkBody,
   errorWrap(meetingController.updateMeeting.bind(meetingController))
 );
 
 router.delete(
   '/:id',
-    checkToken,
+  checkToken,
   errorWrap(meetingController.deleteById.bind(meetingController))
 );
 

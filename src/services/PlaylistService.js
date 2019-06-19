@@ -21,8 +21,8 @@ class PlaylistService extends BaseService {
     const data = this.repository.findOne({
       where: {
         id,
-        userId,
-      },
+        userId
+      }
     });
     if (!data) {
       throw new AppError('Cannot find playlist or user', 400);
