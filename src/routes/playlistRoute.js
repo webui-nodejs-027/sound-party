@@ -9,304 +9,36 @@ const router = express.Router();
 router.use('/:id', baseValidator.checkId);
 router.use('/:userId', validator.checkUserId);
 router.use('/:songId', validator.checkSongId);
-/**
- * @api {get}  /playlists Request info about all playlists
- * @apiName GetAllData
- * @apiGroup Playlist
- *
- * @apiSuccess {Number} id Identifier of the playlist.
- * @apiSuccess {String} name Name of the playlist.
- * @apiSuccess {Boolean} favourite  Is playlist favourite or not.
- * @apiSuccess {Boolean} isMain  Is playlist main or not.
- * @apiSuccess {Number} userId  Identifier of user who has this playlist.
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- * [
- *     {
- *      "id": 1,
-        "name": "Aleksandr`s playlist",
-        "favourite": true,
-        "isMain": false,
-        "userId": 1
- *     },
- {
- *      "id": 2,
-        "name": "Aleksandr`s playlist",
-        "favourite": true,
-        "isMain": false,
-        "userId": 1
- *     }
-]
- */
 
 router.get(
   '/',
-  errorWrap(playlistController.getAllData.bind(playlistController)),
+  errorWrap(playlistController.getAllData.bind(playlistController))
 );
-
-/**
- * @api {get} /playlists/:userId Get all playlists by user id
- * @apiVersion 0.0.0
- * @apiName GetDataByUserId
- * @apiGroup Playlist
- * @apiParam {Number} userId Identifier of user.
- *
- *
- * @apiSuccess {Number} id Identifier of the playlist.
- * @apiSuccess {String} name Name of the playlist.
- * @apiSuccess {Boolean} favourite  Is playlist favourite or not.
- * @apiSuccess {Boolean} isMain  Is playlist main or not.
- * @apiSuccess {Number} userId  Identifier of user who has this playlist.
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *  [
-    {
-        "id": 1,
-        "name": "Aleksandr`s playlist",
-        "favourite": true,
-        "isMain": false,
-        "userId": 1
-    },
-    {
-        "id": 2,
-        "name": "Aleksandr`s playlist",
-        "favourite": false,
-        "isMain": true,
-        "userId": 1
-    },
-    {
-        "id": 22,
-        "name": "Peter's playlist",
-        "favourite": true,
-        "isMain": false,
-        "userId": 1
-    }
-]
- *
- * @apiError ValidationFailed
- *
- * @apiErrorExample Error-Response:
- *     HTTP/1.1 400 Bad Request
- *     {
-    "message": "Validation failed",
-    "errors": [
-        {
-            "location": "params",
-            "param": "userId",
-            "value": "hi",
-            "msg": "Invalid value"
-        }
-    ]
-}
- */
 
 router.get(
   '/:userId',
-  errorWrap(playlistController.getAllDataByUserId.bind(playlistController)),
+  errorWrap(playlistController.getAllDataByUserId.bind(playlistController))
 );
-/**
- * @api {get}  /playlists/:id/users/:userId Request info about one playlist for user
- * @apiName GetDataByPlaylistIdAndUserId
- * @apiGroup Playlist
- * @apiParam {Number} id Identifier of playlist.
- * @apiParam {Number} userId Identifier of user.
- *
- *
- * @apiSuccess {Number} id Identifier of the playlist.
- * @apiSuccess {String} name Name of the playlist.
- * @apiSuccess {Boolean} favourite  Is playlist favourite or not.
- * @apiSuccess {Boolean} isMain  Is playlist main or not.
- * @apiSuccess {Number} userId  Identifier of user who has this playlist.
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *      "id": 1,
-        "name": "Aleksandr`s playlist",
-        "favourite": true,
-        "isMain": false,
-        "userId": 1
- *     }
-@apiError ValidationFailed
- *
- * @apiErrorExample Error-Response:
- *     HTTP/1.1 400 Bad Request
- *     {
-    "message": "Validation failed",
-    "errors": [
-        {
-            "location": "params",
-            "param": "id",
-            "value": "hi",
-            "msg": "Invalid value"
-        }
-    ]
-}
- */
 
 router.get(
   '/:id/users/:userId',
-  playlistController.getByIdUserAndIdPlaylist.bind(playlistController),
+  playlistController.getByIdUserAndIdPlaylist.bind(playlistController)
 );
-
-/**
- * @api {delete} /playlists/:id Delete playlist by id
- * @apiVersion 0.0.0
- * @apiName DeleteData
- * @apiGroup Playlist
- * @apiParam {Number} id Identifier of the playlist.
- *
-
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *   1
- * @apiError ValidationFailed
- *
- * @apiErrorExample Error-Response:
- *     HTTP/1.1 400 Bad Request
- *     {
-    "message": "Validation failed",
-    "errors": [
-        {
-            "location": "params",
-            "param": "id",
-            "value": "hi",
-            "msg": "Invalid value"
-        }
-    ]
-}
- */
 
 router.delete(
   '/:id',
-  errorWrap(playlistController.deleteById.bind(playlistController)),
+  errorWrap(playlistController.deleteById.bind(playlistController))
 );
-
-/**
- * @api {post} /playlists Create new playlist
- * @apiVersion 0.0.0
- * @apiName CreateData
- * @apiGroup Playlist
- * @apiExample Example usage:
- *
- *     body:
- *     {
- *       "name": "Peter's playlist",
- *       "favourite": true,
- *       "isMain": false,
- *        "userId": 1
- *     }
- *
- * @apiParam {String} name Playlist's Name.
- * @apiParam {Boolean} favourite Favourite playlist or not
- * @apiParam {Boolean} isMain Main playlist or not
- * @apiParam {Number} userId Identifier of user who has this playlist.
- *
- * @apiSuccess {Number} id Identifier of the playlist.
- * @apiSuccess {String} name Name of the playlist.
- * @apiSuccess {Boolean} favourite  Is playlist favourite or not.
- * @apiSuccess {Boolean} isMain  Is playlist main or not.
- * @apiSuccess {Number} userId  Identifier of user who has this playlist.
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- * {
- *  "name": "Peter's playlist",
-    "favourite": true,
-    "isMain": false,
-    "userId": 1,
-    "id": 22
- }
- *
- * @apiError ValidationFailed
- *
- * @apiErrorExample Error-Response:
- *     HTTP/1.1 400 Bad Request
- *     {
-    "message": "Validation Failed",
-    "errors": [
-        {
-            "location": "body",
-            "param": "userId",
-            "value": true,
-            "msg": "Invalid value"
-        }
-    ]
-}
- */
 
 router.post(
   '/',
   validator.checkBody,
-  errorWrap(playlistController.insertData.bind(playlistController)),
+  errorWrap(playlistController.insertData.bind(playlistController))
 );
-/**
- * @api {post}  /playlists/:id/addsong/:songId Add song to playlist
- * @apiName AddSongToPlaylist
- * @apiGroup Playlist
- * @apiParam {Number} id Identifier of playlist.
- * @apiParam {Number} songId Identifier of song.
- *
- *
- * @apiSuccess {Number} id Identifier of the playlist.
- * @apiSuccess {String} name Name of the playlist.
- * @apiSuccess {Boolean} favourite  Is playlist favourite or not.
- * @apiSuccess {Boolean} isMain  Is playlist main or not.
- * @apiSuccess {Number} userId  Identifier of user who has this playlist.
- * @apiSuccess {Object[]} songs Songs in the playlist
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *     [
-    {
-        "id": 22,
-        "name": "Peter's playlist",
-        "favourite": true,
-        "isMain": false,
-        "userId": 1,
-        "songs": [
-            {
-                "id": 5,
-                "name": "Song4",
-                "source": "file://localhost/d:/storage/song4.mp3",
-                "year": 1992,
-                "authorId": 3,
-                "genreId": 2
-            }
-        ]
-    }
-]
-@apiError ValidationFailed
- *
- * @apiErrorExample Error-Response:
- *     HTTP/1.1 400 Bad Request
- *     {
-    "message": "Validation failed",
-    "errors": [
-        {
-            "location": "params",
-            "param": "id",
-            "value": "hi",
-            "msg": "Invalid value"
-        }
-    ]
-}
-
-@apiError  AlreadyExists
-*
-* @apiErrorExample Error-Response:
-HTTP/1.1 400 Bad Request
- *     {
-    "errors": "Song 1 already exists in playlist 4"
-}
- */
 
 router.post(
   '/:id/addsong/:songId',
-  errorWrap(playlistController.addSongToPlaylist.bind(playlistController)),
+  errorWrap(playlistController.addSongToPlaylist.bind(playlistController))
 );
 /**
  * @api {post}  /playlists/:id/removesong/:songId Removesong from playlist
@@ -362,7 +94,7 @@ HTTP/1.1 400 Bad Request
 
 router.post(
   '/:id/removesong/:songId',
-  errorWrap(playlistController.removeSongFromPlaylist.bind(playlistController)),
+  errorWrap(playlistController.removeSongFromPlaylist.bind(playlistController))
 );
 /**
  * @api {put} /playlists/:id Update playlist by id
@@ -414,6 +146,6 @@ router.post(
 router.put(
   '/:id',
   validator.checkBodyForPut,
-  errorWrap(playlistController.updateById.bind(playlistController)),
+  errorWrap(playlistController.updateById.bind(playlistController))
 );
 module.exports = router;

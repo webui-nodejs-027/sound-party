@@ -15,5 +15,5 @@ module.exports = {
   meetingValidator,
   playlistValidator,
   songValidator,
-  userValidator,
+  userValidator
 };

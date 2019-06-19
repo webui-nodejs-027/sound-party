@@ -5,6 +5,7 @@ const { container } = require('../src/ioc');
 const { TYPES } = require('../src/constants');
 
 const bcrypt = require('../src/services/BcService');
+
 const userService = container.get(TYPES.UserService);
 
 passport.use(new Strategy({
