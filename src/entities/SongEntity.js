@@ -6,38 +6,38 @@ module.exports = new EntitySchema({
     id: {
       primary: true,
       type: 'int',
-      generated: true
+      generated: true,
     },
     name: {
       type: 'varchar',
-      nullable: false
+      nullable: false,
     },
     source: {
       type: 'varchar',
-      nullable: true
+      nullable: true,
     },
     year: {
-      type: 'int'
+      type: 'int',
     },
     authorId: {
-      type: 'int'
+      type: 'int',
     },
     genreId: {
-      type: 'int'
-    }
+      type: 'int',
+    },
   },
   relations: {
     authorId: {
       type: 'many-to-one',
       target: 'Author',
       joinColumn: { name: 'authorId' },
-      cascade: true
+      cascade: true,
     },
     genreId: {
       type: 'many-to-one',
       target: 'Genre',
       joinColumn: { name: 'genreId' },
-      cascade: true
-    }
-  }
+      cascade: true,
+    },
+  },
 });

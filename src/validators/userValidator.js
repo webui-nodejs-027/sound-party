@@ -7,7 +7,7 @@ module.exports.checkEmail = [
     .not()
     .isEmpty(),
 
-  checkResult
+  checkResult,
 ];
 
 module.exports.checkBodyId = [
@@ -16,7 +16,7 @@ module.exports.checkBodyId = [
     .not()
     .isEmpty(),
 
-  checkResult
+  checkResult,
 ];
 
 module.exports.checkWholeBody = [
@@ -30,7 +30,7 @@ module.exports.checkWholeBody = [
     .isString()
     .isLength({
       min: 8,
-      max: 20
+      max: 20,
     }),
 
   body('email')
@@ -48,7 +48,7 @@ module.exports.checkWholeBody = [
     .not()
     .isEmpty(),
 
-  checkResult
+  checkResult,
 ];
 
 module.exports.checkBodyMeetingId = [
@@ -57,5 +57,5 @@ module.exports.checkBodyMeetingId = [
     .not()
     .isEmpty(),
 
-  checkResult
+  checkResult,
 ];

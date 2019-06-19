@@ -16,7 +16,7 @@ class SongService extends BaseService {
   async checkIdSongSrc(id, source) {
     const result = await super.getById(id);
     if (!result) {
-      fs.unlink(source, err => {
+      fs.unlink(source, (err) => {
         if (err) {
           throw new AppError('File not found', 400);
         }
@@ -34,7 +34,7 @@ class SongService extends BaseService {
 
   deleteSong(data) {
     const { source } = data;
-    fs.unlink(source, err => {
+    fs.unlink(source, (err) => {
       if (err) {
         throw new AppError('File not found', 400);
       }

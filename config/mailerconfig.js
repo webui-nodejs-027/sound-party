@@ -1,6 +1,6 @@
 const credentials = {
   user: 'noreplywebui@gmail.com',
-  pass: 'lvdpqvklvosksywk',
+  pass: 'wcxxthdljeockuml',
 };
 
 const domain = 'http://localhost:3000';

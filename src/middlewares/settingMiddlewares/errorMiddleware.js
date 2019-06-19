@@ -1,4 +1,4 @@
-module.exports = app => {
+module.exports = (app) => {
   // eslint-disable-next-line no-unused-vars
   app.use((req, res, next) => {
     res.sendStatus(404);
@@ -13,7 +13,7 @@ module.exports = app => {
       case 'ValidationError':
         res.status(err.statusCode || 400).json({
           message: err.message,
-          errors: err.errorsArray
+          errors: err.errorsArray,
         });
         break;
       default:
