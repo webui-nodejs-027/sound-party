@@ -3,7 +3,7 @@ const credentials = {
   pass: 'wcxxthdljeockuml',
 };
 
-const domain = 'http://localhost:3000';
+const domain = 'http://localhost:3001';
 
 const transporter = {
   service: 'gmail',

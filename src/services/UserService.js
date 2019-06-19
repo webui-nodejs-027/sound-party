@@ -143,7 +143,7 @@ class UserService extends BaseService {
   async userConfirm(token) {
     const decodedToken = mailer.verifyToken(token);
     const userRole = await this.roleService.getAllData({ name: 'user' });
-    await this.updateById(decodedToken.id, { roleId: userRole[0].id });
+    await this.updateById(decodedToken.id, { roleId: userRole.data[0].id });
     return { message: 'Email confirmed' };
   }
 
