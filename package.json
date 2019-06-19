@@ -10,7 +10,7 @@
   },
   "apidoc": {
     "title": "Custom apiDoc browser title",
-    "url" : "http://localhost:3000/api",
+    "url": "http://localhost:3000/api",
     "template": {
       "forceLanguage": "en"
     },

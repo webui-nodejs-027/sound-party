@@ -46,7 +46,8 @@ async function initializeUser(connection) {
   const users = [];
   const roles = [
     {name: 'admin'},
-    {name: 'user'}
+    {name: 'user'},
+    {name: 'guest'},
   ];
   await connection
     .getRepository(RoleEntity)
