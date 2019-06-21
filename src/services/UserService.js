@@ -9,11 +9,12 @@ const mailer = require('./MailerService');
 const FindPeople = require('./FindPeopleService');
 
 class UserService extends BaseService {
-  constructor(repository, userMeetingService, meetingService, roleService) {
+  constructor(repository, userMeetingService, meetingService, roleService, playlistService) {
     super(repository);
     this.userMeetingService = userMeetingService;
     this.meetingService = meetingService;
     this.roleService = roleService;
+    this.playlistService = playlistService;
   }
 
   async getUserByEmail(email) {
@@ -108,6 +109,13 @@ class UserService extends BaseService {
     if (!user) {
       throw new AppError('Add user error');
     }
+    const mainPlaylist = {
+      name: 'My Songs',
+      isMain: true,
+      favourite: true,
+      userId: user.id,
+    };
+    await this.playlistService.insertData(mainPlaylist);
     return user;
   }
 
@@ -174,8 +182,8 @@ class UserService extends BaseService {
     if (subscribed) {
       throw new AppError(`Error! user with id: 
       ${req.params.id} is already subscribed on meeting with id:${
-  req.body.meetingId
-}`);
+        req.body.meetingId
+        }`);
     }
 
     this.userMeetingService.save(userMeeting);
@@ -211,4 +219,5 @@ inversify.decorate(inversify.inject(TYPES.UserRepository), UserService, 0);
 inversify.decorate(inversify.inject(TYPES.UserMeetingService), UserService, 1);
 inversify.decorate(inversify.inject(TYPES.MeetingService), UserService, 2);
 inversify.decorate(inversify.inject(TYPES.RoleService), UserService, 3);
+inversify.decorate(inversify.inject(TYPES.PlaylistService), UserService, 4);
 module.exports = UserService;

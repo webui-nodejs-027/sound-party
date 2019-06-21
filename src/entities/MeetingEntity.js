@@ -53,6 +53,7 @@ module.exports = new EntitySchema({
       joinColumn: { name: 'cityId' },
       target: 'City',
       cascade: true,
+      onDelete: 'CASCADE',
     },
     status: {
       type: 'many-to-one',

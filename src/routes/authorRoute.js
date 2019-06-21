@@ -5,18 +5,19 @@ const errorWrap = require('../middlewares/appMiddlewares/errorWrap');
 
 const router = express.Router();
 
-router.all('/:id', errorWrap(baseValidator.checkId));
+router.all('/:id', baseValidator.checkId);
 
 router.get('/:id', errorWrap(authorController.getById.bind(authorController)));
 router.post(
   '/',
+  authorValidator.checkBody,
   errorWrap(
-    authorValidator.checkBody,
     authorController.insertData.bind(authorController),
   ),
 );
 router.put(
   '/:id',
+  authorValidator.checkBody,
   errorWrap(authorController.updateById.bind(authorController)),
 );
 router.delete(

@@ -5,7 +5,7 @@ const errorWrap = require('../middlewares/appMiddlewares/errorWrap');
 
 const router = express.Router();
 
-router.use('/:id', errorWrap(baseValidator.checkId));
+router.use('/:id', baseValidator.checkId);
 
 router.get('/:id', errorWrap(genreController.getById.bind(genreController)));
 router.post(
@@ -13,7 +13,10 @@ router.post(
   genreValidator.checkBody,
   errorWrap(genreController.insertData.bind(genreController)),
 );
-router.put('/:id', errorWrap(genreController.updateById.bind(genreController)));
+router.put(
+  '/:id',
+  errorWrap(genreController.updateById.bind(genreController)),
+);
 router.delete(
   '/:id',
   errorWrap(genreController.deleteById.bind(genreController)),

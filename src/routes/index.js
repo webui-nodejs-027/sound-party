@@ -13,9 +13,9 @@ module.exports = (app) => {
   app.use('/', mainRoute);
   app.use('/api/authors', authorRoute);
   app.use('/api/cities', cityRoute);
-  app.use('/api/genres', genreRoute);
   app.use('/api/meetings', meetingRoute);
   app.use('/api/playlists', playlistRoute);
+  app.use('/api/genres', genreRoute);
   app.use('/api/songs', songRoute);
   app.use('/api/users', userRoute);
   app.use('/api/roles', roleRoute);
