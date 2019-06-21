@@ -49,7 +49,7 @@ class UserController extends BaseController {
 
   async getUsers(req, res) {
     const result = await this.service.getAllData();
-    const users = result.map((user) => {
+    const users = result.data.map((user) => {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     });
