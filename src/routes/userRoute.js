@@ -16,6 +16,10 @@ router.get(
   errorWrap(userController.getUsersPercent.bind(userController)),
 );
 
+router.delete('/:id',
+  baseValidator.checkId,
+  errorWrap(userController.deleteById.bind(userController)));
+
 router.get(
   '/getUsersMusicStats',
   checkToken,

@@ -11,9 +11,11 @@ class BaseService {
       where: {},
       order: {},
     };
+    const emptyObject = Object.keys(query).length;
     let page = 1;
     let limit = 10;
-    if (query !== undefined) {
+
+    if (query !== undefined && emptyObject !== 0) {
       const queryParams = Object.entries(query);
       queryParams.forEach((elem) => {
         if (elem[0] in this.repository.metadata.propertiesMap) {
@@ -25,8 +27,12 @@ class BaseService {
       if (query.sortBy) {
         findOptions.order[`${query.sortBy}`] = query.order || 'ASC';
       }
-      page = parseInt(query.page, 10);
-      limit = parseInt(query.limit, 10);
+      if (query.page) {
+        page = parseInt(query.page, 10);
+      }
+      if (query.limit) {
+        limit = parseInt(query.limit, 10);
+      }
     }
     const [data, dataCount] = await this.repository.findAndCount(findOptions);
     return {
