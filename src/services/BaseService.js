@@ -47,6 +47,14 @@ class BaseService {
     };
   }
 
+  async getById(id) {
+    const data = await this.repository.findOne({ where: { id } });
+    if (!data) {
+      throw new AppError(`Data with  id = ${id}  not found`);
+    }
+    return data;
+  }
+
   async insertData(content) {
     const data = await this.repository.save(content);
     if (!data) {
