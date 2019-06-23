@@ -13,7 +13,6 @@ router.use('/:id', baseValidator.checkId);
 router.use('/:userId', validator.checkUserId);
 router.use('/:songId', validator.checkSongId);
 
-
 router.get(
   '/',
   errorWrap(playlistController.getAllData.bind(playlistController)),
@@ -38,7 +37,6 @@ router.delete(
   errorWrap(playlistController.deleteById.bind(playlistController)),
 );
 
-
 router.post(
   '/',
   checkToken,
@@ -51,7 +49,6 @@ router.post(
   '/:id/addsong/:songId',
   errorWrap(playlistController.addSongToPlaylist.bind(playlistController)),
 );
-
 
 router.post(
   '/:id/removesong/:songId',
