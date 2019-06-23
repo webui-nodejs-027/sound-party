@@ -36,7 +36,7 @@ class SongService extends BaseService {
       page: parseInt(query.page, 10) || 1,
       limit: parseInt(query.limit, 10) || 10,
       total: dataCount,
-      data,
+      data
     };
   }
 
@@ -50,7 +50,7 @@ class SongService extends BaseService {
   async checkIdSongSrc(id, source) {
     const result = await super.getById(id);
     if (!result) {
-      fs.unlink(source, (err) => {
+      fs.unlink(source, err => {
         if (err) {
           throw new AppError('File not found', 400);
         }
@@ -70,7 +70,7 @@ class SongService extends BaseService {
     const { source } = data;
     const folder = path.join(__dirname, '../../music');
     const delSource = path.join(folder, source);
-    fs.unlink(delSource, (err) => {
+    fs.unlink(delSource, err => {
       if (err) {
         throw new AppError('File not found', 400);
       }

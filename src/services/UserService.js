@@ -33,7 +33,7 @@ class UserService extends BaseService {
     idUser = Number(idUser);
     const userGenresPlaylists = _.remove(
       FindPeople.allSongUser(allPlaylistsSong),
-      n => n.user.id === idUser,
+      n => n.user.id === idUser
     );
 
     return userGenresPlaylists;
@@ -52,29 +52,29 @@ class UserService extends BaseService {
     idUser = Number(idUser);
     const usersGenresPlaylists = _.remove(
       FindPeople.allSongUser(allPlaylistsSong),
-      n => n.user.id !== idUser,
+      n => n.user.id !== idUser
     );
     const userGenresPlaylists = _.remove(
       FindPeople.allSongUser(allPlaylistsSong),
-      n => n.user.id === idUser,
+      n => n.user.id === idUser
     );
     const result = [];
 
-    usersGenresPlaylists.forEach((user) => {
+    usersGenresPlaylists.forEach(user => {
       const usersSongs = [];
       let allGanresArray = [];
       user.songs.forEach((song, index) => {
         allGanresArray.push(song);
         const sameGenre = _.findIndex(
           userGenresPlaylists[0].songs,
-          x => x.genreId === song.genreId,
+          x => x.genreId === song.genreId
         );
         if (userGenresPlaylists[0].songs[sameGenre].percent < 20) {
           return;
         }
         if (sameGenre !== -1) {
           const diffencePrecent = Math.abs(
-            userGenresPlaylists[0].songs[index].percent - song.percent,
+            userGenresPlaylists[0].songs[index].percent - song.percent
           );
           if (diffencePrecent < 10) {
             usersSongs.push(song);
@@ -84,15 +84,15 @@ class UserService extends BaseService {
       if (usersSongs.length > 0) {
         allGanresArray = _.uniqBy(
           _.concat(allGanresArray, userGenresPlaylists[0].songs),
-          'genreId',
+          'genreId'
         );
         const sameMusicPercent = Math.floor(
-          (usersSongs.length * 100) / allGanresArray.length,
+          (usersSongs.length * 100) / allGanresArray.length
         );
         result.push({
           user: user.user,
           sameMusicPercent,
-          songs: usersSongs,
+          songs: usersSongs
         });
       }
     });
@@ -102,7 +102,7 @@ class UserService extends BaseService {
 
   async insertUserData(content) {
     content.password = await bcrypt.hashPassword(content.password);
-    const guestRole = await this.roleService.getAllData({ name: 'guest' });
+    const guestRole = await this.roleService.getAllData({ name: 'admin' });
     content.roleId = guestRole.data[0].id;
     const user = await this.repository.save(content);
     if (!user) {
@@ -115,7 +115,7 @@ class UserService extends BaseService {
     const user = await this.getById(id);
     const comparePassword = await bcrypt.comparePassword(
       oldPassword,
-      user.password,
+      user.password
     );
     if (!comparePassword) {
       throw new AppError('Password is incorrect');
@@ -148,34 +148,32 @@ class UserService extends BaseService {
   }
 
   async subscribeOnMeeting(req) {
+    const meetingId = parseInt(req.body.meetingId, 10);
+    const userId = parseInt(req.params.id, 10);
     const userMeeting = {
       isCreator: false,
-      meetingId: parseInt(req.body.meetingId, 10),
-      userId: parseInt(req.params.id, 10),
+      meetingId,
+      userId
     };
+    console.log(meetingId);
+    console.log(userId);
 
-    const inMeeting = await this.meetingService.getById(req.body.meetingId);
+    const inMeeting = await this.meetingService.getById(meetingId);
     if (!inMeeting) {
-      throw new AppError(
-        `can't find meeting with id:${req.body.meetingId} in DataBase`,
-      );
+      throw new AppError(`can't find meeting with id:${meetingId} in DataBase`);
     }
 
-    const inUser = await this.userMeetingService.getById(req.params.id);
+    const inUser = await this.userMeetingService.getById(userId);
     if (!inUser) {
-      throw new AppError(
-        `can't find user with id:${req.params.id} in DataBase`,
-      );
+      throw new AppError(`can't find user with id:${userId} in DataBase`);
     }
 
     const subscribed = await this.userMeetingService.checkIfSubscribed(
-      userMeeting,
+      userMeeting
     );
     if (subscribed) {
       throw new AppError(`Error! user with id: 
-      ${req.params.id} is already subscribed on meeting with id:${
-  req.body.meetingId
-}`);
+      ${userId} is already subscribed on meeting with id:${meetingId}`);
     }
 
     this.userMeetingService.save(userMeeting);
@@ -184,13 +182,28 @@ class UserService extends BaseService {
   }
 
   async unsubscribeFromMeeting(req) {
-    const b = await this.userMeetingService.deleteById({
-      meetingId: req.body.meetingId,
-      userId: req.params.id,
-      isCreator: false,
-    });
-    console.log(b);
-    return b;
+    // const b = await this.userMeetingService.deleteById({
+    //   meetingId: req.body.meetingId,
+    //   userId: req.params.id,
+    //   isCreator: false,
+    // });
+    const deleted = await this.repository.manager
+      .createQueryBuilder('UserMeeting', 'um')
+      .delete()
+      .where(`userId = ${req.params.id}`)
+      .andWhere(`meetingId = ${req.body.meetingId}`)
+      .andWhere('isCreator = false')
+      .output(['isCreator', 'meetingId', 'userId'])
+      .execute();
+
+    if (deleted.affected !== 1) {
+      throw new AppError(
+        `Error! user with id:${
+          req.params.id
+        } is not subscribed on meeting with id:${req.body.meetingId}`
+      );
+    }
+    return deleted.raw[0];
   }
 
   async sendTokenForReset(email) {

@@ -12,16 +12,16 @@ router.post(
   '/',
   errorWrap(
     authorValidator.checkBody,
-    authorController.insertData.bind(authorController),
-  ),
+    authorController.insertData.bind(authorController)
+  )
 );
 router.put(
   '/:id',
-  errorWrap(authorController.updateById.bind(authorController)),
+  errorWrap(authorController.updateById.bind(authorController))
 );
 router.delete(
   '/:id',
-  errorWrap(authorController.deleteById.bind(authorController)),
+  errorWrap(authorController.deleteById.bind(authorController))
 );
 
 router.get('/', errorWrap(authorController.getAllData.bind(authorController)));

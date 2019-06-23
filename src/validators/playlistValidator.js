@@ -7,7 +7,7 @@ module.exports.checkUserId = [
     .isInt()
     .not()
     .isEmpty(),
-  checkResult,
+  checkResult
 ];
 
 module.exports.checkSongId = [
@@ -15,7 +15,7 @@ module.exports.checkSongId = [
     .isInt()
     .not()
     .isEmpty(),
-  checkResult,
+  checkResult
 ];
 
 module.exports.checkBody = [
@@ -34,7 +34,7 @@ module.exports.checkBody = [
     .not()
     .isEmpty(),
 
-  checkResult,
+  checkResult
 ];
 
 module.exports.checkBodyForPut = [
@@ -48,5 +48,5 @@ module.exports.checkBodyForPut = [
     .not()
     .isEmpty(),
 
-  checkResult,
+  checkResult
 ];
