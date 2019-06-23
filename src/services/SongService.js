@@ -10,8 +10,10 @@ class SongService extends BaseService {
   async getAllData(query) {
     const take = query.limit || 10;
     const skip = take * (query.page - 1) || 0;
-    let sortBy = '';
+    let sortBy = null;
     const orderBy = query.order || 'ASC';
+    let data = null;
+    let dataCount = null;
 
     if (query.sortBy === 'authorName') {
       sortBy = 'author.name';
@@ -23,14 +25,49 @@ class SongService extends BaseService {
       sortBy = 'song.year';
     }
 
-    const [data, dataCount] = await this.repository
-      .createQueryBuilder('song')
-      .innerJoinAndSelect('song.authorId', 'author')
-      .innerJoinAndSelect('song.genreId', 'genre')
-      .take(take)
-      .skip(skip)
-      .orderBy(sortBy, orderBy)
-      .getManyAndCount();
+    if (query.songName) {
+      [data, dataCount] = await this.repository
+        .createQueryBuilder('song')
+        .innerJoinAndSelect('song.authorId', 'author', 'song.name = :name', {
+          name: query.songName,
+        })
+        .innerJoinAndSelect('song.genreId', 'genre')
+        .orderBy(sortBy, orderBy)
+        .take(take)
+        .skip(skip)
+        .getManyAndCount();
+    } else if (query.authorName) {
+      [data, dataCount] = await this.repository
+        .createQueryBuilder('song')
+        .innerJoinAndSelect('song.authorId', 'author', 'author.name = :name', {
+          name: query.authorName,
+        })
+        .innerJoinAndSelect('song.genreId', 'genre')
+        .orderBy(sortBy, orderBy)
+        .take(take)
+        .skip(skip)
+        .getManyAndCount();
+    } else if (query.genre) {
+      [data, dataCount] = await this.repository
+        .createQueryBuilder('song')
+        .innerJoinAndSelect('song.authorId', 'author')
+        .innerJoinAndSelect('song.genreId', 'genre', 'genre.name = :name', {
+          name: query.genre,
+        })
+        .orderBy(sortBy, orderBy)
+        .take(take)
+        .skip(skip)
+        .getManyAndCount();
+    } else {
+      [data, dataCount] = await this.repository
+        .createQueryBuilder('song')
+        .innerJoinAndSelect('song.authorId', 'author')
+        .innerJoinAndSelect('song.genreId', 'genre')
+        .orderBy(sortBy, orderBy)
+        .take(take)
+        .skip(skip)
+        .getManyAndCount();
+    }
 
     return {
       page: parseInt(query.page, 10) || 1,
