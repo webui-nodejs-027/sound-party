@@ -9,11 +9,12 @@ const mailer = require('./MailerService');
 const FindPeople = require('./FindPeopleService');
 
 class UserService extends BaseService {
-  constructor(repository, userMeetingService, meetingService, roleService) {
+  constructor(repository, userMeetingService, meetingService, roleService, playlistService) {
     super(repository);
     this.userMeetingService = userMeetingService;
     this.meetingService = meetingService;
     this.roleService = roleService;
+    this.playlistService = playlistService;
   }
 
   async getUserByEmail(email) {
@@ -21,7 +22,26 @@ class UserService extends BaseService {
     return user;
   }
 
+  async getUserMusicStatistic(idUser) {
+    const allPlaylistsSong = await this.repository.manager
+      .createQueryBuilder('Playlist', 'playlist')
+      .innerJoinAndSelect('playlist.userId', 'user')
+      .innerJoinAndSelect('playlist.songs', 'songs')
+      .innerJoinAndSelect('songs.genreId', 'genre')
+      .where('user.id =:userId', { userId: idUser })
+      .getMany();
+
+    idUser = Number(idUser);
+    const userGenresPlaylists = _.remove(
+      FindPeople.allSongUser(allPlaylistsSong),
+      n => n.user.id === idUser,
+    );
+
+    return userGenresPlaylists;
+  }
+
   async getUsersPercent(idUser) {
+    this.getUserMusicStatistic(idUser);
     const allPlaylistsSong = await this.repository.manager
       .createQueryBuilder('Playlist', 'playlist')
       .innerJoinAndSelect('playlist.userId', 'user')
@@ -89,6 +109,13 @@ class UserService extends BaseService {
     if (!user) {
       throw new AppError('Add user error');
     }
+    const mainPlaylist = {
+      name: 'My Songs',
+      isMain: true,
+      favourite: true,
+      userId: user.id,
+    };
+    await this.playlistService.insertData(mainPlaylist);
     return user;
   }
 
@@ -106,12 +133,11 @@ class UserService extends BaseService {
   }
 
   async mailCheck(email) {
-    try {
-      await this.getUserByEmail(email);
-    } catch (e) {
-      return { message: 'ok' };
+    const user = await this.getUserByEmail(email);
+    if (user) {
+      throw new AppError('This email is already taken', 400);
     }
-    throw new AppError('This email is already taken', 400);
+    return { message: 'ok' };
   }
 
   async sendConfirm(id) {
@@ -125,15 +151,15 @@ class UserService extends BaseService {
   async userConfirm(token) {
     const decodedToken = mailer.verifyToken(token);
     const userRole = await this.roleService.getAllData({ name: 'user' });
-    await this.updateById(decodedToken.id, { roleId: userRole[0].id });
+    await this.updateById(decodedToken.id, { roleId: userRole.data[0].id });
     return { message: 'Email confirmed' };
   }
 
   async subscribeOnMeeting(req) {
     const userMeeting = {
       isCreator: false,
-      meetingId: req.body.meetingId,
-      userId: req.params.id,
+      meetingId: parseInt(req.body.meetingId, 10),
+      userId: parseInt(req.params.id, 10),
     };
 
     const inMeeting = await this.meetingService.getById(req.body.meetingId);
@@ -193,4 +219,5 @@ inversify.decorate(inversify.inject(TYPES.UserRepository), UserService, 0);
 inversify.decorate(inversify.inject(TYPES.UserMeetingService), UserService, 1);
 inversify.decorate(inversify.inject(TYPES.MeetingService), UserService, 2);
 inversify.decorate(inversify.inject(TYPES.RoleService), UserService, 3);
+inversify.decorate(inversify.inject(TYPES.PlaylistService), UserService, 4);
 module.exports = UserService;

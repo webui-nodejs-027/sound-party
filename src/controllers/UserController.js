@@ -49,7 +49,7 @@ class UserController extends BaseController {
 
   async getUsers(req, res) {
     const result = await this.service.getAllData();
-    const users = result.map((user) => {
+    const users = result.data.map((user) => {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     });
@@ -101,8 +101,14 @@ class UserController extends BaseController {
   }
 
   async getUsersPercent(req, res) {
-    const { id } = req.params;
-    const result = await this.service.getUsersPercent(id);
+    const { user } = req;
+    const result = await this.service.getUsersPercent(user.id);
+    res.send(result);
+  }
+
+  async getUserMusicStats(req, res) {
+    const { user } = req;
+    const result = await this.service.getUserMusicStatistic(user.id);
     res.send(result);
   }
 

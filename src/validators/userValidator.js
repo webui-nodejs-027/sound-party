@@ -67,3 +67,12 @@ module.exports.checkWholeBody = [
 
   checkResult,
 ];
+
+module.exports.checkBodyMeetingId = [
+  body('meetingId')
+    .isInt()
+    .not()
+    .isEmpty(),
+
+  checkResult,
+];

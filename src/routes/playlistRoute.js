@@ -13,15 +13,14 @@ router.use('/:id', baseValidator.checkId);
 router.use('/:userId', validator.checkUserId);
 router.use('/:songId', validator.checkSongId);
 
-router.get(
-  '/',
-  errorWrap(playlistController.getAllData.bind(playlistController)),
-);
+// router.get(
+//   '/',
+//   errorWrap(playlistController.getAllData.bind(playlistController)),
+// );
 
 router.get(
-  '/:userId',
+  '/',
   checkToken,
-  checkAccess(ROLES.admin, ROLES.user),
   errorWrap(playlistController.getAllDataByUserId.bind(playlistController)),
 );
 
