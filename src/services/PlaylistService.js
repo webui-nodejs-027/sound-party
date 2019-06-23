@@ -10,7 +10,7 @@ class PlaylistService extends BaseService {
   }
 
   async getAllDataByUserId(id) {
-    const data = this.repository.find({ where: { userId: id } });
+    const data = this.repository.find({ where: { userId: id }, order: { isMain: 'DESC' } });
     if (!data) {
       throw new AppError('Cannot find userId', 400);
     }
@@ -21,8 +21,8 @@ class PlaylistService extends BaseService {
     const data = this.repository.findOne({
       where: {
         id,
-        userId
-      }
+        userId,
+      },
     });
     if (!data) {
       throw new AppError('Cannot find playlist or user', 400);
@@ -34,7 +34,7 @@ class PlaylistService extends BaseService {
     const song = await this.songRepository.findOne(songId);
     const playlist = await this.repository.find({
       where: { id },
-      relations: ['songs']
+      relations: ['songs'],
     });
     const idsOfSongs = playlist[0].songs.map(item => item.id);
 
@@ -49,8 +49,8 @@ class PlaylistService extends BaseService {
       playlist[0].songs.push(song);
     } else {
       throw new AppError(
-        `Song ${songId} already exists in playlist ${id}`,
-        400
+        `Song already exists in playlist`,
+        400,
       );
     }
     return this.repository.save(playlist);
@@ -59,7 +59,7 @@ class PlaylistService extends BaseService {
   async removeSongFromPlaylist(id, songId) {
     const playlist = await this.repository.find({
       where: { id },
-      relations: ['songs']
+      relations: ['songs'],
     });
     const song = await this.songRepository.findOne(songId);
     const idsOfSongs = playlist[0].songs.map(item => item.id);
@@ -71,12 +71,12 @@ class PlaylistService extends BaseService {
     }
     if (idsOfSongs.indexOf(song.id) > -1) {
       playlist[0].songs = playlist[0].songs.filter(
-        value => value.id !== song.id
+        value => value.id !== song.id,
       );
     } else {
       throw new AppError(
         `Song ${songId} does not exist in playlist ${id}`,
-        400
+        400,
       );
     }
     return this.repository.save(playlist);
@@ -87,7 +87,7 @@ inversify.decorate(inversify.injectable(), PlaylistService);
 inversify.decorate(
   inversify.inject(TYPES.PlaylistRepository),
   PlaylistService,
-  0
+  0,
 );
 inversify.decorate(inversify.inject(TYPES.SongRepository), PlaylistService, 1);
 

@@ -9,11 +9,12 @@ const mailer = require('./MailerService');
 const FindPeople = require('./FindPeopleService');
 
 class UserService extends BaseService {
-  constructor(repository, userMeetingService, meetingService, roleService) {
+  constructor(repository, userMeetingService, meetingService, roleService, playlistService) {
     super(repository);
     this.userMeetingService = userMeetingService;
     this.meetingService = meetingService;
     this.roleService = roleService;
+    this.playlistService = playlistService;
   }
 
   async getUserByEmail(email) {
@@ -33,7 +34,7 @@ class UserService extends BaseService {
     idUser = Number(idUser);
     const userGenresPlaylists = _.remove(
       FindPeople.allSongUser(allPlaylistsSong),
-      n => n.user.id === idUser
+      n => n.user.id === idUser,
     );
 
     return userGenresPlaylists;
@@ -52,29 +53,29 @@ class UserService extends BaseService {
     idUser = Number(idUser);
     const usersGenresPlaylists = _.remove(
       FindPeople.allSongUser(allPlaylistsSong),
-      n => n.user.id !== idUser
+      n => n.user.id !== idUser,
     );
     const userGenresPlaylists = _.remove(
       FindPeople.allSongUser(allPlaylistsSong),
-      n => n.user.id === idUser
+      n => n.user.id === idUser,
     );
     const result = [];
 
-    usersGenresPlaylists.forEach(user => {
+    usersGenresPlaylists.forEach((user) => {
       const usersSongs = [];
       let allGanresArray = [];
       user.songs.forEach((song, index) => {
         allGanresArray.push(song);
         const sameGenre = _.findIndex(
           userGenresPlaylists[0].songs,
-          x => x.genreId === song.genreId
+          x => x.genreId === song.genreId,
         );
         if (userGenresPlaylists[0].songs[sameGenre].percent < 20) {
           return;
         }
         if (sameGenre !== -1) {
           const diffencePrecent = Math.abs(
-            userGenresPlaylists[0].songs[index].percent - song.percent
+            userGenresPlaylists[0].songs[index].percent - song.percent,
           );
           if (diffencePrecent < 10) {
             usersSongs.push(song);
@@ -84,15 +85,15 @@ class UserService extends BaseService {
       if (usersSongs.length > 0) {
         allGanresArray = _.uniqBy(
           _.concat(allGanresArray, userGenresPlaylists[0].songs),
-          'genreId'
+          'genreId',
         );
         const sameMusicPercent = Math.floor(
-          (usersSongs.length * 100) / allGanresArray.length
+          (usersSongs.length * 100) / allGanresArray.length,
         );
         result.push({
           user: user.user,
           sameMusicPercent,
-          songs: usersSongs
+          songs: usersSongs,
         });
       }
     });
@@ -102,12 +103,19 @@ class UserService extends BaseService {
 
   async insertUserData(content) {
     content.password = await bcrypt.hashPassword(content.password);
-    const guestRole = await this.roleService.getAllData({ name: 'admin' });
+    const guestRole = await this.roleService.getAllData({ name: 'guest' });
     content.roleId = guestRole.data[0].id;
     const user = await this.repository.save(content);
     if (!user) {
       throw new AppError('Add user error');
     }
+    const mainPlaylist = {
+      name: 'My Songs',
+      isMain: true,
+      favourite: true,
+      userId: user.id,
+    };
+    await this.playlistService.insertData(mainPlaylist);
     return user;
   }
 
@@ -115,7 +123,7 @@ class UserService extends BaseService {
     const user = await this.getById(id);
     const comparePassword = await bcrypt.comparePassword(
       oldPassword,
-      user.password
+      user.password,
     );
     if (!comparePassword) {
       throw new AppError('Password is incorrect');
@@ -155,8 +163,6 @@ class UserService extends BaseService {
       meetingId,
       userId
     };
-    console.log(meetingId);
-    console.log(userId);
 
     const inMeeting = await this.meetingService.getById(meetingId);
     if (!inMeeting) {
@@ -169,11 +175,10 @@ class UserService extends BaseService {
     }
 
     const subscribed = await this.userMeetingService.checkIfSubscribed(
-      userMeeting
+      userMeeting,
     );
     if (subscribed) {
-      throw new AppError(`Error! user with id: 
-      ${userId} is already subscribed on meeting with id:${meetingId}`);
+      throw new AppError(`Error! user with id:       ${userId} is already subscribed on meeting with id:${meetingId}`)
     }
 
     this.userMeetingService.save(userMeeting);
@@ -182,11 +187,6 @@ class UserService extends BaseService {
   }
 
   async unsubscribeFromMeeting(req) {
-    // const b = await this.userMeetingService.deleteById({
-    //   meetingId: req.body.meetingId,
-    //   userId: req.params.id,
-    //   isCreator: false,
-    // });
     const deleted = await this.repository.manager
       .createQueryBuilder('UserMeeting', 'um')
       .delete()
@@ -234,4 +234,5 @@ inversify.decorate(inversify.inject(TYPES.UserRepository), UserService, 0);
 inversify.decorate(inversify.inject(TYPES.UserMeetingService), UserService, 1);
 inversify.decorate(inversify.inject(TYPES.MeetingService), UserService, 2);
 inversify.decorate(inversify.inject(TYPES.RoleService), UserService, 3);
+inversify.decorate(inversify.inject(TYPES.PlaylistService), UserService, 4);
 module.exports = UserService;

@@ -4,7 +4,7 @@ const userController = require('../controllers/UserController');
 const checkToken = require('../middlewares/appMiddlewares/checkToken');
 const checkAccess = require('../middlewares/appMiddlewares/checkAccess');
 const errorWrap = require('../middlewares/appMiddlewares/errorWrap');
-const { userValidator } = require('../validators');
+const { userValidator, baseValidator } = require('../validators');
 const { ROLES } = require('../constants');
 
 const router = express.Router();
@@ -15,6 +15,10 @@ router.get(
   checkToken,
   errorWrap(userController.getUsersPercent.bind(userController))
 );
+
+router.delete('/:id',
+  baseValidator.checkId,
+  errorWrap(userController.deleteById.bind(userController)));
 
 router.get(
   '/getUsersMusicStats',
@@ -31,6 +35,7 @@ router.get(
 
 router.get(
   '/:id',
+  baseValidator.checkId,
   checkToken,
   checkAccess(ROLES.admin, ROLES.user),
   errorWrap(userController.getUser.bind(userController))
@@ -43,7 +48,11 @@ router.post(
   errorWrap(userController.addUser.bind(userController))
 );
 
-router.put('/:id', errorWrap(userController.updateById.bind(userController)));
+router.put('/:id',
+  userValidator.checkWholeBody,
+  baseValidator.checkId,
+  errorWrap(userController.updateById.bind(userController)));
+
 router.post(
   '/:id/subscribeOnMeeting',
   checkToken,

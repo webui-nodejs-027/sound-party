@@ -154,7 +154,7 @@ async function initializePlaylist(connection, users, songs) {
     const name = `${user.firstName}\`s playlist`;
 
     const playlistNF = {
-      name: name,
+      name: 'My songs',
       userId: user.id,
       favourite: false,
       isMain: true,
