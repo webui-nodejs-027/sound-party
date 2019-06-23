@@ -10,7 +10,7 @@ class PlaylistService extends BaseService {
   }
 
   async getAllDataByUserId(id) {
-    const data = this.repository.find({ where: { userId: id } });
+    const data = this.repository.find({ where: { userId: id }, order: { isMain: 'DESC' } });
     if (!data) {
       throw new AppError('Cannot find userId', 400);
     }
@@ -49,7 +49,7 @@ class PlaylistService extends BaseService {
       playlist[0].songs.push(song);
     } else {
       throw new AppError(
-        `Song ${songId} already exists in playlist ${id}`,
+        `Song already exists in playlist`,
         400,
       );
     }

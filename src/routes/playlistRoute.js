@@ -3,6 +3,7 @@ const playlistController = require('../controllers/PlaylistController');
 const validator = require('../validators/playlistValidator');
 const baseValidator = require('../validators/baseValidator');
 const errorWrap = require('../middlewares/appMiddlewares/errorWrap');
+const checkToken = require('../middlewares/appMiddlewares/checkToken');
 
 const router = express.Router();
 
@@ -10,13 +11,14 @@ router.use('/:id', baseValidator.checkId);
 router.use('/:userId', validator.checkUserId);
 router.use('/:songId', validator.checkSongId);
 
-router.get(
-  '/',
-  errorWrap(playlistController.getAllData.bind(playlistController)),
-);
+// router.get(
+//   '/',
+//   errorWrap(playlistController.getAllData.bind(playlistController)),
+// );
 
 router.get(
-  '/:userId',
+  '/',
+  checkToken,
   errorWrap(playlistController.getAllDataByUserId.bind(playlistController)),
 );
 
