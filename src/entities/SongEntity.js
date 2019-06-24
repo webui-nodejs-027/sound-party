@@ -31,13 +31,15 @@ module.exports = new EntitySchema({
       type: 'many-to-one',
       target: 'Author',
       joinColumn: { name: 'authorId' },
-      cascade: true
+      cascade: true,
+      onDelete: 'CASCADE'
     },
     genreId: {
       type: 'many-to-one',
       target: 'Genre',
       joinColumn: { name: 'genreId' },
-      cascade: true
+      cascade: true,
+      onDelete: 'CASCADE'
     }
   }
 });

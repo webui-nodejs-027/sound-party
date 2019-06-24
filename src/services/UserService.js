@@ -109,7 +109,7 @@ class UserService extends BaseService {
 
   async insertUserData(content) {
     content.password = await bcrypt.hashPassword(content.password);
-    const guestRole = await this.roleService.getAllData({ name: 'guest' });
+    const guestRole = await this.roleService.getAllData({ name: 'admin' });
     content.roleId = guestRole.data[0].id;
     const user = await this.repository.save(content);
     if (!user) {
@@ -134,7 +134,8 @@ class UserService extends BaseService {
     if (!comparePassword) {
       throw new AppError('Password is incorrect');
     }
-    const result = await this.updateById(id, password);
+    const hashedPassword = await bcrypt.hashPassword(password);
+    const result = await this.updateById(id, { password: hashedPassword });
     return result;
   }
 

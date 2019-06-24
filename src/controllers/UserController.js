@@ -48,12 +48,13 @@ class UserController extends BaseController {
   }
 
   async getUsers(req, res) {
-    const result = await this.service.getAllData();
+    const result = await this.service.getAllData(req.query);
     const users = result.data.map((user) => {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     });
-    res.send(users);
+    const resultWithoutPasswords = { ...result, data: users };
+    res.send(resultWithoutPasswords);
   }
 
   async subscribeOnMeeting(req, res) {
