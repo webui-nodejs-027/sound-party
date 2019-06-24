@@ -14,7 +14,7 @@ module.exports = new EntitySchema({
     },
     dateTime: {
       type: 'timestamptz',
-      nullable: false,
+      nullable: true,
     },
     address: {
       type: 'varchar',

@@ -16,9 +16,11 @@ router.get(
   errorWrap(userController.getUsersPercent.bind(userController)),
 );
 
-router.delete('/:id',
+router.delete(
+  '/:id',
   baseValidator.checkId,
-  errorWrap(userController.deleteById.bind(userController)));
+  errorWrap(userController.deleteById.bind(userController)),
+);
 
 router.get(
   '/getUsersMusicStats',
@@ -48,10 +50,12 @@ router.post(
   errorWrap(userController.addUser.bind(userController)),
 );
 
-router.put('/:id',
+router.put(
+  '/:id',
   userValidator.checkWholeBody,
   baseValidator.checkId,
-  errorWrap(userController.updateById.bind(userController)));
+  errorWrap(userController.updateById.bind(userController)),
+);
 
 router.post(
   '/:id/subscribeOnMeeting',

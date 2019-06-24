@@ -10,7 +10,10 @@ class PlaylistService extends BaseService {
   }
 
   async getAllDataByUserId(id) {
-    const data = this.repository.find({ where: { userId: id }, order: { isMain: 'DESC' } });
+    const data = this.repository.find({
+      where: { userId: id },
+      order: { isMain: 'DESC' },
+    });
     if (!data) {
       throw new AppError('Cannot find userId', 400);
     }
@@ -30,19 +33,43 @@ class PlaylistService extends BaseService {
     return data;
   }
 
-  async getAllSongsFromPlaylist(id) {
-    const playlist = await this.repository.find({
-      where: { id },
-      relations: ['songs'],
-    });
-    if (!playlist) {
-      throw new AppError(`There is not playlist with id ${id}`, 400);
-    }
-    // eslint-disable-next-line prefer-destructuring
-    const songs = playlist[0].songs;
+  async getAllSongsFromPlaylist(id, query) {
+    const take = query.limit || 10;
+    const skip = take * (query.page - 1) || 0;
+    let data = null;
+    let dataCount = null;
 
-    return songs;
+    [data, dataCount] = await this.repository
+      .createQueryBuilder('playlist')
+      .innerJoinAndSelect('playlist.songs', 'song')
+      .innerJoinAndSelect('song.authorId', 'author')
+      .innerJoinAndSelect('song.genreId', 'genre')
+      .where('playlist.id = :id', { id })
+      .take(take)
+      .skip(skip)
+      .getManyAndCount();
+
+    // const playlist = await this.repository.find({
+    //   where: { id },
+    //   relations: ['songs'],
+    //   skip: { skip },
+    //   take: { take },
+
+    // });
+    // if (!playlist) {
+    //   throw new AppError(`There is not playlist with id ${id}`, 400);
+    // }
+    // eslint-disable-next-line prefer-destructuring
+    // const songs = playlist[0].songs;
+
+    return {
+      page: parseInt(query.page, 10) || 1,
+      limit: parseInt(query.limit, 10) || 10,
+      total: dataCount,
+      data,
+    };
   }
+
 
   async addSongToPlaylist(id, songId) {
     const song = await this.songRepository.findOne(songId);
@@ -62,10 +89,7 @@ class PlaylistService extends BaseService {
     if (idsOfSongs.indexOf(song.id) === -1) {
       playlist[0].songs.push(song);
     } else {
-      throw new AppError(
-        'Song already exists in playlist',
-        400,
-      );
+      throw new AppError('Song already exists in playlist', 400);
     }
     return this.repository.save(playlist);
   }
