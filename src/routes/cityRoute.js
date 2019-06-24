@@ -8,10 +8,7 @@ const router = express.Router();
 router.use('/:id', baseValidator.checkId);
 
 router.get('/', errorWrap(cityController.getAllData.bind(cityController)));
-router.get(
-  '/:id',
-  errorWrap(cityController.getById.bind(cityController)),
-);
+router.get('/:id', errorWrap(cityController.getById.bind(cityController)));
 router.post(
   '/',
   cityValidator.checkBody,

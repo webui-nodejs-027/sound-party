@@ -25,6 +25,15 @@ class PlaylistController extends BaseController {
     }
   }
 
+  async getAllSongsFromPlaylist(req, res, next) {
+    try {
+      const result = await this.service.getAllSongsFromPlaylist(req.params.id, req.query);
+      res.status(200).json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async addSongToPlaylist(req, res, next) {
     try {
       const result = await this.service.addSongToPlaylist(

@@ -11,9 +11,7 @@ router.get('/:id', errorWrap(authorController.getById.bind(authorController)));
 router.post(
   '/',
   authorValidator.checkBody,
-  errorWrap(
-    authorController.insertData.bind(authorController),
-  ),
+  errorWrap(authorController.insertData.bind(authorController)),
 );
 router.put(
   '/:id',

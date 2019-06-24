@@ -7,7 +7,7 @@ module.exports.checkUserId = [
     .isInt()
     .not()
     .isEmpty(),
-  checkResult
+  checkResult,
 ];
 
 module.exports.checkSongId = [
@@ -15,7 +15,7 @@ module.exports.checkSongId = [
     .isInt()
     .not()
     .isEmpty(),
-  checkResult
+  checkResult,
 ];
 
 module.exports.checkBody = [
@@ -34,19 +34,5 @@ module.exports.checkBody = [
     .not()
     .isEmpty(),
 
-  checkResult
-];
-
-module.exports.checkBodyForPut = [
-  body('name')
-    .isString()
-    .not()
-    .isEmpty(),
-
-  body('favourite')
-    .isBoolean()
-    .not()
-    .isEmpty(),
-
-  checkResult
+  checkResult,
 ];

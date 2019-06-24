@@ -9,7 +9,13 @@ const mailer = require('./MailerService');
 const FindPeople = require('./FindPeopleService');
 
 class UserService extends BaseService {
-  constructor(repository, userMeetingService, meetingService, roleService, playlistService) {
+  constructor(
+    repository,
+    userMeetingService,
+    meetingService,
+    roleService,
+    playlistService,
+  ) {
     super(repository);
     this.userMeetingService = userMeetingService;
     this.meetingService = meetingService;
