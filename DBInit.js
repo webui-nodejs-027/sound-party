@@ -99,6 +99,16 @@ async function initializeAuthor(connection) {
     { name: 'Miyagi'},
     { name: 'Yanix'},
     { name: 'Drake'},
+      { name: 'Beyonce'},
+      { name: 'Eminem'},
+      { name: 'Tiesto'},
+      { name: 'Van Dyke'},
+      { name: 'Dr.Dre'},
+      { name: 'Kendrick Lamar'},
+      { name: '30S'},
+      { name: 'Justin Timberlake'},
+      { name: 'Nelly Furtado'},
+      { name: 'Madonna'},
   ];
   await connection
     .getRepository(AuthorEntity)
