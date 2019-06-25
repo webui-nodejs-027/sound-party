@@ -99,10 +99,8 @@ class MeetingService extends BaseService {
       if (nameProps.find(item => elem[0] === item)) {
         if (whereQuery.length === 0) {
           whereQuery = `${elem[0]}.name = '${elem[1]}'`;
-        } else if (elem[0] === 'isCreator') {
-          whereQuery = `${whereQuery} AND um.${elem[0]} = ${elem[1]}`;
         } else {
-          whereQuery = `${whereQuery} AND ${elem[0]}.name = ${elem[1]}`;
+          whereQuery = `${whereQuery} AND ${elem[0]}.name = '${elem[1]}'`;
         }
       }
     });
@@ -117,9 +115,9 @@ class MeetingService extends BaseService {
     // if (query.userId) {
     //   andWhereQuery = `um.userId = ${query.userId}`;
     // }
-    // if (query.isCreator) {
-    //   whereQuery += 'AND um.isCreator = true';
-    // }
+    if (query.isCreator) {
+      whereQuery += 'AND um.isCreator = true';
+    }
 
     if (query.sortBy) {
       if (nameProps.find(elem => elem === query.sortBy)) {
@@ -128,6 +126,7 @@ class MeetingService extends BaseService {
         opts.sortBy = `meeting.${query.sortBy}`;
       }
     }
+    console.log(whereQuery);
 
     const [data, dataCount] = await this.repository
       .createQueryBuilder('meeting')

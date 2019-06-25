@@ -29,7 +29,7 @@ class SongService extends BaseService {
       [data, dataCount] = await this.repository
         .createQueryBuilder('song')
         .innerJoinAndSelect('song.authorId', 'author', 'song.name = :name', {
-          name: query.songName,
+          name: query.songName
         })
         .innerJoinAndSelect('song.genreId', 'genre')
         .orderBy(sortBy, orderBy)
@@ -40,7 +40,7 @@ class SongService extends BaseService {
       [data, dataCount] = await this.repository
         .createQueryBuilder('song')
         .innerJoinAndSelect('song.authorId', 'author', 'author.name = :name', {
-          name: query.authorName,
+          name: query.authorName
         })
         .innerJoinAndSelect('song.genreId', 'genre')
         .orderBy(sortBy, orderBy)
@@ -52,7 +52,7 @@ class SongService extends BaseService {
         .createQueryBuilder('song')
         .innerJoinAndSelect('song.authorId', 'author')
         .innerJoinAndSelect('song.genreId', 'genre', 'genre.name = :name', {
-          name: query.genre,
+          name: query.genre
         })
         .orderBy(sortBy, orderBy)
         .take(take)

@@ -12,7 +12,7 @@ router.get('/:id', errorWrap(cityController.getById.bind(cityController)));
 router.post(
   '/',
   cityValidator.checkBody,
-  errorWrap(cityController.insertData.bind(cityController)),
+  errorWrap(cityController.insertData.bind(cityController))
 );
 router.put(
   '/:id',
@@ -21,7 +21,7 @@ router.put(
 );
 router.delete(
   '/:id',
-  errorWrap(cityController.deleteById.bind(cityController)),
+  errorWrap(cityController.deleteById.bind(cityController))
 );
 
 module.exports = router;

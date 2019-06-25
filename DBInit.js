@@ -110,7 +110,11 @@ async function initializeGenre(connection) {
   const genres = [
     { name: 'rock'},
     { name: 'pop'},
-    { name: 'rap'}
+    { name: 'rap'},
+      { name: 'jazz'},
+      { name: 'funk'},
+      { name: 'rock-n-roll'},
+
   ];
   await connection
     .getRepository(GenreEntity)

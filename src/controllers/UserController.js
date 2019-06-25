@@ -15,21 +15,21 @@ class UserController extends BaseController {
       if (!user) {
         return res.status(400).json({ message: 'User doesnt found ' });
       }
-      req.logIn(user, { session: false }, (err) => {
+      req.logIn(user, { session: false }, err => {
         if (err) {
           return next(err);
         }
         const payLoad = {
           id: user.id,
-          roleId: user.roleId,
+          roleId: user.roleId
         };
         const token = jwt.sign(payLoad, SECRET, {
-          expiresIn: '24h',
+          expiresIn: '24h'
         });
         return res.json({
           succes: true,
           message: 'Authentication succesful',
-          token,
+          token
         });
       });
     })(req, res, next);
@@ -49,7 +49,7 @@ class UserController extends BaseController {
 
   async getUsers(req, res) {
     const result = await this.service.getAllData();
-    const users = result.data.map((user) => {
+    const users = result.data.map(user => {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     });
@@ -70,7 +70,7 @@ class UserController extends BaseController {
     const result = await this.service.changePassword(
       req.body.id,
       req.body.oldpassword,
-      req.body.password,
+      req.body.password
     );
     res.json(result);
   }

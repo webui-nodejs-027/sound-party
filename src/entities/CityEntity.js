@@ -6,12 +6,12 @@ module.exports = new EntitySchema({
     id: {
       primary: true,
       type: 'int',
-      generated: true,
+      generated: true
     },
     name: {
       type: 'varchar',
-      nullable: false,
-    },
+      nullable: false
+    }
   },
   relations: {
     meeting: {
@@ -19,7 +19,7 @@ module.exports = new EntitySchema({
       joinColumn: { name: 'cityId' },
       target: 'Meeting',
       cascade: true,
-      onDelete: 'CASCADE',
-    },
-  },
+      onDelete: 'CASCADE'
+    }
+  }
 });
