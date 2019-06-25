@@ -50,7 +50,8 @@ module.exports = new EntitySchema({
       type: 'many-to-one',
       target: 'Role',
       joinColumn: { name: 'roleId' },
-      cascade: true
+      cascade: true,
+      onDelete: 'CASCADE'
     }
   }
 });

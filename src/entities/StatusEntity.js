@@ -18,7 +18,8 @@ module.exports = new EntitySchema({
       type: 'one-to-many',
       joinColumn: { name: 'statusId' },
       target: 'Meeting',
-      cascade: true
+      cascade: true,
+      onDelete: 'CASCADE'
     }
   }
 });

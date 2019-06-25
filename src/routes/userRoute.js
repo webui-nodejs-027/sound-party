@@ -52,7 +52,7 @@ router.post(
 
 router.put(
   '/:id',
-  userValidator.checkWholeBody,
+  userValidator.checkWholeBodyOptional,
   baseValidator.checkId,
   errorWrap(userController.updateById.bind(userController))
 );

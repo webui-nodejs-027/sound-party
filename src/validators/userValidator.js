@@ -1,4 +1,4 @@
-const { body } = require('express-validator/check');
+const { body, oneOf } = require('express-validator/check');
 const { checkResult } = require('./checkResult');
 
 module.exports.checkEmail = [
@@ -7,7 +7,7 @@ module.exports.checkEmail = [
     .not()
     .isEmpty(),
 
-  checkResult
+  checkResult,
 ];
 
 module.exports.checkEmailAndPassword = [
@@ -33,7 +33,7 @@ module.exports.checkBodyId = [
     .not()
     .isEmpty(),
 
-  checkResult
+  checkResult,
 ];
 
 module.exports.checkWholeBody = [
@@ -47,7 +47,7 @@ module.exports.checkWholeBody = [
     .isString()
     .isLength({
       min: 8,
-      max: 20
+      max: 20,
     }),
 
   body('email')
@@ -65,7 +65,41 @@ module.exports.checkWholeBody = [
     .not()
     .isEmpty(),
 
-  checkResult
+  checkResult,
+];
+
+module.exports.checkWholeBodyOptional = [
+  oneOf([
+    body(['firstName', 'lastName', 'gender'])
+      .isString()
+      .not()
+      .isEmpty()
+      .escape(),
+
+    body(['password'])
+      .isString()
+      .isLength({
+        min: 8,
+        max: 20,
+      }),
+
+    body('email')
+      .isEmail()
+      .not()
+      .isEmpty(),
+
+    body('socialLink')
+      .isURL()
+      .not()
+      .isEmpty(),
+
+    body('birthday')
+      .isISO8601()
+      .not()
+      .isEmpty(),
+  ]),
+
+  checkResult,
 ];
 
 module.exports.checkBodyMeetingId = [
@@ -74,5 +108,5 @@ module.exports.checkBodyMeetingId = [
     .not()
     .isEmpty(),
 
-  checkResult
+  checkResult,
 ];

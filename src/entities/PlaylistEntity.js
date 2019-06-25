@@ -29,13 +29,15 @@ module.exports = new EntitySchema({
       target: 'Song',
       type: 'many-to-many',
       joinTable: true,
-      cascade: true
+      cascade: true,
+      onDelete: 'CASCADE'
     },
     userId: {
       type: 'many-to-one',
       joinColumn: { name: 'userId' },
       target: 'User',
-      cascade: true
+      cascade: true,
+      onDelete: 'CASCADE'
     }
   }
 });
