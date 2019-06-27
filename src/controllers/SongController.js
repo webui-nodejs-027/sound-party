@@ -22,14 +22,13 @@ class SongController extends BaseController {
   }
 
   async deleteSong(req, res) {
-    await this.service.checkIdSong(req.params.id);
     const data = await this.service.getById(req.params.id);
     await this.service.deleteSong(data);
     await super.deleteById(req, res);
   }
 
   async updateSongData(req, res) {
-    await this.service.checkIdSong(req.params.id);
+    await this.service.getById(req.params.id);
     await this.service.checkNameSong(req.body.name, req.body.authorId);
     await super.updateById(req, res);
   }

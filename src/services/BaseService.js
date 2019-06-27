@@ -46,7 +46,7 @@ class BaseService {
   async getById(id) {
     const data = await this.repository.findOne({ where: { id } });
     if (!data) {
-      throw new AppError(`Data with  id = ${id}  not found`);
+      throw new AppError(`Data with  id = ${id}  not found`, 400);
     }
     return data;
   }
@@ -54,7 +54,7 @@ class BaseService {
   async insertData(content) {
     const data = await this.repository.save(content);
     if (!data) {
-      throw new AppError('Add error');
+      throw new AppError('Add error', 400);
     }
     return data;
   }
@@ -62,7 +62,7 @@ class BaseService {
   async deleteById(id) {
     const data = await this.repository.delete(id);
     if (!data.affected) {
-      throw new AppError(`Delete error ${id}`);
+      throw new AppError(`Delete error ${id}`, 400);
     }
     return data;
   }
@@ -76,7 +76,7 @@ class BaseService {
       .returning('*')
       .execute();
     if (!data) {
-      throw new AppError('Update error');
+      throw new AppError('Update error', 400);
     }
     return data;
   }

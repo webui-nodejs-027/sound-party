@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const inversify = require('inversify');
 const { TYPES } = require('../constants');
@@ -25,7 +25,14 @@ class SongService extends BaseService {
       sortBy = 'song.year';
     }
 
-    if (query.songName) {
+    if (query.searchSong) {
+      data = await this.repository
+        .createQueryBuilder('song')
+        .select('DISTINCT song.name')
+        .where('LOWER(song.name) LIKE LOWER(:name)', { name: `${query.searchSong}%` })
+        .take(take)
+        .getRawMany();
+    } else if (query.songName) {
       [data, dataCount] = await this.repository
         .createQueryBuilder('song')
         .innerJoinAndSelect('song.authorId', 'author', 'song.name = :name', {
@@ -85,33 +92,23 @@ class SongService extends BaseService {
   }
 
   async checkIdSongSrc(id, source) {
-    const result = await super.getById(id);
+    const result = await this.repository.findOne({ where: { id } });
     if (!result) {
-      fs.unlink(source, (err) => {
-        if (err) {
-          throw new AppError('File not found', 400);
-        }
-      });
-      throw new AppError("ID doesn't exists", 400);
+      this.deleteSong({ source });
+      throw new AppError(`Data with  id = ${id}  not found`, 400);
     }
   }
 
-  async checkIdSong(id) {
-    const result = await super.getById(id);
-    if (!result) {
-      throw new AppError("ID doesn't exists", 400);
-    }
-  }
-
-  deleteSong(data) {
+  async deleteSong(data) {
     const { source } = data;
     const folder = path.join(__dirname, '../../music');
     const delSource = path.join(folder, source);
-    fs.unlink(delSource, (err) => {
-      if (err) {
-        throw new AppError('File not found', 400);
-      }
-    });
+    const exists = await fs.pathExists(delSource);
+    if (!exists) {
+      throw new AppError('File not found', 400);
+    } else {
+      await fs.remove(delSource);
+    }
   }
 }
 

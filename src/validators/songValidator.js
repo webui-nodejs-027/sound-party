@@ -1,15 +1,6 @@
 const { checkSchema } = require('express-validator/check');
 const { checkResult } = require('./checkResult');
 
-const getContentType = (req, res, next) => {
-  if (req.get('Content-Type') !== 'application/json') {
-    return res.status(400).json({
-      message: 'Invalid content-type',
-    });
-  }
-  return next();
-};
-
 const inputParam = {
   id: {
     in: 'params',
@@ -80,7 +71,6 @@ const inputBody = {
 };
 
 module.exports.checkBody = [
-  getContentType,
   checkSchema(inputBody),
   checkResult,
 ];
