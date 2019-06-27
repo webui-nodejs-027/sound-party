@@ -1,7 +1,13 @@
 const express = require('express');
 const meetingController = require('../controllers/MeetingController');
-const { checkId, checkBody } = require('../validators/meetingValidator');
+const {
+  checkId,
+  checkBody,
+  checkStatusId,
+  checkUserInQuery
+} = require('../validators/meetingValidator');
 const errorWrap = require('../middlewares/appMiddlewares/errorWrap');
+const checkToken = require('../middlewares/appMiddlewares/checkToken');
 
 const router = express.Router();
 
@@ -9,26 +15,36 @@ router.use('/:id', checkId);
 
 router.get(
   '/',
-  errorWrap(meetingController.getAllData.bind(meetingController)),
+  checkToken,
+  errorWrap(meetingController.getAllData.bind(meetingController))
 );
+
 router.get(
   '/:id',
-  errorWrap(meetingController.getById.bind(meetingController)),
+  checkToken,
+  checkUserInQuery,
+  errorWrap(meetingController.getById.bind(meetingController))
 );
+
 router.post(
   '/',
+  checkToken,
   checkBody,
-  errorWrap(meetingController.createMeeting.bind(meetingController)),
+  errorWrap(meetingController.createMeeting.bind(meetingController))
 );
 
 router.put(
   '/:id',
+  checkToken,
   checkBody,
-  errorWrap(meetingController.updateMeeting.bind(meetingController)),
+  checkStatusId,
+  errorWrap(meetingController.updateMeeting.bind(meetingController))
 );
+
 router.delete(
   '/:id',
-  errorWrap(meetingController.deleteById.bind(meetingController)),
+  checkToken,
+  errorWrap(meetingController.deleteById.bind(meetingController))
 );
 
 module.exports = router;

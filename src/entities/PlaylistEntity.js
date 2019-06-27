@@ -6,23 +6,23 @@ module.exports = new EntitySchema({
     id: {
       primary: true,
       type: 'int',
-      generated: true,
+      generated: true
     },
     name: {
       type: 'varchar',
-      nullable: false,
+      nullable: false
     },
     favourite: {
       type: 'boolean',
-      default: false,
+      default: false
     },
     isMain: {
       type: 'boolean',
-      default: false,
+      default: false
     },
     userId: {
-      type: 'int',
-    },
+      type: 'int'
+    }
   },
   relations: {
     songs: {
@@ -30,12 +30,14 @@ module.exports = new EntitySchema({
       type: 'many-to-many',
       joinTable: true,
       cascade: true,
+      onDelete: 'CASCADE'
     },
     userId: {
       type: 'many-to-one',
       joinColumn: { name: 'userId' },
       target: 'User',
       cascade: true,
-    },
-  },
+      onDelete: 'CASCADE'
+    }
+  }
 });

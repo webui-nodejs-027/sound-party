@@ -8,6 +8,11 @@ class MeetingController extends BaseController {
     res.status(201).json(result);
   }
 
+  async getById(req, res) {
+    const result = await this.service.getByIdAndUser(req);
+    res.status(200).json(result);
+  }
+
   async updateMeeting(req, res) {
     const result = await this.service.updateMeeting(req);
     res.status(200).json(result);

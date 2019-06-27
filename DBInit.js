@@ -1,6 +1,7 @@
 const { createConnection } = require('typeorm');
 const crypto = require('crypto');
 const config = require('./config/dbconfig');
+const bcrypt = require('./src/services/BcService');
 
 config.entities = ['./src/entities/*.js'];
 
@@ -46,12 +47,13 @@ async function initializeUser(connection) {
   const users = [];
   const roles = [
     {name: 'admin'},
-    {name: 'user'}
+    {name: 'user'},
+    {name: 'guest'},
   ];
   await connection
     .getRepository(RoleEntity)
     .save(roles);
-  for (let i = 0; i < 10; i += 1) {
+  for (let i = 0; i < 9; i += 1) {
     const firstName = firstNames[getRndmNum(0, 9)];
     const lastName = lastNames[getRndmNum(0, 9)];
     const email = `${firstName.toLowerCase()}.${lastName.toLowerCase() + i}@gmail.com`;
@@ -64,17 +66,30 @@ async function initializeUser(connection) {
     const SL = `https://www.instagram.com/${firstName.toLowerCase()}_${lastName.toLowerCase()}`;
     const roleId = i ? roles[1].id : roles[0].id;
     const user = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      birthday: birthday,
-      gender: gender,
+      firstName,
+      lastName,
+      email,
+      password,
+      birthday,
+      gender,
       socialLink: SL,
-      roleId: roleId,
-      };
+      roleId,
+    };
     users.push(user);
   }
+  const adminPassword = '123321Anton';
+  const hashedAdminPassword = await bcrypt.hashPassword(adminPassword);
+  const admin = {
+    firstName: 'Vadim',
+    email: 'test@gmail.com',
+    password: hashedAdminPassword,
+    lastName: 'NotVegan',
+    birthday: '1999-08-12',
+    gender: 'male',
+    socialLink: 'https://www.instagram.com/?hl=ru',
+    roleId: 1,
+  };
+  users.push(admin);
   await connection
     .getRepository(UserEntity)
     .save(users);
@@ -83,9 +98,31 @@ async function initializeUser(connection) {
 
 async function initializeAuthor(connection) {
   const authors = [
-    { name: 'David Bowie'},
-    { name: 'Aleksandr Vasiliev'},
-    { name: 'Kurt Cobain'}
+    { name: 'Black keys'},
+    { name: 'Bruce springsteen'},
+    { name: 'Foo fighters'},
+    { name: 'Shinedown'},
+    { name: 'Sum 41'},
+    { name: 'Alie Gatie'},
+    { name: 'Burna boy'},
+    { name: 'Davincii'},
+    { name: 'Isaac Dunbar'},
+    { name: 'Jonas Brothers'},
+    { name: 'Kesh'},
+    { name: 'Luxor'},
+    { name: 'Miyagi'},
+    { name: 'Yanix'},
+    { name: 'Drake'},
+      { name: 'Beyonce'},
+      { name: 'Eminem'},
+      { name: 'Tiesto'},
+      { name: 'Van Dyke'},
+      { name: 'Dr.Dre'},
+      { name: 'Kendrick Lamar'},
+      { name: '30S'},
+      { name: 'Justin Timberlake'},
+      { name: 'Nelly Furtado'},
+      { name: 'Madonna'},
   ];
   await connection
     .getRepository(AuthorEntity)
@@ -97,7 +134,11 @@ async function initializeGenre(connection) {
   const genres = [
     { name: 'rock'},
     { name: 'pop'},
-    { name: 'rap'}
+    { name: 'rap'},
+      { name: 'jazz'},
+      { name: 'funk'},
+      { name: 'rock-n-roll'},
+
   ];
   await connection
     .getRepository(GenreEntity)
@@ -106,17 +147,41 @@ async function initializeGenre(connection) {
 }
 
 async function initializeSong(connection, authors, genres) {
+  let j = 0;
   const songs = [];
-  for (let i = 0; i < 11; i += 1) {
-    const songName = `Song${i}`;
-    const source = `file://localhost/d:/storage/song${i}.mp3`;
+  const songName = [
+    'Lonely boy',
+    'The rising',
+    'Walk',
+    'Get up',
+    'Never there',
+    'It\'s you',
+    'Anybody',
+    'Closer',
+    'Woment on the hills',
+    'Greenlight',
+    'Message',
+    'Million',
+    'Angel',
+    'Boom',
+    'God\'s plan',
+  ];
+  for (let i = 0; i <= 14; i += 1) {
+    if (i === 4) {
+      j = 1;
+    }
+    if (i === 9) {
+      j = 2;
+    }
+    const name = songName[i];
+    const source = `63f49327b755045c801c851d03a9cd94155991323203${i}.mp3`;
     const year = `${getRndmNum(1980, 2011)}`;
     const song = {
-      name: songName,
-      source: source,
-      year: year,
-      authorId: authors[getRndmNum(0, 3)].id,
-      genreId: genres[getRndmNum(0, 3)].id,
+      name,
+      source,
+      year,
+      authorId: authors[i],
+      genreId: genres[j],
     };
     songs.push(song);
   }
@@ -131,22 +196,24 @@ async function initializePlaylist(connection, users, songs) {
   for (let i = 0; i < 10; i += 1) {
     const user = users[i];
     const name = `${user.firstName}\`s playlist`;
-
+    const rndmSongsNF = songs.filter(el => (getRndmNum(0, 100) % 2 ? el : null));
+    const rndmSongsF = songs.filter(el => (getRndmNum(0, 100) % 2 ? el : null));
     const playlistNF = {
-      name: name,
+      name: 'My songs',
       userId: user.id,
       favourite: false,
       isMain: true,
-      songs: songs,
+      songs: rndmSongsNF,
     };
     const playlistF = {
-        name: name,
-        userId: user.id,
-        favourite: true,
-        isMain: false,
-        songs: songs,
-      };
-    playlists = [...playlists, playlistF, playlistNF];
+      name,
+      userId: user.id,
+      favourite: true,
+      isMain: false,
+      songs: rndmSongsF,
+    };
+    playlists = playlists.concat(playlistNF);
+    playlists = playlists.concat(playlistF);
   }
   await connection
     .getRepository(PlaylistEntity)
@@ -156,11 +223,11 @@ async function initializePlaylist(connection, users, songs) {
 
 async function initializeCity(connection) {
   const cities = [
-    {name: 'Izium'},
-    {name: 'Kharkov'},
-    {name: 'Kiev'},
-    {name: 'Lvov'},
-    {name: 'Dnepr'}
+    { name: 'Izium' },
+    { name: 'Kharkov' },
+    { name: 'Kiev' },
+    { name: 'Lvov' },
+    { name: 'Dnepr' },
   ];
 
   await connection
@@ -171,9 +238,9 @@ async function initializeCity(connection) {
 
 async function initializeStatus(connection) {
   const statuses = [
-    {name: 'finished'},
-    {name: 'canceled'},
-    {name: 'pending'}
+    { name: 'finished' },
+    { name: 'canceled' },
+    { name: 'pending' },
   ];
   await connection
     .getRepository(StatusEntity)
@@ -209,14 +276,14 @@ async function initializeMeeting(connection, authors, genres, cities, statuses) 
     const city = cities[getRndmNum(0, 5)];
     const status = statuses[getRndmNum(0, 3)];
     const meeting = {
-        name: name,
-        dateTime: dateTime,
-        cityId: city.id,
-        address: address,
-        statusId: status.id,
-        genreId: genre.id,
-        authorId: author.id,
-  };
+      name,
+      dateTime,
+      cityId: city.id,
+      address,
+      statusId: status.id,
+      genreId: genre.id,
+      authorId: author.id,
+    };
     meetings.push(meeting);
   }
   await connection
@@ -233,11 +300,11 @@ async function initializeUserMeting(connection, users, meetings) {
       const isCreator = j % 10 === 0;
       const userId = users[j].id;
       const um = {
-        isCreator: isCreator,
-        userId: userId,
-        meetingId: meetingId};
+        isCreator,
+        userId,
+        meetingId,
+      };
       ums.push(um);
-
     }
   }
   await connection

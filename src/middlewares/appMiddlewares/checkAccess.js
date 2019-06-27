@@ -8,7 +8,7 @@ const checkAccess = (...roles) => async (req, res, next) => {
   const { user } = req;
   const userRole = await roleService.getById(user.roleId);
   let notRole = 0;
-  roles.forEach((role) => {
+  roles.forEach(role => {
     if (role !== userRole.name) {
       notRole += 1;
     }
