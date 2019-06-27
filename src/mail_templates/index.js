@@ -5,5 +5,5 @@ const resetPasswordTemplate = require('./resetPasswordTemplate');
 module.exports = {
   confirmTemplate,
   newPasswordTemplate,
-  resetPasswordTemplate,
+  resetPasswordTemplate
 };

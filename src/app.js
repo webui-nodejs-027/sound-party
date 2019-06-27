@@ -7,7 +7,6 @@ const errorMiddleware = require('./middlewares/settingMiddlewares/errorMiddlewar
 const createDbConnection = require('./db/');
 
 const app = express();
-
 app.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', '*');

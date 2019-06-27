@@ -8,15 +8,15 @@ const errorMsg = {
     {
       location: 'body',
       param: 'fileName',
-      msg: 'Invalid value',
-    },
-  ],
+      msg: 'Invalid value'
+    }
+  ]
 };
 
 const getContentType = (req, res, next) => {
   if (req.is('multipart/form-data') !== 'multipart/form-data') {
     return res.status(400).json({
-      message: 'Invalid content-type',
+      message: 'Invalid content-type'
     });
   }
   return next();
@@ -34,7 +34,7 @@ const storage = multer.diskStorage({
       .update(file.originalname)
       .digest('hex')}${Date.now()}.mp3`;
     return cb(null, hash);
-  },
+  }
 });
 
 const uploadFile = multer({
@@ -45,11 +45,11 @@ const uploadFile = multer({
       return cb(new Error('Invalid file type'));
     }
     return cb(null, true);
-  },
+  }
 }).single('fileName');
 
 const errorHandler = (req, res, next) => {
-  uploadFile(req, res, (err) => {
+  uploadFile(req, res, err => {
     if (err instanceof multer.MulterError) {
       errorMsg.errors[0].msg = err.message;
       return res.status(400).json(errorMsg);

@@ -7,31 +7,35 @@ class BaseService {
   }
 
   async getAllData(query) {
+    let page = 1;
+    let limit = 10;
     const findOptions = {
       where: {},
       order: {},
+      take: limit,
+      skip: 0
     };
-    const emptyObject = Object.keys(query).length;
-    let page = 1;
-    let limit = 10;
 
-    if (query !== undefined && emptyObject !== 0) {
-      const queryParams = Object.entries(query);
-      queryParams.forEach((elem) => {
-        if (elem[0] in this.repository.metadata.propertiesMap) {
-          [, findOptions.where[elem[0]]] = elem;
+    if (query !== undefined) {
+      const emptyObject = Object.keys(query).length;
+      if (emptyObject !== 0) {
+        const queryParams = Object.entries(query);
+        queryParams.forEach(elem => {
+          if (elem[0] in this.repository.metadata.propertiesMap) {
+            [, findOptions.where[elem[0]]] = elem;
+          }
+        });
+        findOptions.take = query.limit || 10;
+        findOptions.skip = findOptions.take * (query.page - 1) || 0;
+        if (query.sortBy) {
+          findOptions.order[`${query.sortBy}`] = query.order || 'ASC';
         }
-      });
-      findOptions.take = query.limit || 10;
-      findOptions.skip = findOptions.take * (query.page - 1) || 0;
-      if (query.sortBy) {
-        findOptions.order[`${query.sortBy}`] = query.order || 'ASC';
-      }
-      if (query.page) {
-        page = parseInt(query.page, 10);
-      }
-      if (query.limit) {
-        limit = parseInt(query.limit, 10);
+        if (query.page) {
+          page = parseInt(query.page, 10);
+        }
+        if (query.limit) {
+          limit = parseInt(query.limit, 10);
+        }
       }
     }
     const [data, dataCount] = await this.repository.findAndCount(findOptions);
@@ -39,7 +43,7 @@ class BaseService {
       page,
       limit,
       total: dataCount,
-      data,
+      data
     };
   }
 
