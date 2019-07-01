@@ -13,7 +13,6 @@ router.use('/:id', baseValidator.checkId);
 router.use('/:userId', validator.checkUserId);
 router.use('/:songId', validator.checkSongId);
 
-
 router.get(
   '/',
   checkToken,
