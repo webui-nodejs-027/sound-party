@@ -10,7 +10,7 @@ class SongController extends BaseController {
   }
 
   async addSongData(req, res) {
-    await this.service.checkNameSong(req.body.name, req.body.authorId);
+    await this.service.checkNameSong(req.body);
     await super.insertData(req, res);
   }
 
@@ -29,7 +29,7 @@ class SongController extends BaseController {
 
   async updateSongData(req, res) {
     await this.service.getById(req.params.id);
-    await this.service.checkNameSong(req.body.name, req.body.authorId);
+    await this.service.checkNameSong(req.body);
     await super.updateById(req, res);
   }
 

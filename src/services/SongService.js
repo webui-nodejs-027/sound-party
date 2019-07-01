@@ -23,20 +23,24 @@ class SongService extends BaseService {
       sortBy = 'genre.name';
     } else if (query.sortBy === 'year') {
       sortBy = 'song.year';
+    } else if (query.sortBy === 'id') {
+      sortBy = 'song.id';
     }
 
     if (query.searchSong) {
       data = await this.repository
         .createQueryBuilder('song')
         .select('DISTINCT song.name')
-        .where('LOWER(song.name) LIKE LOWER(:name)', { name: `${query.searchSong}%` })
+        .where('LOWER(song.name) LIKE LOWER(:name)', {
+          name: `${query.searchSong}%`,
+        })
         .take(take)
         .getRawMany();
     } else if (query.songName) {
       [data, dataCount] = await this.repository
         .createQueryBuilder('song')
         .innerJoinAndSelect('song.authorId', 'author', 'song.name = :name', {
-          name: query.songName
+          name: query.songName,
         })
         .innerJoinAndSelect('song.genreId', 'genre')
         .orderBy(sortBy, orderBy)
@@ -47,7 +51,7 @@ class SongService extends BaseService {
       [data, dataCount] = await this.repository
         .createQueryBuilder('song')
         .innerJoinAndSelect('song.authorId', 'author', 'author.name = :name', {
-          name: query.authorName
+          name: query.authorName,
         })
         .innerJoinAndSelect('song.genreId', 'genre')
         .orderBy(sortBy, orderBy)
@@ -59,7 +63,7 @@ class SongService extends BaseService {
         .createQueryBuilder('song')
         .innerJoinAndSelect('song.authorId', 'author')
         .innerJoinAndSelect('song.genreId', 'genre', 'genre.name = :name', {
-          name: query.genre
+          name: query.genre,
         })
         .orderBy(sortBy, orderBy)
         .take(take)
@@ -80,12 +84,12 @@ class SongService extends BaseService {
       page: parseInt(query.page, 10) || 1,
       limit: parseInt(query.limit, 10) || 10,
       total: dataCount,
-      data
+      data,
     };
   }
 
-  async checkNameSong(name, authorId) {
-    const result = await this.repository.findOne({ where: { name, authorId } });
+  async checkNameSong(data) {
+    const result = await this.repository.findOne({ where: data });
     if (result) {
       throw new AppError('Song exists', 400);
     }
