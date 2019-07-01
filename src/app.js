@@ -29,7 +29,10 @@ const initial = async () => {
   });
 };
 
-initial();
+const env = process.env.NODE_ENV || 'development';
+if (env !== 'test') {
+  initial();
+}
 
 module.exports.initialServer = initial;
 module.exports.server = app;
