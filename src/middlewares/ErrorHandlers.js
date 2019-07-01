@@ -16,5 +16,5 @@ class ValidationError extends AppError {
 
 module.exports = {
   AppError,
-  ValidationError
+  ValidationError,
 };
