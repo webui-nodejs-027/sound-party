@@ -9,7 +9,7 @@ class CityController extends BaseController {
   }
 
   async updateById(req, res) {
-    await this.service.checkIdCity(req.params.id);
+    await this.service.getById(req.params.id);
     await this.service.checkNameCity(req.body.name);
     super.updateById(req, res);
   }
