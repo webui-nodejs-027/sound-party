@@ -41,7 +41,7 @@ const uploadFile = multer({
   storage,
   limits: { fileSize: 20 * 1000000 },
   fileFilter: (req, file, cb) => {
-    if (file.mimetype !== 'audio/mpeg') {
+    if (file.mimetype !== 'audio/mp3') {
       return cb(new Error('Invalid file type'));
     }
     return cb(null, true);
