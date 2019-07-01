@@ -1,4 +1,4 @@
-const { body } = require('express-validator/check');
+const { body, oneOf } = require('express-validator/check');
 const { checkResult } = require('./checkResult');
 
 module.exports.checkEmail = [
@@ -64,6 +64,42 @@ module.exports.checkWholeBody = [
     .isISO8601()
     .not()
     .isEmpty(),
+
+  checkResult,
+];
+
+module.exports.checkWholeBodyOptional = [
+  oneOf(
+    [
+      body(['firstName', 'lastName', 'gender'])
+        .isString()
+        .not()
+        .isEmpty()
+        .escape(),
+
+      body(['password'])
+        .isString()
+        .isLength({
+          min: 8,
+          max: 20,
+        }),
+
+      body('email')
+        .isEmail()
+        .not()
+        .isEmpty(),
+
+      body('socialLink')
+        .isURL()
+        .not()
+        .isEmpty(),
+
+      body('birthday')
+        .isISO8601()
+        .not()
+        .isEmpty(),
+    ],
+  ),
 
   checkResult,
 ];

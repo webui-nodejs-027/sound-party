@@ -57,7 +57,7 @@ router.put(
   '/:id',
   checkToken,
   checkAccess(ROLES.admin, ROLES.user, ROLES.guest),
-  userValidator.checkWholeBody,
+  userValidator.checkWholeBodyOptional,
   baseValidator.checkId,
   errorWrap(userController.updateById.bind(userController)),
 );
