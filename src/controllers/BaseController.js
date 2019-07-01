@@ -15,7 +15,10 @@ class BaseController {
 
   async insertData(req, res) {
     const result = await this.service.insertData(req.body);
-    res.status(201).json(result);
+    res
+      .status(201)
+      .json(result)
+      .end();
   }
 
   async deleteById(req, res) {
