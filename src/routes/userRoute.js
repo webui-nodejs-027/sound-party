@@ -9,7 +9,11 @@ const { ROLES } = require('../constants');
 
 const router = express.Router();
 
-router.get('/', checkToken, errorWrap(userController.getUsers.bind(userController)));
+router.get(
+  '/',
+  checkToken,
+  errorWrap(userController.getUsers.bind(userController)),
+);
 
 router.get(
   '/:id',

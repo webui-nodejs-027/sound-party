@@ -123,6 +123,4 @@ describe('Playlists', () => {
         throw e;
       }));
 
-//   it('should add a SINGLE song to playlist on /playlists/<id>/addsong/<songId> POST');
-//   it('should delete a SINGLE song from playlist on /playlists/<id>/removesong/<songId> POST');
 });
