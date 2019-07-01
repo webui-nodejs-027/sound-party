@@ -13,14 +13,14 @@ class BaseService {
       where: {},
       order: {},
       take: limit,
-      skip: 0
+      skip: 0,
     };
 
     if (query !== undefined) {
       const emptyObject = Object.keys(query).length;
       if (emptyObject !== 0) {
         const queryParams = Object.entries(query);
-        queryParams.forEach(elem => {
+        queryParams.forEach((elem) => {
           if (elem[0] in this.repository.metadata.propertiesMap) {
             [, findOptions.where[elem[0]]] = elem;
           }
@@ -43,7 +43,7 @@ class BaseService {
       page,
       limit,
       total: dataCount,
-      data
+      data,
     };
   }
 

@@ -25,7 +25,7 @@ class MeetingService extends BaseService {
         'meeting.um',
         'UserMeeting',
         'um',
-        'um.meetingId = meeting.id'
+        'um.meetingId = meeting.id',
       )
       .select('meeting')
       .where(`um."meetingId" = ${req.params.id}`)
@@ -33,37 +33,34 @@ class MeetingService extends BaseService {
       .addSelect('creator."firstName"', 'creator_firstName')
       .addSelect('creator."lastName"', 'creator_lastName')
       .addSelect(
-        subQuery =>
-          subQuery
-            .select('COUNT(um.meetingId)', 'count')
-            .from('UserMeeting', 'um')
-            .where(`um."meetingId" = ${req.params.id}`)
-            .groupBy('meeting.id'),
-        'count'
+        subQuery => subQuery
+          .select('COUNT(um.meetingId)', 'count')
+          .from('UserMeeting', 'um')
+          .where(`um."meetingId" = ${req.params.id}`)
+          .groupBy('meeting.id'),
+        'count',
       )
       .addSelect(
-        subQuery =>
-          subQuery
-            .select('COUNT(um.userId)', 'count')
-            .from('UserMeeting', 'um')
-            .where(
-              `um."meetingId" = ${req.params.id} AND um."userId" = ${
-                req.query.userId
-              }`
-            )
-            .groupBy('meeting.id'),
-        'user_in_meeting'
+        subQuery => subQuery
+          .select('COUNT(um.userId)', 'count')
+          .from('UserMeeting', 'um')
+          .where(
+            `um."meetingId" = ${req.params.id} AND um."userId" = ${
+              req.query.userId
+            }`,
+          )
+          .groupBy('meeting.id'),
+        'user_in_meeting',
       )
       .addSelect(
-        subQuery =>
-          subQuery
-            .select('um."userId"', 'userId')
-            .from('UserMeeting', 'um')
-            .where(
-              `um."meetingId" = ${req.params.id} AND um."isCreator" = true`
-            )
-            .limit(1),
-        'creator_id'
+        subQuery => subQuery
+          .select('um."userId"', 'userId')
+          .from('UserMeeting', 'um')
+          .where(
+            `um."meetingId" = ${req.params.id} AND um."isCreator" = true`,
+          )
+          .limit(1),
+        'creator_id',
       )
       .getRawOne();
 
@@ -81,7 +78,7 @@ class MeetingService extends BaseService {
       cityId: req.body.cityId,
       address: req.body.address,
       genreId: req.body.genreId,
-      authorId: req.body.authorId
+      authorId: req.body.authorId,
     };
   }
 
@@ -89,13 +86,13 @@ class MeetingService extends BaseService {
     const queryParams = Object.entries(query);
     const nameProps = ['genre', 'author', 'city', 'status'];
     const opts = {
-      sortBy: 'meeting.dateTime'
+      sortBy: 'meeting.dateTime',
     };
     const take = query.limit || 10;
     const skip = take * (query.page - 1) || 0;
     const order = query.order || 'ASC';
     let whereQuery = '';
-    queryParams.forEach(elem => {
+    queryParams.forEach((elem) => {
       if (nameProps.find(item => elem[0] === item)) {
         if (whereQuery.length === 0) {
           whereQuery = `${elem[0]}.name = '${elem[1]}'`;
@@ -134,7 +131,7 @@ class MeetingService extends BaseService {
         'meeting.id',
         'meeting.name',
         'meeting.dateTime',
-        'meeting.address'
+        'meeting.address',
       ])
       .leftJoinAndSelect('meeting.genre', 'genre')
       .leftJoinAndSelect('meeting.author', 'author')
@@ -144,7 +141,7 @@ class MeetingService extends BaseService {
         'meeting.um',
         'UserMeeting',
         'um',
-        'um.meetingId = meeting.id'
+        'um.meetingId = meeting.id',
       )
       .where(whereQuery)
       // .andWhere(andWhereQuery)
@@ -157,7 +154,7 @@ class MeetingService extends BaseService {
       page: parseInt(query.page, 10) || 1,
       limit: parseInt(query.limit, 10) || 10,
       total: dataCount,
-      data
+      data,
     };
   }
 
@@ -168,7 +165,7 @@ class MeetingService extends BaseService {
     const userMeetingCreator = {
       isCreator: true,
       userId: req.body.creatorId,
-      meetingId: meeting.id
+      meetingId: meeting.id,
     };
 
     await this.userMeetingService.save(userMeetingCreator);
@@ -188,11 +185,11 @@ inversify.decorate(inversify.injectable(), MeetingService);
 inversify.decorate(
   inversify.inject(TYPES.MeetingRepository),
   MeetingService,
-  0
+  0,
 );
 inversify.decorate(
   inversify.inject(TYPES.UserMeetingService),
   MeetingService,
-  1
+  1,
 );
 module.exports = MeetingService;

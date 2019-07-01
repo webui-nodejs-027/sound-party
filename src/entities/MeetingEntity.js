@@ -41,14 +41,14 @@ module.exports = new EntitySchema({
       joinColumn: { name: 'authorId' },
       target: 'Author',
       cascade: true,
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
     },
     genre: {
       type: 'many-to-one',
       joinColumn: { name: 'genreId' },
       target: 'Genre',
       cascade: true,
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
     },
     city: {
       type: 'many-to-one',
@@ -62,7 +62,7 @@ module.exports = new EntitySchema({
       joinColumn: { name: 'statusId' },
       target: 'Status',
       cascade: true,
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
     },
   },
 });

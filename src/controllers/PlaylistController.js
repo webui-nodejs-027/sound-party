@@ -17,7 +17,7 @@ class PlaylistController extends BaseController {
     try {
       const result = await this.service.getByIdUserAndIdPlaylist(
         req.params.id,
-        req.params.userId
+        req.params.userId,
       );
       res.status(200).json(result);
     } catch (e) {
@@ -29,7 +29,7 @@ class PlaylistController extends BaseController {
     try {
       const result = await this.service.getAllSongsFromPlaylist(
         req.params.id,
-        req.query
+        req.query,
       );
       res.status(200).json(result);
     } catch (e) {
@@ -41,7 +41,7 @@ class PlaylistController extends BaseController {
     try {
       const result = await this.service.addSongToPlaylist(
         req.params.id,
-        req.params.songId
+        req.params.songId,
       );
       res.status(200).json(result);
     } catch (e) {
@@ -53,7 +53,7 @@ class PlaylistController extends BaseController {
     try {
       const result = await this.service.removeSongFromPlaylist(
         req.params.id,
-        req.params.songId
+        req.params.songId,
       );
       res.status(200).json(result);
     } catch (e) {
