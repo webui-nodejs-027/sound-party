@@ -70,7 +70,6 @@ class PlaylistService extends BaseService {
     };
   }
 
-
   async addSongToPlaylist(id, songId) {
     const song = await this.songRepository.findOne(songId);
     const playlist = await this.repository.find({
