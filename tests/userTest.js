@@ -5,18 +5,10 @@ const { describe, it } = require('mocha');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-const should = chai.should();
-
-const { server } = require('../app');
-
-// const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGVJZCI6MSwia
-// WF0IjoxNTYxOTI4ODYxLCJleHAiOjE1NjIwMTUyNjF9.8PmM6Xp6M5iEj6GLsFxCM5yfl2PARQ8Nc4WGfOF9lfM';
-
 chai.use(chaiHttp);
 
 const url = 'http://localhost:3001/api';
 let user = null;
-let token = null;
 
 const userPost = {
   firstName: 'Vadim',
@@ -55,7 +47,6 @@ describe('User', () => {
       res.body.should.include.keys(
         'success', 'message', 'token',
       );
-      token = res.body.token;
     }));
   it('Should get a users on /users GET', () => chai.request(url)
     .get('/users')
