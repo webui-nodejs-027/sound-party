@@ -27,7 +27,7 @@ class UserController extends BaseController {
           expiresIn: '24h',
         });
         return res.json({
-          succes: true,
+          success: true,
           message: 'Authentication succesful',
           token,
         });
@@ -38,7 +38,7 @@ class UserController extends BaseController {
   async addUser(req, res) {
     const result = await this.service.insertUserData(req.body);
     const { password, ...user } = result;
-    res.json(user);
+    res.status(201).json(user);
   }
 
   async getUser(req, res) {

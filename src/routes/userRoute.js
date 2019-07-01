@@ -10,16 +10,25 @@ const { ROLES } = require('../constants');
 const router = express.Router();
 
 router.get('/', errorWrap(userController.getUsers.bind(userController)));
+
 router.get(
-  '/getUsersPercent',
+  '/:id',
+  baseValidator.checkId,
   checkToken,
-  errorWrap(userController.getUsersPercent.bind(userController))
+  checkAccess(ROLES.admin, ROLES.user),
+  errorWrap(userController.getUser.bind(userController))
 );
 
 router.delete(
   '/:id',
   baseValidator.checkId,
   errorWrap(userController.deleteById.bind(userController))
+);
+
+router.get(
+  '/getUsersPercent',
+  checkToken,
+  errorWrap(userController.getUsersPercent.bind(userController))
 );
 
 router.get(
@@ -35,13 +44,7 @@ router.get(
   userController.checkAuthorization.bind(userController)
 );
 
-router.get(
-  '/:id',
-  baseValidator.checkId,
-  checkToken,
-  checkAccess(ROLES.admin, ROLES.user),
-  errorWrap(userController.getUser.bind(userController))
-);
+
 router.post('/login', errorWrap(userController.login.bind(userController)));
 
 router.post(
