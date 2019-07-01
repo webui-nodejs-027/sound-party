@@ -5,8 +5,9 @@ module.exports.test = {
   username: 'postgres',
   password: 123,
   database: 'music-test',
-  entities: ['entities/*.js'],
+  entities: ['src/entities/*.js'],
   synchronize: true,
+  dropSchema: true,
 };
 
 module.exports.development = {

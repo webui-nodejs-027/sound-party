@@ -9,7 +9,7 @@ const { ROLES } = require('../constants');
 
 const router = express.Router();
 
-router.get('/', errorWrap(userController.getUsers.bind(userController)));
+router.get('/', checkToken, errorWrap(userController.getUsers.bind(userController)));
 
 router.get(
   '/:id',
@@ -22,6 +22,7 @@ router.get(
 router.delete(
   '/:id',
   baseValidator.checkId,
+  checkToken,
   errorWrap(userController.deleteById.bind(userController)),
 );
 
@@ -48,6 +49,7 @@ router.post('/login', errorWrap(userController.login.bind(userController)));
 
 router.post(
   '/',
+  checkToken,
   userValidator.checkWholeBody,
   errorWrap(userController.addUser.bind(userController)),
 );
