@@ -20,11 +20,11 @@ module.exports.checkEmailAndPassword = [
     .isString()
     .isLength({
       min: 8,
-      max: 20
+      max: 20,
     })
     .withMessage('Password must be between 8 and 20 characters'),
 
-  checkResult
+  checkResult,
 ];
 
 module.exports.checkBodyId = [

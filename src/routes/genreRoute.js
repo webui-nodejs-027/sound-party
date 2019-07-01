@@ -11,12 +11,12 @@ router.get('/:id', errorWrap(genreController.getById.bind(genreController)));
 router.post(
   '/',
   genreValidator.checkBody,
-  errorWrap(genreController.insertData.bind(genreController))
+  errorWrap(genreController.insertData.bind(genreController)),
 );
 router.put('/:id', errorWrap(genreController.updateById.bind(genreController)));
 router.delete(
   '/:id',
-  errorWrap(genreController.deleteById.bind(genreController))
+  errorWrap(genreController.deleteById.bind(genreController)),
 );
 
 router.get('/', errorWrap(genreController.getAllData.bind(genreController)));

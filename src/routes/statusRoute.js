@@ -125,7 +125,7 @@ router.post('/', errorWrap(statusController.insertData.bind(statusController)));
 
 router.put(
   '/:id',
-  errorWrap(statusController.updateById.bind(statusController))
+  errorWrap(statusController.updateById.bind(statusController)),
 );
 
 /**
@@ -158,7 +158,7 @@ router.put(
 
 router.delete(
   '/:id',
-  errorWrap(statusController.deleteById.bind(statusController))
+  errorWrap(statusController.deleteById.bind(statusController)),
 );
 
 /**

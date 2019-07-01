@@ -4,7 +4,7 @@ const {
   checkId,
   checkBody,
   checkStatusId,
-  checkUserInQuery
+  checkUserInQuery,
 } = require('../validators/meetingValidator');
 const errorWrap = require('../middlewares/appMiddlewares/errorWrap');
 const checkToken = require('../middlewares/appMiddlewares/checkToken');
@@ -16,21 +16,21 @@ router.use('/:id', checkId);
 router.get(
   '/',
   checkToken,
-  errorWrap(meetingController.getAllData.bind(meetingController))
+  errorWrap(meetingController.getAllData.bind(meetingController)),
 );
 
 router.get(
   '/:id',
   checkToken,
   checkUserInQuery,
-  errorWrap(meetingController.getById.bind(meetingController))
+  errorWrap(meetingController.getById.bind(meetingController)),
 );
 
 router.post(
   '/',
   checkToken,
   checkBody,
-  errorWrap(meetingController.createMeeting.bind(meetingController))
+  errorWrap(meetingController.createMeeting.bind(meetingController)),
 );
 
 router.put(
@@ -38,13 +38,13 @@ router.put(
   checkToken,
   checkBody,
   checkStatusId,
-  errorWrap(meetingController.updateMeeting.bind(meetingController))
+  errorWrap(meetingController.updateMeeting.bind(meetingController)),
 );
 
 router.delete(
   '/:id',
   checkToken,
-  errorWrap(meetingController.deleteById.bind(meetingController))
+  errorWrap(meetingController.deleteById.bind(meetingController)),
 );
 
 module.exports = router;

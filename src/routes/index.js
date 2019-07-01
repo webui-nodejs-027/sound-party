@@ -9,7 +9,7 @@ const userRoute = require('./userRoute');
 const roleRoute = require('./roleRoute');
 const statusRoute = require('./statusRoute');
 
-module.exports = app => {
+module.exports = (app) => {
   app.use('/', mainRoute);
   app.use('/api/authors', authorRoute);
   app.use('/api/cities', cityRoute);
