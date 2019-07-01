@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const path = require('path');
 
-module.exports = (app) => {
+module.exports = app => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(
@@ -17,9 +17,9 @@ module.exports = (app) => {
       saveUninitialized: false,
       cookie: {
         maxAge: 30 * 60 * 1000,
-        httpOnly: false,
-      },
-    }),
+        httpOnly: false
+      }
+    })
   );
 
   app.use(cookieParser());

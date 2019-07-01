@@ -23,6 +23,7 @@ app.all('*', (req, res, next) => {
   res.header('Content-Type', 'application/json;charset=utf-8');
   next();
 });
+
 const initial = async () => {
   await createDbConnection();
   await container.loadAsync(bindings);
@@ -39,4 +40,5 @@ const initial = async () => {
 
 initial();
 
-module.exports = app;
+module.exports.initialServer = initial;
+module.exports.server = app;

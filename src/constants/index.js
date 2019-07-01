@@ -5,7 +5,7 @@ module.exports = {
   ROLES: {
     admin: 'admin',
     user: 'user',
-    guest: 'guest',
+    guest: 'guest'
   },
-  M_SECRET: 'mailer_secret',
+  M_SECRET: 'mailer_secret'
 };

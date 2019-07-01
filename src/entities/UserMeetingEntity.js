@@ -5,16 +5,16 @@ module.exports = new EntitySchema({
   columns: {
     isCreator: {
       type: 'boolean',
-      default: false,
+      default: false
     },
     meetingId: {
       primary: true,
-      type: 'int',
+      type: 'int'
     },
     userId: {
       primary: true,
-      type: 'int',
-    },
+      type: 'int'
+    }
   },
   relations: {
     user: {
@@ -22,14 +22,14 @@ module.exports = new EntitySchema({
       target: 'User',
       joinColumn: { name: 'userId' },
       cascade: true,
-      onDelete: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     meeting: {
       type: 'many-to-one',
       target: 'Meeting',
       joinColumn: { name: 'meetingId' },
       cascade: true,
-      onDelete: 'CASCADE',
-    },
-  },
+      onDelete: 'CASCADE'
+    }
+  }
 });

@@ -1,4 +1,4 @@
-const { body } = require('express-validator/check');
+const { body, oneOf } = require('express-validator/check');
 const { checkResult } = require('./checkResult');
 
 module.exports.checkEmail = [
@@ -20,11 +20,11 @@ module.exports.checkEmailAndPassword = [
     .isString()
     .isLength({
       min: 8,
-      max: 20,
+      max: 20
     })
     .withMessage('Password must be between 8 and 20 characters'),
 
-  checkResult,
+  checkResult
 ];
 
 module.exports.checkBodyId = [
@@ -64,6 +64,40 @@ module.exports.checkWholeBody = [
     .isISO8601()
     .not()
     .isEmpty(),
+
+  checkResult,
+];
+
+module.exports.checkWholeBodyOptional = [
+  oneOf([
+    body(['firstName', 'lastName', 'gender'])
+      .isString()
+      .not()
+      .isEmpty()
+      .escape(),
+
+    body(['password'])
+      .isString()
+      .isLength({
+        min: 8,
+        max: 20,
+      }),
+
+    body('email')
+      .isEmail()
+      .not()
+      .isEmpty(),
+
+    body('socialLink')
+      .isURL()
+      .not()
+      .isEmpty(),
+
+    body('birthday')
+      .isISO8601()
+      .not()
+      .isEmpty(),
+  ]),
 
   checkResult,
 ];

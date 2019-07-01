@@ -27,7 +27,7 @@ class UserController extends BaseController {
           expiresIn: '24h',
         });
         return res.json({
-          succes: true,
+          success: true,
           message: 'Authentication succesful',
           token,
         });
@@ -38,7 +38,7 @@ class UserController extends BaseController {
   async addUser(req, res) {
     const result = await this.service.insertUserData(req.body);
     const { password, ...user } = result;
-    res.json(user);
+    res.status(201).json(user);
   }
 
   async getUser(req, res) {
@@ -48,16 +48,22 @@ class UserController extends BaseController {
   }
 
   async getUsers(req, res) {
-    const result = await this.service.getAllData();
+    const result = await this.service.getAllData(req.query);
     const users = result.data.map((user) => {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     });
-    res.send(users);
+    const resultWithoutPasswords = { ...result, data: users };
+    res.send(resultWithoutPasswords);
   }
 
   async subscribeOnMeeting(req, res) {
     const result = await this.service.subscribeOnMeeting(req);
+    res.json(result);
+  }
+
+  async unsubscribeFromMeeting(req, res) {
+    const result = await this.service.unsubscribeFromMeeting(req);
     res.json(result);
   }
 

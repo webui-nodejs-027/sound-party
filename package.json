@@ -7,7 +7,7 @@
     "start": "nodemon app.js",
     "lint": "eslint --fix ./src/**/*.js",
     "pretty": "prettier --single-quote --write ./src/**/*.js",
-    "test": "mocha"
+    "test": "mocha --timeout 10000"
   },
   "apidoc": {
     "title": "Custom apiDoc browser title",
@@ -36,8 +36,10 @@
     "express-async-errors": "^3.1.1",
     "express-session": "1.16.1",
     "express-validator": "5.3.1",
+    "fs-extra": "8.0.1",
     "inversify": "5.0.1",
     "jsonwebtoken": "8.5.1",
+    "lodash": "^4.17.11",
     "multer": "1.4.1",
     "nodemailer": "6.1.1",
     "nodemon": "1.19.1",
@@ -45,21 +47,20 @@
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
     "pg": "7.11.0",
+    "chai": "4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "6.1.4",
     "reflect-metadata": "0.1.13",
     "session-file-store": "1.2.0",
-    "typeorm": "0.2.17",
-    "lodash": "^4.17.11"
+    "typeorm": "0.2.17"
   },
   "devDependencies": {
-    "chai": "^3.2.0",
-    "chai-http": "^4.3.0",
     "eslint": "5.3.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.1",
     "eslint-plugin-react": "7.11.0",
     "husky": "2.3.0",
-    "mocha": "6.1.4",
     "prettier": "1.17.1"
   },
   "eslintConfig": {
