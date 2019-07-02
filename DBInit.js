@@ -1,6 +1,6 @@
 const { createConnection } = require('typeorm');
 const crypto = require('crypto');
-const config = require('./config/dbconfig');
+const config = require('./config/developmentDbconfig');
 const bcrypt = require('./src/services/BcService');
 
 config.entities = ['./src/entities/*.js'];

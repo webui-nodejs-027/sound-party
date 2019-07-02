@@ -22,6 +22,14 @@ router.get(
   errorWrap(userController.getUsersPercent.bind(userController)),
 );
 
+router.get(
+  '/:id',
+  baseValidator.checkId,
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
+  errorWrap(userController.getUser.bind(userController)),
+);
+
 router.delete(
   '/:id',
   checkToken,
@@ -31,14 +39,14 @@ router.delete(
 );
 
 router.get(
-  '/getUsersMusicStats',
+  '/getUsersPercent',
   checkToken,
   checkAccess(ROLES.admin, ROLES.user),
   errorWrap(userController.getUserMusicStats.bind(userController)),
 );
 
 router.get(
-  '/checkAuthorization',
+  '/getUsersMusicStats',
   checkToken,
   checkAccess(ROLES.admin, ROLES.user),
   userController.checkAuthorization.bind(userController),
@@ -51,6 +59,7 @@ router.get(
   baseValidator.checkId,
   errorWrap(userController.getUser.bind(userController)),
 );
+
 router.post('/login', errorWrap(userController.login.bind(userController)));
 
 router.put(

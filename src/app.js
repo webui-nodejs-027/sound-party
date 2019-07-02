@@ -7,6 +7,15 @@ const errorMiddleware = require('./middlewares/settingMiddlewares/errorMiddlewar
 const createDbConnection = require('./db/');
 
 const app = express();
+// app.get('/todo', (req, res) => {
+//   res.send('hello world');
+// });
+
+// const routers = require('./routes/');
+
+// reqMiddleware(app);
+// routers(app);
+// errorMiddleware(app);
 app.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', '*');
@@ -14,6 +23,7 @@ app.all('*', (req, res, next) => {
   res.header('Content-Type', 'application/json;charset=utf-8');
   next();
 });
+
 const initial = async () => {
   await createDbConnection();
   await container.loadAsync(bindings);
@@ -28,4 +38,10 @@ const initial = async () => {
   });
 };
 
-initial();
+const env = process.env.NODE_ENV || 'development';
+if (env !== 'test') {
+  initial();
+}
+
+module.exports.initialServer = initial;
+module.exports.server = app;
