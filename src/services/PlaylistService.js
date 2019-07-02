@@ -36,10 +36,9 @@ class PlaylistService extends BaseService {
   async getAllSongsFromPlaylist(id, query) {
     const take = query.limit || 10;
     const skip = take * (query.page - 1) || 0;
-    let data = null;
-    let dataCount = null;
+    let data = [];
 
-    [data, dataCount] = await this.repository
+    const dataSongs = await this.repository
       .createQueryBuilder('playlist')
       .innerJoinAndSelect('playlist.songs', 'song')
       .innerJoinAndSelect('song.authorId', 'author')
@@ -47,25 +46,14 @@ class PlaylistService extends BaseService {
       .where('playlist.id = :id', { id })
       .take(take)
       .skip(skip)
-      .getManyAndCount();
-
-    // const playlist = await this.repository.find({
-    //   where: { id },
-    //   relations: ['songs'],
-    //   skip: { skip },
-    //   take: { take },
-
-    // });
-    // if (!playlist) {
-    //   throw new AppError(`There is not playlist with id ${id}`, 400);
-    // }
-    // eslint-disable-next-line prefer-destructuring
-    // const songs = playlist[0].songs;
-
+      .getMany();
+    if (dataSongs.length > 0) {
+      data = dataSongs[0].songs;
+    }
     return {
       page: parseInt(query.page, 10) || 1,
       limit: parseInt(query.limit, 10) || 10,
-      total: dataCount,
+      total: data.length,
       data,
     };
   }
@@ -94,10 +82,13 @@ class PlaylistService extends BaseService {
   }
 
   async removeSongFromPlaylist(id, songId) {
-    const playlist = await this.repository.find({
-      where: { id },
-      relations: ['songs'],
-    });
+    const playlist = await this.repository
+      .createQueryBuilder('playlist')
+      .innerJoinAndSelect('playlist.songs', 'song')
+      .innerJoinAndSelect('song.authorId', 'author')
+      .innerJoinAndSelect('song.genreId', 'genre')
+      .where('playlist.id = :id', { id })
+      .getMany();
     const song = await this.songRepository.findOne(songId);
     const idsOfSongs = playlist[0].songs.map(item => item.id);
     if (!playlist) {
