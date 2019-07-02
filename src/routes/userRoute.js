@@ -12,7 +12,14 @@ const router = express.Router();
 router.get(
   '/',
   checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   errorWrap(userController.getUsers.bind(userController)),
+);
+router.get(
+  '/getUsersPercent',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
+  errorWrap(userController.getUsersPercent.bind(userController)),
 );
 
 router.get(
@@ -25,41 +32,40 @@ router.get(
 
 router.delete(
   '/:id',
-  baseValidator.checkId,
   checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
+  baseValidator.checkId,
   errorWrap(userController.deleteById.bind(userController)),
 );
 
 router.get(
   '/getUsersPercent',
   checkToken,
-  errorWrap(userController.getUsersPercent.bind(userController)),
+  checkAccess(ROLES.admin, ROLES.user),
+  errorWrap(userController.getUserMusicStats.bind(userController)),
 );
 
 router.get(
   '/getUsersMusicStats',
   checkToken,
-  errorWrap(userController.getUserMusicStats.bind(userController)),
-);
-
-router.get(
-  '/checkAuthorization',
-  checkToken,
   checkAccess(ROLES.admin, ROLES.user),
   userController.checkAuthorization.bind(userController),
 );
 
-router.post('/login', errorWrap(userController.login.bind(userController)));
-
-router.post(
-  '/',
+router.get(
+  '/:id',
   checkToken,
-  userValidator.checkWholeBody,
-  errorWrap(userController.addUser.bind(userController)),
+  checkAccess(ROLES.admin, ROLES.user, ROLES.guest),
+  baseValidator.checkId,
+  errorWrap(userController.getUser.bind(userController)),
 );
+
+router.post('/login', errorWrap(userController.login.bind(userController)));
 
 router.put(
   '/:id',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user, ROLES.guest),
   userValidator.checkWholeBodyOptional,
   baseValidator.checkId,
   errorWrap(userController.updateById.bind(userController)),
@@ -68,17 +74,21 @@ router.put(
 router.post(
   '/:id/subscribeOnMeeting',
   checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   // userValidator.checkBodyMeetingId,
   errorWrap(userController.subscribeOnMeeting.bind(userController)),
 );
 router.post(
   '/:id/unsubscribeFromMeeting',
   checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   userValidator.checkBodyMeetingId,
   errorWrap(userController.unsubscribeFromMeeting.bind(userController)),
 );
 router.post(
   '/changePassword',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user, ROLES.guest),
   errorWrap(userController.changePassword.bind(userController)),
 );
 

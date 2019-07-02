@@ -2,6 +2,9 @@ const express = require('express');
 const statusController = require('../controllers/StatusController');
 const { checkId } = require('../validators/baseValidator');
 const errorWrap = require('../middlewares/appMiddlewares/errorWrap');
+const checkToken = require('../middlewares/appMiddlewares/checkToken');
+const checkAccess = require('../middlewares/appMiddlewares/checkAccess');
+const { ROLES } = require('../constants');
 
 const router = express.Router();
 
@@ -41,7 +44,12 @@ router.use('/:id', checkId);
 }
  */
 
-router.get('/:id', errorWrap(statusController.getById.bind(statusController)));
+router.get(
+  '/:id',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
+  errorWrap(statusController.getById.bind(statusController)),
+);
 
 /**
  * @api {post} /statuses Create new status
@@ -82,7 +90,12 @@ router.get('/:id', errorWrap(statusController.getById.bind(statusController)));
 }
  */
 
-router.post('/', errorWrap(statusController.insertData.bind(statusController)));
+router.post(
+  '/',
+  checkToken,
+  checkAccess(ROLES.admin),
+  errorWrap(statusController.insertData.bind(statusController)),
+);
 
 /**
  * @api {put} /statuses/:id Update status by id
@@ -125,6 +138,8 @@ router.post('/', errorWrap(statusController.insertData.bind(statusController)));
 
 router.put(
   '/:id',
+  checkToken,
+  checkAccess(ROLES.admin),
   errorWrap(statusController.updateById.bind(statusController)),
 );
 
@@ -158,6 +173,8 @@ router.put(
 
 router.delete(
   '/:id',
+  checkToken,
+  checkAccess(ROLES.admin),
   errorWrap(statusController.deleteById.bind(statusController)),
 );
 
@@ -194,6 +211,11 @@ router.delete(
 }
  */
 
-router.get('/', statusController.getAllData.bind(statusController));
+router.get(
+  '/',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
+  statusController.getAllData.bind(statusController),
+);
 
 module.exports = router;

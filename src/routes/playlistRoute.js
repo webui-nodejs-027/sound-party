@@ -16,6 +16,7 @@ router.use('/:songId', validator.checkSongId);
 router.get(
   '/',
   checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   errorWrap(playlistController.getAllDataByUserId.bind(playlistController)),
 );
 
@@ -28,6 +29,8 @@ router.get(
 
 router.delete(
   '/:id',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   errorWrap(playlistController.deleteById.bind(playlistController)),
 );
 
@@ -41,20 +44,28 @@ router.post(
 
 router.post(
   '/:id/addsong/:songId',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   errorWrap(playlistController.addSongToPlaylist.bind(playlistController)),
 );
 
 router.post(
   '/:id/removesong/:songId',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   errorWrap(playlistController.removeSongFromPlaylist.bind(playlistController)),
 );
 
 router.put(
   '/:id',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   errorWrap(playlistController.updateById.bind(playlistController)),
 );
 router.get(
   '/:id/songs',
+  checkToken,
+  checkAccess(ROLES.admin, ROLES.user),
   errorWrap(playlistController.getAllSongsFromPlaylist.bind(playlistController)),
 );
 module.exports = router;

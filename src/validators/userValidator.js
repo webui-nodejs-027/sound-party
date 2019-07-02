@@ -69,35 +69,37 @@ module.exports.checkWholeBody = [
 ];
 
 module.exports.checkWholeBodyOptional = [
-  oneOf([
-    body(['firstName', 'lastName', 'gender'])
-      .isString()
-      .not()
-      .isEmpty()
-      .escape(),
+  oneOf(
+    [
+      body(['firstName', 'lastName', 'gender'])
+        .isString()
+        .not()
+        .isEmpty()
+        .escape(),
 
-    body(['password'])
-      .isString()
-      .isLength({
-        min: 8,
-        max: 20,
-      }),
+      body(['password'])
+        .isString()
+        .isLength({
+          min: 8,
+          max: 20,
+        }),
 
-    body('email')
-      .isEmail()
-      .not()
-      .isEmpty(),
+      body('email')
+        .isEmail()
+        .not()
+        .isEmpty(),
 
-    body('socialLink')
-      .isURL()
-      .not()
-      .isEmpty(),
+      body('socialLink')
+        .isURL()
+        .not()
+        .isEmpty(),
 
-    body('birthday')
-      .isISO8601()
-      .not()
-      .isEmpty(),
-  ]),
+      body('birthday')
+        .isISO8601()
+        .not()
+        .isEmpty(),
+    ],
+  ),
 
   checkResult,
 ];

@@ -23,6 +23,8 @@ class SongService extends BaseService {
       sortBy = 'genre.name';
     } else if (query.sortBy === 'year') {
       sortBy = 'song.year';
+    } else if (query.sortBy === 'id') {
+      sortBy = 'song.id';
     }
 
     if (query.searchSong) {
@@ -86,8 +88,8 @@ class SongService extends BaseService {
     };
   }
 
-  async checkNameSong(name, authorId) {
-    const result = await this.repository.findOne({ where: { name, authorId } });
+  async checkNameSong(data) {
+    const result = await this.repository.findOne({ where: data });
     if (result) {
       throw new AppError('Song exists', 400);
     }
