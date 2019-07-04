@@ -13,7 +13,7 @@ class UserController extends BaseController {
         return next(err);
       }
       if (!user) {
-        res.send('User doesnt found ');
+        return res.status(400).json({ message: 'User doesnt found ' });
       }
       req.logIn(user, { session: false }, (err) => {
         if (err) {
@@ -49,7 +49,7 @@ class UserController extends BaseController {
 
   async getUsers(req, res) {
     const result = await this.service.getAllData();
-    const users = result.map((user) => {
+    const users = result.data.map((user) => {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     });
@@ -98,6 +98,23 @@ class UserController extends BaseController {
     const { token } = req.params;
     const result = await this.service.passwordReset(token);
     res.json(result);
+  }
+
+  async getUsersPercent(req, res) {
+    const { user } = req;
+    const result = await this.service.getUsersPercent(user.id);
+    res.send(result);
+  }
+
+  async getUserMusicStats(req, res) {
+    const { user } = req;
+    const result = await this.service.getUserMusicStatistic(user.id);
+    res.send(result);
+  }
+
+  checkAuthorization(req, res) {
+    const { user } = req;
+    res.send(user);
   }
 }
 

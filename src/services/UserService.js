@@ -1,35 +1,127 @@
 /* eslint-disable no-param-reassign */
 const inversify = require('inversify');
+const _ = require('lodash');
 const bcrypt = require('./BcService');
 const { TYPES } = require('../constants');
 const BaseService = require('./BaseService');
 const { AppError } = require('../middlewares/ErrorHandlers');
 const mailer = require('./MailerService');
+const FindPeople = require('./FindPeopleService');
 
 class UserService extends BaseService {
-  constructor(repository, userMeetingService, meetingService, roleService) {
+  constructor(
+    repository,
+    userMeetingService,
+    meetingService,
+    roleService,
+    playlistService,
+  ) {
     super(repository);
     this.userMeetingService = userMeetingService;
     this.meetingService = meetingService;
     this.roleService = roleService;
+    this.playlistService = playlistService;
   }
 
   async getUserByEmail(email) {
     const user = await this.repository.findOne({ email });
-    if (!user) {
-      throw new AppError('User with this email not found');
-    }
     return user;
+  }
+
+  async getUserMusicStatistic(idUser) {
+    const allPlaylistsSong = await this.repository.manager
+      .createQueryBuilder('Playlist', 'playlist')
+      .innerJoinAndSelect('playlist.userId', 'user')
+      .innerJoinAndSelect('playlist.songs', 'songs')
+      .innerJoinAndSelect('songs.genreId', 'genre')
+      .where('user.id =:userId', { userId: idUser })
+      .getMany();
+
+    idUser = Number(idUser);
+    const userGenresPlaylists = _.remove(
+      FindPeople.allSongUser(allPlaylistsSong),
+      n => n.user.id === idUser,
+    );
+
+    return userGenresPlaylists;
+  }
+
+  async getUsersPercent(idUser) {
+    this.getUserMusicStatistic(idUser);
+    const allPlaylistsSong = await this.repository.manager
+      .createQueryBuilder('Playlist', 'playlist')
+      .innerJoinAndSelect('playlist.userId', 'user')
+      .innerJoinAndSelect('playlist.songs', 'songs')
+      .innerJoinAndSelect('songs.genreId', 'genre')
+      .orderBy('user.id')
+      .getMany();
+
+    idUser = Number(idUser);
+    const usersGenresPlaylists = _.remove(
+      FindPeople.allSongUser(allPlaylistsSong),
+      n => n.user.id !== idUser,
+    );
+    const userGenresPlaylists = _.remove(
+      FindPeople.allSongUser(allPlaylistsSong),
+      n => n.user.id === idUser,
+    );
+    const result = [];
+
+    usersGenresPlaylists.forEach((user) => {
+      const usersSongs = [];
+      let allGanresArray = [];
+      user.songs.forEach((song, index) => {
+        allGanresArray.push(song);
+        const sameGenre = _.findIndex(
+          userGenresPlaylists[0].songs,
+          x => x.genreId === song.genreId,
+        );
+        if (userGenresPlaylists[0].songs[sameGenre].percent < 20) {
+          return;
+        }
+        if (sameGenre !== -1) {
+          const diffencePrecent = Math.abs(
+            userGenresPlaylists[0].songs[index].percent - song.percent,
+          );
+          if (diffencePrecent < 10) {
+            usersSongs.push(song);
+          }
+        }
+      });
+      if (usersSongs.length > 0) {
+        allGanresArray = _.uniqBy(
+          _.concat(allGanresArray, userGenresPlaylists[0].songs),
+          'genreId',
+        );
+        const sameMusicPercent = Math.floor(
+          (usersSongs.length * 100) / allGanresArray.length,
+        );
+        result.push({
+          user: user.user,
+          sameMusicPercent,
+          songs: usersSongs,
+        });
+      }
+    });
+
+    return result;
   }
 
   async insertUserData(content) {
     content.password = await bcrypt.hashPassword(content.password);
     const guestRole = await this.roleService.getAllData({ name: 'guest' });
-    content.roleId = guestRole[0].id;
+    content.roleId = guestRole.data[0].id;
     const user = await this.repository.save(content);
     if (!user) {
       throw new AppError('Add user error');
     }
+    const mainPlaylist = {
+      name: 'My Songs',
+      isMain: true,
+      favourite: true,
+      userId: user.id,
+    };
+    await this.playlistService.insertData(mainPlaylist);
     return user;
   }
 
@@ -47,12 +139,11 @@ class UserService extends BaseService {
   }
 
   async mailCheck(email) {
-    try {
-      await this.getUserByEmail(email);
-    } catch (e) {
-      return { message: 'ok' };
+    const user = await this.getUserByEmail(email);
+    if (user) {
+      throw new AppError('This email is already taken', 400);
     }
-    throw new AppError('This email is already taken', 400);
+    return { message: 'ok' };
   }
 
   async sendConfirm(id) {
@@ -66,15 +157,15 @@ class UserService extends BaseService {
   async userConfirm(token) {
     const decodedToken = mailer.verifyToken(token);
     const userRole = await this.roleService.getAllData({ name: 'user' });
-    await this.updateById(decodedToken.id, { roleId: userRole[0].id });
+    await this.updateById(decodedToken.id, { roleId: userRole.data[0].id });
     return { message: 'Email confirmed' };
   }
 
   async subscribeOnMeeting(req) {
     const userMeeting = {
       isCreator: false,
-      meetingId: req.body.meetingId,
-      userId: req.params.id,
+      meetingId: parseInt(req.body.meetingId, 10),
+      userId: parseInt(req.params.id, 10),
     };
 
     const inMeeting = await this.meetingService.getById(req.body.meetingId);
@@ -134,4 +225,5 @@ inversify.decorate(inversify.inject(TYPES.UserRepository), UserService, 0);
 inversify.decorate(inversify.inject(TYPES.UserMeetingService), UserService, 1);
 inversify.decorate(inversify.inject(TYPES.MeetingService), UserService, 2);
 inversify.decorate(inversify.inject(TYPES.RoleService), UserService, 3);
+inversify.decorate(inversify.inject(TYPES.PlaylistService), UserService, 4);
 module.exports = UserService;

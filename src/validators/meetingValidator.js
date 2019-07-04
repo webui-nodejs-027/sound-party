@@ -25,7 +25,7 @@ module.exports.checkBody = [
     .not()
     .isEmpty(),
 
-  body(['cityId', 'statusId', 'creatorId'])
+  body(['cityId', 'statusId'])
     .isInt()
     .not()
     .isEmpty(),

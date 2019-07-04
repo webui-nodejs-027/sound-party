@@ -13,8 +13,8 @@ module.exports = new EntitySchema({
       nullable: false,
     },
     dateTime: {
-      type: 'timestamp',
-      nullable: false,
+      type: 'timestamptz',
+      nullable: true,
     },
     address: {
       type: 'varchar',
@@ -53,6 +53,7 @@ module.exports = new EntitySchema({
       joinColumn: { name: 'cityId' },
       target: 'City',
       cascade: true,
+      onDelete: 'CASCADE',
     },
     status: {
       type: 'many-to-one',

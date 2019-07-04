@@ -7,25 +7,37 @@ class BaseService {
   }
 
   async getAllData(query) {
-    const queryParams = Object.entries(query);
     const findOptions = {
       where: {},
       order: {},
     };
-    queryParams.forEach((elem) => {
-      if (elem[0] in this.repository.metadata.propertiesMap) {
-        [, findOptions.where[elem[0]]] = elem;
+    const emptyObject = Object.keys(query).length;
+    let page = 1;
+    let limit = 10;
+
+    if (query !== undefined && emptyObject !== 0) {
+      const queryParams = Object.entries(query);
+      queryParams.forEach((elem) => {
+        if (elem[0] in this.repository.metadata.propertiesMap) {
+          [, findOptions.where[elem[0]]] = elem;
+        }
+      });
+      findOptions.take = query.limit || 10;
+      findOptions.skip = findOptions.take * (query.page - 1) || 0;
+      if (query.sortBy) {
+        findOptions.order[`${query.sortBy}`] = query.order || 'ASC';
       }
-    });
-    findOptions.take = query.limit || 10;
-    findOptions.skip = findOptions.take * (query.page - 1) || 0;
-    if (query.sortBy) {
-      findOptions.order[`${query.sortBy}`] = query.order || 'ASC';
+      if (query.page) {
+        page = parseInt(query.page, 10);
+      }
+      if (query.limit) {
+        limit = parseInt(query.limit, 10);
+      }
     }
     const [data, dataCount] = await this.repository.findAndCount(findOptions);
     return {
-      page: parseInt(query.page, 10) || 1,
-      limit: parseInt(query.limit, 10) || 10,
+      page,
+      limit,
       total: dataCount,
       data,
     };

@@ -1,11 +1,82 @@
 /* eslint-disable class-methods-use-this */
 const fs = require('fs');
+const path = require('path');
 const inversify = require('inversify');
 const { TYPES } = require('../constants');
 const BaseService = require('./BaseService');
 const { AppError } = require('../middlewares/ErrorHandlers');
 
 class SongService extends BaseService {
+  async getAllData(query) {
+    const take = query.limit || 10;
+    const skip = take * (query.page - 1) || 0;
+    let sortBy = null;
+    const orderBy = query.order || 'ASC';
+    let data = null;
+    let dataCount = null;
+
+    if (query.sortBy === 'authorName') {
+      sortBy = 'author.name';
+    } else if (query.sortBy === 'songName') {
+      sortBy = 'song.name';
+    } else if (query.sortBy === 'genre') {
+      sortBy = 'genre.name';
+    } else if (query.sortBy === 'year') {
+      sortBy = 'song.year';
+    }
+
+    if (query.songName) {
+      [data, dataCount] = await this.repository
+        .createQueryBuilder('song')
+        .innerJoinAndSelect('song.authorId', 'author', 'song.name = :name', {
+          name: query.songName,
+        })
+        .innerJoinAndSelect('song.genreId', 'genre')
+        .orderBy(sortBy, orderBy)
+        .take(take)
+        .skip(skip)
+        .getManyAndCount();
+    } else if (query.authorName) {
+      [data, dataCount] = await this.repository
+        .createQueryBuilder('song')
+        .innerJoinAndSelect('song.authorId', 'author', 'author.name = :name', {
+          name: query.authorName,
+        })
+        .innerJoinAndSelect('song.genreId', 'genre')
+        .orderBy(sortBy, orderBy)
+        .take(take)
+        .skip(skip)
+        .getManyAndCount();
+    } else if (query.genre) {
+      [data, dataCount] = await this.repository
+        .createQueryBuilder('song')
+        .innerJoinAndSelect('song.authorId', 'author')
+        .innerJoinAndSelect('song.genreId', 'genre', 'genre.name = :name', {
+          name: query.genre,
+        })
+        .orderBy(sortBy, orderBy)
+        .take(take)
+        .skip(skip)
+        .getManyAndCount();
+    } else {
+      [data, dataCount] = await this.repository
+        .createQueryBuilder('song')
+        .innerJoinAndSelect('song.authorId', 'author')
+        .innerJoinAndSelect('song.genreId', 'genre')
+        .orderBy(sortBy, orderBy)
+        .take(take)
+        .skip(skip)
+        .getManyAndCount();
+    }
+
+    return {
+      page: parseInt(query.page, 10) || 1,
+      limit: parseInt(query.limit, 10) || 10,
+      total: dataCount,
+      data,
+    };
+  }
+
   async checkNameSong(name, authorId) {
     const result = await this.repository.findOne({ where: { name, authorId } });
     if (result) {
@@ -34,7 +105,9 @@ class SongService extends BaseService {
 
   deleteSong(data) {
     const { source } = data;
-    fs.unlink(source, (err) => {
+    const folder = path.join(__dirname, '../../music');
+    const delSource = path.join(folder, source);
+    fs.unlink(delSource, (err) => {
       if (err) {
         throw new AppError('File not found', 400);
       }

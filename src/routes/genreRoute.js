@@ -5,7 +5,7 @@ const errorWrap = require('../middlewares/appMiddlewares/errorWrap');
 
 const router = express.Router();
 
-router.use('/:id', errorWrap(baseValidator.checkId));
+router.use('/:id', baseValidator.checkId);
 
 router.get('/:id', errorWrap(genreController.getById.bind(genreController)));
 router.post(

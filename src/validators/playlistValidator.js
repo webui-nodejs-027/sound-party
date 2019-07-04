@@ -36,17 +36,3 @@ module.exports.checkBody = [
 
   checkResult,
 ];
-
-module.exports.checkBodyForPut = [
-  body('name')
-    .isString()
-    .not()
-    .isEmpty(),
-
-  body('favourite')
-    .isBoolean()
-    .not()
-    .isEmpty(),
-
-  checkResult,
-];

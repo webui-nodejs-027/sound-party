@@ -1,9 +1,9 @@
 const credentials = {
   user: 'noreplywebui@gmail.com',
-  pass: 'lvdpqvklvosksywk',
+  pass: 'wcxxthdljeockuml',
 };
 
-const domain = 'http://localhost:3000';
+const domain = 'http://localhost:3001';
 
 const transporter = {
   service: 'gmail',
