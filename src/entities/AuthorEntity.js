@@ -19,12 +19,14 @@ module.exports = new EntitySchema({
       joinColumn: { name: 'authorId' },
       target: 'Song',
       cascade: true,
+      onDelete: 'CASCADE',
     },
     meeting: {
       type: 'one-to-many',
       joinColumn: { name: 'authorId' },
       target: 'Meeting',
       cascade: true,
+      onDelete: 'CASCADE',
     },
   },
 });

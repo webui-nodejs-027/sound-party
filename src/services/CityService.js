@@ -10,13 +10,6 @@ class CityService extends BaseService {
       throw new AppError('Name exists', 400);
     }
   }
-
-  async checkIdCity(id) {
-    const result = await this.repository.findOne({ where: { id } });
-    if (!result) {
-      throw new AppError("Id doesn't exist", 400);
-    }
-  }
 }
 
 inversify.decorate(inversify.injectable(), CityService);

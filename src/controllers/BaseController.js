@@ -15,14 +15,18 @@ class BaseController {
 
   async insertData(req, res) {
     const result = await this.service.insertData(req.body);
-    res.status(201).json(result);
+    res
+      .status(201)
+      .json(result)
+      .end();
   }
 
   async deleteById(req, res) {
     const result = await this.service.deleteById(req.params.id);
-    const row = await result.affected;
-    if (row) {
-      res.json(row);
+    if (result.affected) {
+      res
+        .status(200)
+        .json({ id: req.params.id, message: 'Data has been deleted' });
     }
   }
 

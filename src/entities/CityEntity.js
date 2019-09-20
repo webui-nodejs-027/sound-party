@@ -19,6 +19,7 @@ module.exports = new EntitySchema({
       joinColumn: { name: 'cityId' },
       target: 'Meeting',
       cascade: true,
+      onDelete: 'CASCADE',
     },
   },
 });

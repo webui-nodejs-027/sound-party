@@ -30,12 +30,14 @@ module.exports = new EntitySchema({
       type: 'many-to-many',
       joinTable: true,
       cascade: true,
+      onDelete: 'CASCADE',
     },
     userId: {
       type: 'many-to-one',
       joinColumn: { name: 'userId' },
       target: 'User',
       cascade: true,
+      onDelete: 'CASCADE',
     },
   },
 });

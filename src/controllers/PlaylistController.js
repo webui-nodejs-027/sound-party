@@ -5,7 +5,8 @@ const { TYPES } = require('../constants');
 class PlaylistController extends BaseController {
   async getAllDataByUserId(req, res, next) {
     try {
-      const result = await this.service.getAllDataByUserId(req.params.userId);
+      const { user } = req;
+      const result = await this.service.getAllDataByUserId(user.id);
       res.status(200).json(result);
     } catch (e) {
       next(e);
@@ -17,6 +18,18 @@ class PlaylistController extends BaseController {
       const result = await this.service.getByIdUserAndIdPlaylist(
         req.params.id,
         req.params.userId,
+      );
+      res.status(200).json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async getAllSongsFromPlaylist(req, res, next) {
+    try {
+      const result = await this.service.getAllSongsFromPlaylist(
+        req.params.id,
+        req.query,
       );
       res.status(200).json(result);
     } catch (e) {

@@ -10,7 +10,10 @@ class PlaylistService extends BaseService {
   }
 
   async getAllDataByUserId(id) {
-    const data = this.repository.find({ where: { userId: id } });
+    const data = this.repository.find({
+      where: { userId: id },
+      order: { isMain: 'DESC' },
+    });
     if (!data) {
       throw new AppError('Cannot find userId', 400);
     }
@@ -18,11 +21,41 @@ class PlaylistService extends BaseService {
   }
 
   async getByIdUserAndIdPlaylist(id, userId) {
-    const data = this.repository.findOne({ where: { id, userId } });
+    const data = this.repository.findOne({
+      where: {
+        id,
+        userId,
+      },
+    });
     if (!data) {
       throw new AppError('Cannot find playlist or user', 400);
     }
     return data;
+  }
+
+  async getAllSongsFromPlaylist(id, query) {
+    const take = query.limit || 10;
+    const skip = take * (query.page - 1) || 0;
+    let data = [];
+
+    const dataSongs = await this.repository
+      .createQueryBuilder('playlist')
+      .innerJoinAndSelect('playlist.songs', 'song')
+      .innerJoinAndSelect('song.authorId', 'author')
+      .innerJoinAndSelect('song.genreId', 'genre')
+      .where('playlist.id = :id', { id })
+      .take(take)
+      .skip(skip)
+      .getMany();
+    if (dataSongs.length > 0) {
+      data = dataSongs[0].songs;
+    }
+    return {
+      page: parseInt(query.page, 10) || 1,
+      limit: parseInt(query.limit, 10) || 10,
+      total: data.length,
+      data,
+    };
   }
 
   async addSongToPlaylist(id, songId) {
@@ -43,19 +76,19 @@ class PlaylistService extends BaseService {
     if (idsOfSongs.indexOf(song.id) === -1) {
       playlist[0].songs.push(song);
     } else {
-      throw new AppError(
-        `Song ${songId} already exists in playlist ${id}`,
-        400,
-      );
+      throw new AppError('Song already exists in playlist', 400);
     }
     return this.repository.save(playlist);
   }
 
   async removeSongFromPlaylist(id, songId) {
-    const playlist = await this.repository.find({
-      where: { id },
-      relations: ['songs'],
-    });
+    const playlist = await this.repository
+      .createQueryBuilder('playlist')
+      .innerJoinAndSelect('playlist.songs', 'song')
+      .innerJoinAndSelect('song.authorId', 'author')
+      .innerJoinAndSelect('song.genreId', 'genre')
+      .where('playlist.id = :id', { id })
+      .getMany();
     const song = await this.songRepository.findOne(songId);
     const idsOfSongs = playlist[0].songs.map(item => item.id);
     if (!playlist) {

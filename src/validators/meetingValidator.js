@@ -18,6 +18,17 @@ const checkResult = (req, res, next) => {
 };
 
 module.exports.checkId = [param('id', 'must be a number').isInt(), checkResult];
+module.exports.checkUserInQuery = [
+  query('userId', 'must be a number').isInt(),
+  checkResult,
+];
+module.exports.checkStatusId = [
+  body(['statusId'])
+    .isInt()
+    .not()
+    .isEmpty(),
+  checkResult,
+];
 
 module.exports.checkBody = [
   body(['address', 'name'])
@@ -25,7 +36,7 @@ module.exports.checkBody = [
     .not()
     .isEmpty(),
 
-  body(['cityId', 'statusId', 'creatorId'])
+  body(['cityId'])
     .isInt()
     .not()
     .isEmpty(),

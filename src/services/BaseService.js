@@ -7,25 +7,41 @@ class BaseService {
   }
 
   async getAllData(query) {
-    const queryParams = Object.entries(query);
+    let page = 1;
+    let limit = 10;
     const findOptions = {
       where: {},
       order: {},
+      take: limit,
+      skip: 0,
     };
-    queryParams.forEach((elem) => {
-      if (elem[0] in this.repository.metadata.propertiesMap) {
-        [, findOptions.where[elem[0]]] = elem;
+
+    if (query !== undefined) {
+      const emptyObject = Object.keys(query).length;
+      if (emptyObject !== 0) {
+        const queryParams = Object.entries(query);
+        queryParams.forEach((elem) => {
+          if (elem[0] in this.repository.metadata.propertiesMap) {
+            [, findOptions.where[elem[0]]] = elem;
+          }
+        });
+        findOptions.take = query.limit || 10;
+        findOptions.skip = findOptions.take * (query.page - 1) || 0;
+        if (query.sortBy) {
+          findOptions.order[`${query.sortBy}`] = query.order || 'ASC';
+        }
+        if (query.page) {
+          page = parseInt(query.page, 10);
+        }
+        if (query.limit) {
+          limit = parseInt(query.limit, 10);
+        }
       }
-    });
-    findOptions.take = query.limit || 10;
-    findOptions.skip = findOptions.take * (query.page - 1) || 0;
-    if (query.sortBy) {
-      findOptions.order[`${query.sortBy}`] = query.order || 'ASC';
     }
     const [data, dataCount] = await this.repository.findAndCount(findOptions);
     return {
-      page: parseInt(query.page, 10) || 1,
-      limit: parseInt(query.limit, 10) || 10,
+      page,
+      limit,
       total: dataCount,
       data,
     };
@@ -34,7 +50,7 @@ class BaseService {
   async getById(id) {
     const data = await this.repository.findOne({ where: { id } });
     if (!data) {
-      throw new AppError(`Data with  id = ${id}  not found`);
+      throw new AppError(`Data with  id = ${id}  not found`, 400);
     }
     return data;
   }
@@ -42,7 +58,7 @@ class BaseService {
   async insertData(content) {
     const data = await this.repository.save(content);
     if (!data) {
-      throw new AppError('Add error');
+      throw new AppError('Add error', 400);
     }
     return data;
   }
@@ -50,7 +66,7 @@ class BaseService {
   async deleteById(id) {
     const data = await this.repository.delete(id);
     if (!data.affected) {
-      throw new AppError(`Delete error ${id}`);
+      throw new AppError(`Delete error ${id}`, 400);
     }
     return data;
   }
@@ -64,7 +80,7 @@ class BaseService {
       .returning('*')
       .execute();
     if (!data) {
-      throw new AppError('Update error');
+      throw new AppError('Update error', 400);
     }
     return data;
   }

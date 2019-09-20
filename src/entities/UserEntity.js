@@ -51,6 +51,7 @@ module.exports = new EntitySchema({
       target: 'Role',
       joinColumn: { name: 'roleId' },
       cascade: true,
+      onDelete: 'CASCADE',
     },
   },
 });

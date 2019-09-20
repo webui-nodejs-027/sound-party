@@ -4,8 +4,13 @@ const { TYPES } = require('../constants');
 const { getSongSrc } = require('../middlewares/appMiddlewares/songMiddleware');
 
 class SongController extends BaseController {
+  async getAllData(req, res) {
+    const result = await this.service.getAllData(req.query);
+    res.status(200).json(result);
+  }
+
   async addSongData(req, res) {
-    await this.service.checkNameSong(req.body.name, req.body.authorId);
+    await this.service.checkNameSong(req.body);
     await super.insertData(req, res);
   }
 
@@ -17,15 +22,14 @@ class SongController extends BaseController {
   }
 
   async deleteSong(req, res) {
-    await this.service.checkIdSong(req.params.id);
     const data = await this.service.getById(req.params.id);
     await this.service.deleteSong(data);
     await super.deleteById(req, res);
   }
 
   async updateSongData(req, res) {
-    await this.service.checkIdSong(req.params.id);
-    await this.service.checkNameSong(req.body.name, req.body.authorId);
+    await this.service.getById(req.params.id);
+    await this.service.checkNameSong(req.body);
     await super.updateById(req, res);
   }
 
